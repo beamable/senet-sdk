@@ -1,0 +1,29 @@
+{
+    "name": "Senet",
+    "rootNamespace": "",
+    "references": [
+        "Unity.Beamable",
+        "Unity.Beamable.Runtime.Common",
+        "Unity.Beamable.Server.Runtime",
+        "Unity.Beamable.Server.Runtime.Common",
+        "Unity.Beamable.Server.Runtime.Mocks",
+        "Unity.ResourceManager",
+        "Unity.Addressables",
+        "Beamable.Platform",
+        "Beamable.SmallerJSON",
+        "Unity.TextMeshPro",
+        "Unity.Beamable.Customer.MicroserviceClients",
+        "UnityEngine.Advertisements",
+        "Unity.Notifications.Android",
+        "RewardModel"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,25 @@
+{
+    "name": "com.beamable.senetsdk",
+    "version": "1.0.0",
+    "displayName": "Senet SDK",
+    "description": "Senet SDK built on top of Beamable SDK features",
+    "unity": "2021.3",
+    "documentationUrl": "https://docs.beamable.com/docs",
+    "keywords": [
+      "beamable",
+      "senet",
+      "sdk"
+    ],
+    "author": "Beamable <info@beamable.com> (https://www.beamable.com)",
+    "license": "ISC",
+    "dependencies": {
+
+    },
+    "samples": [
+      {
+        "displayName": "Demo",
+        "description": "Example showing various screens",
+        "path": "Samples~/SenetExamples"
+      }
+    ]
+  }
