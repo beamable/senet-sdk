@@ -1,7 +1,9 @@
 using Beamable;
 using Beamable.Common;
 using Beamable.Common.Api.Inventory;
+using Beamable.Server.Clients;
 using UnityEngine;
+using Web3FederationCommon;
 
 public class CurrencyManager : MonoBehaviour
 {
@@ -27,8 +29,6 @@ public class CurrencyManager : MonoBehaviour
         _beamContext = BeamContext.Default;
         await _beamContext.OnReady;
         await _beamContext.Accounts.OnReady;
-
-        var account = _beamContext.Accounts.Current;
 
         _beamContext.Api.InventoryService.Subscribe("currency", inventoryView =>
         {

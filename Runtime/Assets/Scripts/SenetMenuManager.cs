@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class SenetMenuManager : MonoBehaviour
 {
+    [SerializeField]
+    private string _gameplaySceneName = "Gameplay";
     private BeamContext _beamContext;
     private TournamentServiceClient _tournamentServiceClient;
 
@@ -76,7 +78,7 @@ public class SenetMenuManager : MonoBehaviour
 
     private void StartTournament()
     {
-        SceneManager.LoadSceneAsync("Gameplay");
-        TournamentManager.instance.IsTournament = true;
+        TournamentManager.instance.isTournament = true;
+        SceneManager.LoadSceneAsync(_gameplaySceneName);
     }
 }

@@ -12,7 +12,7 @@ using Unity.Notifications.Android;
 public class TournamentManager : MonoBehaviour
 {
     public static TournamentManager instance;
-    public bool IsTournament;
+    public bool isTournament;
     public string eventId;
     private BeamContext _beamContext;
 
@@ -122,6 +122,7 @@ public class TournamentManager : MonoBehaviour
     {
         await _beamContext.Microservices().TournamentService().SetScore(eventId, totalScore);
         _beamContext.Api.EventsService.Subscribable.ForceRefresh();
+        isTournament = false;
     }
 
     private void SetRunningTournament(EventView eventView)
