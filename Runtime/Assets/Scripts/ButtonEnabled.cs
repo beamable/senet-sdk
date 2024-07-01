@@ -6,9 +6,13 @@ public class ButtonEnabled : MonoBehaviour
 {
     [SerializeField]
     private Button button;
+    private long _cooldownSeconds;
 
-    [SerializeField]
-    private long _cooldownSeconds = 15;
+    private void Start()
+    {
+        var settings = Resources.Load<SenetSettings>("SenetSettings");
+        _cooldownSeconds = settings.wheelCooldownSeconds;
+    }
 
     void Update()
     {

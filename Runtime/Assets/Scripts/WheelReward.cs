@@ -6,16 +6,17 @@ public class WheelReward : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 {
     [SerializeField] Button _showAdButton;
     [SerializeField] RotateWheel _rotateWheel;
-    [SerializeField] string _androidAdUnitId = "Rewarded_Android";
-    [SerializeField] string _iOSAdUnitId = "Rewarded_iOS";
-    string _adUnitId = null;
+    private string _adUnitId = null;
 
     void Awake()
     {
+        var settings = Resources.Load<SenetSettings>("SenetSettings");
+        var iOSAdUnitId = settings.iOSAdUnitId;
+        var androidAdUnitId = settings.androidAdUnitId;
 #if UNITY_IOS
-        _adUnitId = _iOSAdUnitId;
+        _adUnitId = iOSAdUnitId;
 #elif UNITY_ANDROID
-        _adUnitId = _androidAdUnitId;
+        _adUnitId = androidAdUnitId;
 #endif
 
         _showAdButton.interactable = false;

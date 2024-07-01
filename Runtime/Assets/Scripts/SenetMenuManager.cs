@@ -5,13 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class SenetMenuManager : MonoBehaviour
 {
-    [SerializeField]
-    private string _gameplaySceneName = "Gameplay";
+    private string _gameplaySceneName;
     private BeamContext _beamContext;
     private TournamentServiceClient _tournamentServiceClient;
 
     private async void Start()
     {
+        var settings = Resources.Load<SenetSettings>("SenetSettings");
+        _gameplaySceneName = settings.gameplaySceneName;
+
         _beamContext = BeamContext.Default;
         await _beamContext.OnReady;
         await _beamContext.Accounts.OnReady;

@@ -11,7 +11,6 @@ public class WinnerRank : MonoBehaviour
     [SerializeField]
     private GameObject _thirdPlace;
 
-
     void Update()
     {
         var rank = TournamentManager.instance.rank;

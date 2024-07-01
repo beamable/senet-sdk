@@ -7,19 +7,23 @@ using UnityEngine.UI;
 public class LoadingBar : MonoBehaviour
 {
     [SerializeField]
-    private bool _simulated = false;
-    [SerializeField]
     private Image _progressBar;
 
     async void Start()
     {
+        var settings = Resources.Load<SenetSettings>("SenetSettings");
+        var simulated = settings.simulatedLoading;
+
         var beamContext = BeamContext.Default;
         await beamContext.OnReady;
         await beamContext.Accounts.OnReady;
+
         var account = beamContext.Accounts.Current;
         string level;
+
         Debug.Log(account.Email);
         Debug.Log(account.Alias);
+
         if (account != null && account.Email != "")
         {
             level = "MainMenu";
@@ -30,7 +34,7 @@ public class LoadingBar : MonoBehaviour
         }
         Debug.Log(level);
 
-        if (_simulated)
+        if (simulated)
         {
             StartCoroutine(SimulatedLoading(level));
         }

@@ -1,5 +1,5 @@
 {
-    "name": "Senet",
+    "name": "Beamable.SenetSDK",
     "rootNamespace": "",
     "references": [
         "Unity.Beamable",
@@ -15,7 +15,8 @@
         "Unity.Beamable.Customer.MicroserviceClients",
         "UnityEngine.Advertisements",
         "Unity.Notifications.Android",
-        "RewardModel"
+        "RewardModel",
+        "Beamable.SenetSDK.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
