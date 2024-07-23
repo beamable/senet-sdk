@@ -12,17 +12,17 @@ namespace Beamable.Server.Clients
     using System;
     using Beamable.Platform.SDK;
     using Beamable.Server;
-    
-    
+
+
     /// <summary> A generated client for <see cref="Beamable.Microservices.TournamentService"/> </summary
     public sealed class TournamentServiceClient : MicroserviceClient, Beamable.Common.IHaveServiceName
     {
-        
-        public TournamentServiceClient(BeamContext context = null) : 
+
+        public TournamentServiceClient(BeamContext context = null) :
                 base(context)
         {
         }
-        
+
         public string ServiceName
         {
             get
@@ -30,7 +30,7 @@ namespace Beamable.Server.Clients
                 return "TournamentService";
             }
         }
-        
+
         /// <summary>
         /// Call the SetScore method on the TournamentService microservice
         /// <see cref="Beamable.Microservices.TournamentService.SetScore"/>
@@ -44,7 +44,7 @@ namespace Beamable.Server.Clients
             serializedFields.Add("score", raw_score);
             return this.Request<System.Threading.Tasks.Task>("TournamentService", "SetScore", serializedFields);
         }
-        
+
         /// <summary>
         /// Call the GetPaidTournamentById method on the TournamentService microservice
         /// <see cref="Beamable.Microservices.TournamentService.GetPaidTournamentById"/>
@@ -56,7 +56,7 @@ namespace Beamable.Server.Clients
             serializedFields.Add("userId", raw_userId);
             return this.Request<string>("TournamentService", "GetPaidTournamentById", serializedFields);
         }
-        
+
         /// <summary>
         /// Call the CalculateReward method on the TournamentService microservice
         /// <see cref="Beamable.Microservices.TournamentService.CalculateReward"/>
@@ -68,7 +68,7 @@ namespace Beamable.Server.Clients
             serializedFields.Add("rotationAngle", raw_rotationAngle);
             return this.Request<Senet.Scripts.Models.RewardModel>("TournamentService", "CalculateReward", serializedFields);
         }
-        
+
         /// <summary>
         /// Call the UpdatePaidTournamentRecord method on the TournamentService microservice
         /// <see cref="Beamable.Microservices.TournamentService.UpdatePaidTournamentRecord"/>
@@ -82,7 +82,7 @@ namespace Beamable.Server.Clients
             serializedFields.Add("tournamentId", raw_tournamentId);
             return this.Request<Beamable.Common.Unit>("TournamentService", "UpdatePaidTournamentRecord", serializedFields);
         }
-        
+
         /// <summary>
         /// Call the ClaimTournamentRewards method on the TournamentService microservice
         /// <see cref="Beamable.Microservices.TournamentService.ClaimTournamentRewards"/>
@@ -95,41 +95,41 @@ namespace Beamable.Server.Clients
             return this.Request<System.Threading.Tasks.Task>("TournamentService", "ClaimTournamentRewards", serializedFields);
         }
     }
-    
+
     internal sealed class MicroserviceParametersTournamentServiceClient
     {
-        
+
         [System.SerializableAttribute()]
         internal sealed class ParameterSystem_String : MicroserviceClientDataWrapper<string>
         {
         }
-        
+
         [System.SerializableAttribute()]
         internal sealed class ParameterSystem_Double : MicroserviceClientDataWrapper<double>
         {
         }
-        
+
         [System.SerializableAttribute()]
         internal sealed class ParameterSystem_Int64 : MicroserviceClientDataWrapper<long>
         {
         }
-        
+
         [System.SerializableAttribute()]
         internal sealed class ParameterSystem_Single : MicroserviceClientDataWrapper<float>
         {
         }
     }
-    
+
     [BeamContextSystemAttribute()]
     public static class ExtensionsForTournamentServiceClient
     {
-        
+
         [Beamable.Common.Dependencies.RegisterBeamableDependenciesAttribute()]
         public static void RegisterService(Beamable.Common.Dependencies.IDependencyBuilder builder)
         {
             builder.AddScoped<TournamentServiceClient>();
         }
-        
+
         public static TournamentServiceClient TournamentService(this Beamable.Server.MicroserviceClients clients)
         {
             return clients.GetClient<TournamentServiceClient>();

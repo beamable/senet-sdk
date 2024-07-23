@@ -8,7 +8,6 @@
         "Unity.Beamable.Server.Runtime",
         "Unity.Beamable.Server.Runtime.Common",
         "Unity.Beamable.Customer.Common",
-        "Beamable.Microservice.WheelService",
         "RewardModel"
     ],
     "includePlatforms": [],
