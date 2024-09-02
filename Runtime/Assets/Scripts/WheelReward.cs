@@ -1,12 +1,25 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Advertisements;
+using Beamable;
+using Beamable.Server.Clients;
+using System;
 
 public class WheelReward : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
-    [SerializeField] Button _showAdButton;
-    [SerializeField] RotateWheel _rotateWheel;
+    [SerializeField] 
+    private Button _spinButton;
+    [SerializeField]
+    private GameObject _rewardScreen;
+    [SerializeField]
+    private GameObject _betterLuckScreen;
     private string _adUnitId = null;
+    public float StopPower;
+    private long _amount;
+    [SerializeField]
+    private Rigidbody2D rbody;
+    int inRotate;
+    float t;
 
     void Awake()
     {
@@ -17,9 +30,11 @@ public class WheelReward : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
         _adUnitId = iOSAdUnitId;
 #elif UNITY_ANDROID
         _adUnitId = androidAdUnitId;
+#elif UNITY_EDITOR
+        _adUnitId = androidAdUnitId; //Only for testing the functionality in the Editor
 #endif
 
-        _showAdButton.interactable = false;
+        _spinButton.interactable = false;
         LoadAd();
     }
 
@@ -35,22 +50,94 @@ public class WheelReward : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
         if (adUnitId.Equals(_adUnitId))
         {
-            _showAdButton.onClick.AddListener(ShowAd);
-            _showAdButton.interactable = true;
+            _spinButton.onClick.AddListener(ShowAd);
+            _spinButton.interactable = true;
         }
     }
 
     public void ShowAd()
     {
-        _showAdButton.interactable = false;
+        //_showAdButton.interactable = false;
         Advertisement.Show(_adUnitId, this);
+    }
+
+    private void Update()
+    {
+        if (rbody.angularVelocity > 0)
+        {
+            rbody.angularVelocity -= StopPower * Time.deltaTime;
+            rbody.angularVelocity = Mathf.Clamp(rbody.angularVelocity, 0, 1440);
+        }
+
+        if (rbody.angularVelocity == 0 && inRotate == 1)
+        {
+            t += 1 * Time.deltaTime;
+            if (t >= 0.5f)
+            {
+                GetReward();
+
+                inRotate = 0;
+                t = 0;
+            }
+        }
+    }
+
+    public void Rotate()
+    {
+        if (inRotate == 0)
+        {
+            PlayerPrefs.SetString("LastDateSpun", DateTime.Now.Ticks.ToString());
+            rbody.AddTorque(UnityEngine.Random.Range(10000f, 20000f));
+            inRotate = 1;
+        }
+    }
+
+    private async void GetReward()
+    {
+        var _beamContext = BeamContext.Default;
+        await _beamContext.OnReady;
+        await _beamContext.Accounts.OnReady;
+
+        float rot = rbody.gameObject.transform.eulerAngles.z;
+        var rewardData = await _beamContext.Microservices().TournamentService().CalculateReward(rot);
+
+        long rewardAmount = rewardData.rewardAmount;
+        float newRotationAngle = rewardData.rotationAngle;
+
+        RewardHelper(new Vector3(0, 0, newRotationAngle), rewardAmount);
+    }
+
+    public async void ClaimReward()
+    {
+        await CurrencyManager.Instance.AddOrRemoveSenet(+_amount);
+        _rewardScreen.SetActive(false);
+    }
+
+    public void SpinAgain()
+    {
+        _betterLuckScreen.SetActive(false);
+        ShowAd();
+    }
+
+    private void RewardHelper(Vector3 vector3, long amount)
+    {
+        rbody.gameObject.transform.eulerAngles = vector3;
+        _amount = amount;
+        if (amount == 0)
+        {
+            _betterLuckScreen.SetActive(true);
+        }
+        else
+        {
+            _rewardScreen.SetActive(true);
+        }
     }
 
     public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState)
     {
         if (adUnitId.Equals(_adUnitId) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
         {
-            _rotateWheel.ClaimReward();
+            Rotate();
         }
     }
 

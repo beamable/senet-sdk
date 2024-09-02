@@ -84,6 +84,7 @@ class SenetSettingsProvider : SettingsProvider
         EditorGUILayout.PropertyField(m_SenetSettings.FindProperty("simulatedLoading"));
         EditorGUILayout.PropertyField(m_SenetSettings.FindProperty("gameplaySceneName"));
         EditorGUILayout.PropertyField(m_SenetSettings.FindProperty("wheelCooldownSeconds"));
+        EditorGUILayout.PropertyField(m_SenetSettings.FindProperty("gameLogo"));
         m_SenetSettings.ApplyModifiedPropertiesWithoutUndo();
     }
 }

@@ -86,15 +86,14 @@ public class TournamentManager : MonoBehaviour
 
         var lastEvent = eventsGetResponse.done[^1];
 
-        Debug.Log(lastEvent.id);
-
         var userReward = lastEvent.rankRewards.Find(i => i.earned);
 
         if (userReward != null && !userReward.claimed)
         {
             try
             {
-                await _beamContext.Microservices().TournamentService().ClaimTournamentRewards(lastEvent.id);
+                Debug.Log($"Claiming reward: {lastEvent.name}, {lastEvent.id} {rewardAmount} {rank}");
+                await _beamContext.Microservices().TournamentService().ClaimTournamentRewards(lastEvent.id, lastEvent.name, rewardAmount, rank);
             }
             catch (Exception ex)
             {
@@ -113,7 +112,7 @@ public class TournamentManager : MonoBehaviour
                 {
                     ResetTournamentData();
                 }
-                SceneManager.LoadSceneAsync("MainMenu");
+                SceneManager.LoadSceneAsync("SenetMainMenu");
             }
         }
     }

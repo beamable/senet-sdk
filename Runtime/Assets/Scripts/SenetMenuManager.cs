@@ -1,5 +1,6 @@
 using Beamable;
 using Beamable.Server.Clients;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,40 +21,15 @@ public class SenetMenuManager : MonoBehaviour
         _tournamentServiceClient = new TournamentServiceClient();
     }
 
-    public void Tournament()
+    public void RegularGame()
     {
-        var account = _beamContext.Accounts.Current;
-        Debug.Log($"GamerTag: {account.GamerTag}");
-
-        _beamContext.Api.EventsService.Subscribe(async eventsGetResponse =>
-        {
-            if (eventsGetResponse.running.Count > 0)
-            {
-                var paidTournamentId = await _tournamentServiceClient.GetPaidTournamentById(account.GamerTag);
-                if (TournamentManager.instance.eventId != "")
-                {
-                    var hasPaid = paidTournamentId == TournamentManager.instance.eventId;
-
-                    if (hasPaid)
-                    {
-                        StartTournament();
-                    }
-                    else
-                    {
-                        LoadSceneBasedOnBalance();
-                    }
-                }
-            }
-            else
-            {
-                SceneManager.LoadSceneAsync("SenetNoTournament");
-            }
-        });
+        TournamentManager.instance.isTournament = false;
+        SceneManager.LoadSceneAsync(_gameplaySceneName);
     }
 
     public void Wheel()
     {
-        SceneManager.LoadSceneAsync("SenetWheel");
+        SceneManager.LoadSceneAsync("SenetSpinWheel");
     }
 
     public void Leaderboard()
@@ -66,15 +42,42 @@ public class SenetMenuManager : MonoBehaviour
         SceneManager.LoadSceneAsync("SenetWithdraw");
     }
 
-    private void LoadSceneBasedOnBalance()
+    public void Wallet()
     {
-        if (CurrencyManager.Instance.senet < 10)
+        SceneManager.LoadSceneAsync("SenetWallet");
+    }
+
+    public void Activity()
+    {
+        SceneManager.LoadSceneAsync("SenetActivity");
+    }
+
+    public void ShareAndEarn()
+    {
+        SceneManager.LoadSceneAsync("SenetShareAndEarn");
+    }
+
+    public void Redeem()
+    {
+        SceneManager.LoadSceneAsync("SenetRedeem");
+    }
+
+    public async void JoinTournament()
+    {
+        var eventId = TournamentManager.instance.eventId;
+
+        if (eventId != "")
         {
-            SceneManager.LoadScene("SenetLowBalance");
-        }
-        else
-        {
-            SceneManager.LoadScene("SenetPayEntryFee");
+            try
+            {
+                await _tournamentServiceClient.CheckOrCreatePayment(eventId);
+                StartTournament();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(ex.ToString());
+            }
+
         }
     }
 

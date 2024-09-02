@@ -1,13 +1,13 @@
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RewardAmount : MonoBehaviour
 {
     [SerializeField]
-    private TextMeshProUGUI _rewardAmount;
+    private Text _rewardAmount;
 
     void Update()
     {
-        _rewardAmount.text = $"You win {TournamentManager.instance.rewardAmount} senet coins";
+        _rewardAmount.text = $"You Win {TournamentManager.instance.rewardAmount} Coins";
     }
 }

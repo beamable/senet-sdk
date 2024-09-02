@@ -1,10 +1,11 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DisplaySenetAmount : MonoBehaviour
 {
     [SerializeField]
-    private TextMeshProUGUI _senetAmount;
+    private Text _senetAmount;
 
     void Update()
     {

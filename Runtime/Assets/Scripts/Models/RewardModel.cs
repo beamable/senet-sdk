@@ -15,4 +15,13 @@ namespace Senet.Scripts.Models
         public long rewardAmount;
         public float rotationAngle;
     }
+
+    [Serializable]
+    public class PaymentModel : System.Object
+    {
+        public long paymentAmount;
+		public string tournamentName;
+		public long wonAmount;
+		public long rank;
+    }
 }

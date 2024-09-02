@@ -1,5 +1,6 @@
 using Beamable;
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,25 +15,8 @@ public class LoadingBar : MonoBehaviour
         var settings = Resources.Load<SenetSettings>("SenetSettings");
         var simulated = settings.simulatedLoading;
 
-        var beamContext = BeamContext.Default;
-        await beamContext.OnReady;
-        await beamContext.Accounts.OnReady;
-
-        var account = beamContext.Accounts.Current;
-        string level;
-
-        Debug.Log(account.Email);
-        Debug.Log(account.Alias);
-
-        if (account != null && account.Email != "")
-        {
-            level = "MainMenu";
-        }
-        else
-        {
-            level = "SenetLogin";
-        }
-        Debug.Log(level);
+        var isFirstLaunch = PlayerPrefs.GetInt("IsFirstLaunch", 1);
+        string level = await DetermineLevel(isFirstLaunch);
 
         if (simulated)
         {
@@ -53,7 +37,34 @@ public class LoadingBar : MonoBehaviour
             _progressBar.fillAmount = loadingOperation.progress;
             yield return new WaitForEndOfFrame();
         }
+    }
 
+    private async Task<string> DetermineLevel(int isFirstLaunch)
+    {
+        if (isFirstLaunch != 0)
+        {
+            return "SenetWelcome";
+        }
+
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            return "SenetNoInternet";
+        }
+
+        var beamContext = BeamContext.Default;
+        await beamContext.OnReady;
+        await beamContext.Accounts.OnReady;
+
+        var account = beamContext.Accounts.Current;
+
+        Debug.Log($"Player Email: {account.Email},\n Player GamerTag: {account.GamerTag}");
+
+        if (account != null && !string.IsNullOrEmpty(account.Email))
+        {
+            return "SenetMainMenu";
+        }
+
+        return "SenetSignUp";
     }
 
     IEnumerator SimulatedLoading(string level)

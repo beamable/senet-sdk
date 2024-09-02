@@ -2,19 +2,20 @@ using Assets.Senet.Scripts.Extensions;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Beamable.Examples.Services.LeaderboardService
 {
     public class LeaderBoardManager : MonoBehaviour
     {
         [SerializeField]
-        private List<TextMeshProUGUI> _scores;
+        private List<Text> _scores;
         [SerializeField]
-        private List<TextMeshProUGUI> _names;
+        private List<Text> _names;
         [SerializeField]
-        private TextMeshProUGUI _currentPlayerScore;
+        private Text _currentPlayerScore;
         [SerializeField]
-        private TextMeshProUGUI _currentPlayerRanking;
+        private Text _currentPlayerRanking;
         [SerializeField]
 
         protected async void Start()
@@ -41,16 +42,16 @@ namespace Beamable.Examples.Services.LeaderboardService
                             var stats =
                                     await beamContext.Api.StatsService.GetStats("client", "public", "player", userId);
 
-                            if (userId == account.GamerTag)
-                            {
-                                _currentPlayerRanking.text = $"{rankEntry.rank}.";
-                                _currentPlayerScore.text = $"{rankEntry.score}";
-                            }
-
                             stats.TryGetValue("alias", out string alias);
                             if (string.IsNullOrEmpty(alias))
                             {
                                 alias = $"Player {index + 1}";
+                            }
+
+                            if (userId == account.GamerTag)
+                            {
+                                _currentPlayerRanking.text = alias;
+                                _currentPlayerScore.text = $"{rankEntry.score}";
                             }
 
                             _scores[index].text = $"{rankEntry.score}";

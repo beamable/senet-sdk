@@ -46,15 +46,35 @@ namespace Beamable.Server.Clients
         }
 
         /// <summary>
-        /// Call the GetPaidTournamentById method on the TournamentService microservice
-        /// <see cref="Beamable.Microservices.TournamentService.GetPaidTournamentById"/>
+        /// Call the CheckOrCreatePayment method on the TournamentService microservice
+        /// <see cref="Beamable.Microservices.TournamentService.CheckOrCreatePayment"/>
         /// </summary>
-        public Beamable.Common.Promise<string> GetPaidTournamentById(long userId)
+        public Beamable.Common.Promise<System.Threading.Tasks.Task> CheckOrCreatePayment(string tournamentId)
         {
-            object raw_userId = userId;
+            object raw_tournamentId = tournamentId;
             System.Collections.Generic.Dictionary<string, object> serializedFields = new System.Collections.Generic.Dictionary<string, object>();
-            serializedFields.Add("userId", raw_userId);
-            return this.Request<string>("TournamentService", "GetPaidTournamentById", serializedFields);
+            serializedFields.Add("tournamentId", raw_tournamentId);
+            return this.Request<System.Threading.Tasks.Task>("TournamentService", "CheckOrCreatePayment", serializedFields);
+        }
+
+        /// <summary>
+        /// Call the HasUserParticipated method on the TournamentService microservice
+        /// <see cref="Beamable.Microservices.TournamentService.HasUserParticipated"/>
+        /// </summary>
+        public Beamable.Common.Promise<bool> HasUserParticipated()
+        {
+            System.Collections.Generic.Dictionary<string, object> serializedFields = new System.Collections.Generic.Dictionary<string, object>();
+            return this.Request<bool>("TournamentService", "HasUserParticipated", serializedFields);
+        }
+
+        /// <summary>
+        /// Call the GetUserActivities method on the TournamentService microservice
+        /// <see cref="Beamable.Microservices.TournamentService.GetUserActivities"/>
+        /// </summary>
+        public Beamable.Common.Promise<System.Collections.Generic.List<Senet.Scripts.Models.PaymentModel>> GetUserActivities()
+        {
+            System.Collections.Generic.Dictionary<string, object> serializedFields = new System.Collections.Generic.Dictionary<string, object>();
+            return this.Request<System.Collections.Generic.List<Senet.Scripts.Models.PaymentModel>>("TournamentService", "GetUserActivities", serializedFields);
         }
 
         /// <summary>
@@ -70,28 +90,20 @@ namespace Beamable.Server.Clients
         }
 
         /// <summary>
-        /// Call the UpdatePaidTournamentRecord method on the TournamentService microservice
-        /// <see cref="Beamable.Microservices.TournamentService.UpdatePaidTournamentRecord"/>
-        /// </summary>
-        public Beamable.Common.Promise<Beamable.Common.Unit> UpdatePaidTournamentRecord(long userId, string tournamentId)
-        {
-            object raw_userId = userId;
-            object raw_tournamentId = tournamentId;
-            System.Collections.Generic.Dictionary<string, object> serializedFields = new System.Collections.Generic.Dictionary<string, object>();
-            serializedFields.Add("userId", raw_userId);
-            serializedFields.Add("tournamentId", raw_tournamentId);
-            return this.Request<Beamable.Common.Unit>("TournamentService", "UpdatePaidTournamentRecord", serializedFields);
-        }
-
-        /// <summary>
         /// Call the ClaimTournamentRewards method on the TournamentService microservice
         /// <see cref="Beamable.Microservices.TournamentService.ClaimTournamentRewards"/>
         /// </summary>
-        public Beamable.Common.Promise<System.Threading.Tasks.Task> ClaimTournamentRewards(string eventId)
+        public Beamable.Common.Promise<System.Threading.Tasks.Task> ClaimTournamentRewards(string eventId, string tournamentName, long amountWon, long rank)
         {
             object raw_eventId = eventId;
+            object raw_tournamentName = tournamentName;
+            object raw_amountWon = amountWon;
+            object raw_rank = rank;
             System.Collections.Generic.Dictionary<string, object> serializedFields = new System.Collections.Generic.Dictionary<string, object>();
             serializedFields.Add("eventId", raw_eventId);
+            serializedFields.Add("tournamentName", raw_tournamentName);
+            serializedFields.Add("amountWon", raw_amountWon);
+            serializedFields.Add("rank", raw_rank);
             return this.Request<System.Threading.Tasks.Task>("TournamentService", "ClaimTournamentRewards", serializedFields);
         }
     }
@@ -110,12 +122,12 @@ namespace Beamable.Server.Clients
         }
 
         [System.SerializableAttribute()]
-        internal sealed class ParameterSystem_Int64 : MicroserviceClientDataWrapper<long>
+        internal sealed class ParameterSystem_Single : MicroserviceClientDataWrapper<float>
         {
         }
 
         [System.SerializableAttribute()]
-        internal sealed class ParameterSystem_Single : MicroserviceClientDataWrapper<float>
+        internal sealed class ParameterSystem_Int64 : MicroserviceClientDataWrapper<long>
         {
         }
     }

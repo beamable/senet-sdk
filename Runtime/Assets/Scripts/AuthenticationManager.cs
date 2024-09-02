@@ -1,8 +1,9 @@
-using System;
-using System.Collections;
 using Beamable;
 using Beamable.Common;
 using Beamable.Server.Clients;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,15 +13,21 @@ using Web3FederationCommon;
 public class AuthenticationManager : MonoBehaviour
 {
     [SerializeField]
-    private TMP_InputField usernameField;
+    private InputField usernameInputField;
     [SerializeField]
-    private TMP_InputField passwordField;
+    private InputField emailInputField;
     [SerializeField]
-    private TMP_InputField confirmPasswordField;
+    private InputField passwordInputField;
     [SerializeField]
-    private Button loginButton;
+    private InputField confirmPasswordInputField;
+    [SerializeField]
+    private Button signInButton;
     [SerializeField]
     private Button signUpButton;
+    [SerializeField]
+    private Button togglePassword;
+    [SerializeField]
+    private Button toggleConfirmPassword;
     private BeamContext _beamContext;
     [SerializeField]
     private GameObject errorMessagePanel;
@@ -36,25 +43,34 @@ public class AuthenticationManager : MonoBehaviour
         if (signUpButton != null)
         {
             signUpButton.interactable = true;
+            signUpButton.onClick.AddListener(SignUpUser);
         }
         else
         {
-            loginButton.interactable = true;
+            signInButton.interactable = true;
+            signInButton.onClick.AddListener(LoginUser);
+        }
+
+        togglePassword.onClick.AddListener(() => TogglePassword(false));
+
+        if (toggleConfirmPassword != null)
+        {
+            toggleConfirmPassword.onClick.AddListener(() => TogglePassword(true));
         }
     }
 
     public async void LoginUser()
     {
-        if (usernameField.text != "" && usernameField.text != "Anonymous" && loginButton != null)
+        if (emailInputField.text != "" && emailInputField.text != "Anonymous" && signInButton != null)
         {
-            loginButton.interactable = false;
+            signInButton.interactable = false;
             await Login();
         }
     }
 
     public async void SignUpUser()
     {
-        if (usernameField.text != "" && passwordField.text != "" && signUpButton != null)
+        if (emailInputField.text != "" && usernameInputField.text != "" && passwordInputField.text != "" && signUpButton != null)
         {
             signUpButton.interactable = false;
             await SignUp();
@@ -65,26 +81,25 @@ public class AuthenticationManager : MonoBehaviour
     {
         try
         {
-
-            await _beamContext.Api.AuthService.Login(usernameField.text, passwordField.text);
-            SceneManager.LoadScene("MainMenu");
+            await _beamContext.Api.AuthService.Login(emailInputField.text, passwordInputField.text);
+            SceneManager.LoadScene("SenetMainMenu");
         }
         catch (Exception e)
         {
-            DisplayErrorMessage(e.ToString());
-            loginButton.interactable = true;
+            Debug.LogError(e.ToString());
+            signInButton.interactable = true;
         }
     }
 
     private async Promise SignUp()
     {
-        string email = usernameField.text;
-        string password = passwordField.text;
-        string confirmPassword = confirmPasswordField.text;
+        string email = emailInputField.text;
+        string userName = usernameInputField.text;
+        string password = passwordInputField.text;
+        string confirmPassword = confirmPasswordInputField.text;
 
         if (password != confirmPassword)
         {
-            DisplayErrorMessage("Passwords do not match.");
             signUpButton.interactable = true;
             return;
         }
@@ -94,12 +109,19 @@ public class AuthenticationManager : MonoBehaviour
             await _beamContext.Api.AuthService.RegisterDBCredentials(email, password);
             await _beamContext.Accounts.AddExternalIdentity<SuiIdentity, Web3FederationClient>("");
             await _beamContext.Api.AuthService.Login(email, password);
+            var userNameStat = new Dictionary<string, string>()
+            {
+                { "alias", userName }
+            };
+
+            await _beamContext.Api.StatsService.SetStats("public", userNameStat);
+
             Debug.Log("Sign up successful.");
-            SceneManager.LoadScene("MainMenu");
+            SceneManager.LoadScene("SenetMainMenu");
         }
         catch (Exception e)
         {
-            DisplayErrorMessage(e.ToString());
+            Debug.LogError(e.ToString());
             signUpButton.interactable = true;
         }
     }
@@ -111,7 +133,22 @@ public class AuthenticationManager : MonoBehaviour
 
     public void GoToLogin()
     {
-        SceneManager.LoadScene("SenetLogin");
+        SceneManager.LoadScene("SenetSignIn");
+    }
+
+    private void TogglePassword(bool isConfirm)
+    {
+        var inputField = isConfirm ? confirmPasswordInputField : passwordInputField;
+        if (inputField.contentType == InputField.ContentType.Password)
+        {
+            inputField.contentType = InputField.ContentType.Standard;
+        }
+        else
+        {
+            inputField.contentType = InputField.ContentType.Password;
+        }
+
+        inputField.ForceLabelUpdate();
     }
 
     private void DisplayErrorMessage(string message)

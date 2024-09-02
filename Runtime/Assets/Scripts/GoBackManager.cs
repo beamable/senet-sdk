@@ -13,6 +13,6 @@ public class GoBackManager : MonoBehaviour
 
     public void GoBack()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("SenetMainMenu");
     }
 }

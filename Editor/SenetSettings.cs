@@ -1,26 +1,21 @@
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SenetSettings : ScriptableObject
 {
-    public const string senetSettingsPath = "Assets/Senet/Resources/SenetSettings.asset";
+    private const string senetRootPath = "Assets/Senet";
+    private static string senetSettingsPath = $"{senetRootPath}/Resources/SenetSettings.asset";
 
-    [SerializeField]
     public string androidGameId;
-    [SerializeField]
     public string iOSGameId;
-    [SerializeField]
     public bool testMode;
-    [SerializeField]
     public string androidAdUnitId;
-    [SerializeField]
     public string iOSAdUnitId;
-    [SerializeField]
     public bool simulatedLoading;
-    [SerializeField]
     public string gameplaySceneName;
-    [SerializeField]
     public long wheelCooldownSeconds;
+    public Sprite gameLogo;
 
     internal static SenetSettings GetOrCreateSettings()
     {

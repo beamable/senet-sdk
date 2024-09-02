@@ -13,8 +13,12 @@ namespace Beamable.Server
 	{
 		public ObjectId id;
 		public long UserId;
-		public string PaidTournamentId;
-	}
+		public string TournamentId;
+		public string TournamentName;
+        public long PaidAmount;
+		public long WonAmount;
+		public long Rank;
+    }
 
 	public static class TournamentStorageExtension
 	{
