@@ -1,7 +1,6 @@
 using Beamable;
 using Beamable.Common;
 using Beamable.Common.Api.Inventory;
-using System;
 using UnityEngine;
 
 public class CurrencyManager : MonoBehaviour

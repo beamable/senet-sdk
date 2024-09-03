@@ -15,8 +15,7 @@
         "Unity.Beamable.Customer.MicroserviceClients",
         "UnityEngine.Advertisements",
         "Unity.Notifications.Android",
-        "RewardModel",
-        "Beamable.SenetSDK.Editor"
+        "RewardModel"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

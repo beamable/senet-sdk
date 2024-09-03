@@ -1,6 +1,7 @@
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
-using UnityEngine.UI;
 
 public class SenetSettings : ScriptableObject
 {
@@ -17,6 +18,7 @@ public class SenetSettings : ScriptableObject
     public long wheelCooldownSeconds;
     public Sprite gameLogo;
 
+#if UNITY_EDITOR
     internal static SenetSettings GetOrCreateSettings()
     {
         if (!AssetDatabase.IsValidFolder("Assets/Senet"))
@@ -40,4 +42,5 @@ public class SenetSettings : ScriptableObject
     {
         return new SerializedObject(GetOrCreateSettings());
     }
+#endif
 }

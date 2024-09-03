@@ -1,8 +1,12 @@
 {
     "name": "Beamable.SenetSDK.Editor",
     "rootNamespace": "",
-    "references": [],
-    "includePlatforms": [],
+    "references": [
+        "GUID:2a98e7e905ba0ce47a1bc7e2edb20ac8"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
