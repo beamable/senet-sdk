@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CurrencyManager : MonoBehaviour
 {
-    public static CurrencyManager Instance;
+    public static CurrencyManager instance;
     public double senet = 0;
     private BeamContext _beamContext;
     private const long gweiPerSenet = 1000000000;
@@ -13,13 +13,13 @@ public class CurrencyManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
+        if (instance != null)
         {
             Destroy(gameObject);
             return;
         }
 
-        Instance = this;
+        instance = this;
         DontDestroyOnLoad(gameObject);
     }
 

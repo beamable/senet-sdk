@@ -1,11 +1,9 @@
-using Beamable.Common.Api.Auth;
 using Beamable.Common.Api.Inventory;
 using Beamable.Server;
 using MongoDB.Driver;
 using Senet.Scripts.Models;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -64,6 +62,35 @@ namespace Beamable.Microservices
             catch (Exception e)
             {
                 System.Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        [ClientCallable]
+        public async Task<bool> HasUserPaidForTournament(string tournamentId)
+        {
+            try
+            {
+                var userId = Context.UserId;
+                var db = await Storage.GetDatabase<TournamentStorage>();
+                var collection = db.GetCollection<Payment>("Payments");
+                var filter = Builders<Payment>.Filter.And(
+                  Builders<Payment>.Filter.Eq("UserId", userId),
+                  Builders<Payment>.Filter.Eq("TournamentId", tournamentId)
+              );
+
+                var payment = await collection.Find(filter).FirstOrDefaultAsync();
+
+                if (payment == null)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"Error retrieving payment record: {e}");
                 throw;
             }
         }
@@ -164,29 +191,6 @@ namespace Beamable.Microservices
             return -1; // If no matching range is found
         }
 
-
-        private async void CreateTournamentPaymentRecord(long userId)
-        {
-            try
-            {
-                var db = await Storage.GetDatabase<TournamentStorage>();
-                var collection = db.GetCollection<Payment>("Payments");
-                await collection.InsertOneAsync(new Payment()
-                {
-                    UserId = userId,
-                    TournamentId = "",
-                    TournamentName = "",
-                    PaidAmount = 0,
-                    WonAmount = 0,
-                });
-                Debug.Log("Payment Record");
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Error creating payment record: {e}");
-                throw;
-            }
-        }
 
         [ClientCallable]
         public async Task ClaimTournamentRewards(string eventId, string tournamentName, long amountWon, long rank)

@@ -58,6 +58,18 @@ namespace Beamable.Server.Clients
         }
 
         /// <summary>
+        /// Call the HasUserPaidForTournament method on the TournamentService microservice
+        /// <see cref="Beamable.Microservices.TournamentService.HasUserPaidForTournament"/>
+        /// </summary>
+        public Beamable.Common.Promise<bool> HasUserPaidForTournament(string tournamentId)
+        {
+            object raw_tournamentId = tournamentId;
+            System.Collections.Generic.Dictionary<string, object> serializedFields = new System.Collections.Generic.Dictionary<string, object>();
+            serializedFields.Add("tournamentId", raw_tournamentId);
+            return this.Request<bool>("TournamentService", "HasUserPaidForTournament", serializedFields);
+        }
+
+        /// <summary>
         /// Call the HasUserParticipated method on the TournamentService microservice
         /// <see cref="Beamable.Microservices.TournamentService.HasUserParticipated"/>
         /// </summary>

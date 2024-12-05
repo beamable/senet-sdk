@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class SenetSettings : ScriptableObject
 {
-    private const string senetRootPath = "Assets/Senet";
-    private static string senetSettingsPath = $"{senetRootPath}/Resources/SenetSettings.asset";
+    private static readonly string senetRootPath = "Assets/Senet";
+    private static readonly string senetSettingsPath = $"{senetRootPath}/Resources/SenetSettings.asset";
 
     public string androidGameId;
     public string iOSGameId;
@@ -15,16 +15,17 @@ public class SenetSettings : ScriptableObject
     public string iOSAdUnitId;
     public bool simulatedLoading;
     public string gameplaySceneName;
+    public string senetGameName;
     public long wheelCooldownSeconds;
     public Sprite gameLogo;
 
 #if UNITY_EDITOR
     internal static SenetSettings GetOrCreateSettings()
     {
-        if (!AssetDatabase.IsValidFolder("Assets/Senet"))
+        if (!AssetDatabase.IsValidFolder(senetRootPath))
         {
             AssetDatabase.CreateFolder("Assets", "Senet");
-            AssetDatabase.CreateFolder("Assets/Senet", "Resources");
+            AssetDatabase.CreateFolder(senetRootPath, "Resources");
         }
 
         var settings = AssetDatabase.LoadAssetAtPath<SenetSettings>(senetSettingsPath);

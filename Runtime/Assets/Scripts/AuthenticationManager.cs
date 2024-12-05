@@ -4,6 +4,7 @@ using Beamable.Server.Clients;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -33,6 +34,8 @@ public class AuthenticationManager : MonoBehaviour
     private GameObject errorMessagePanel;
     [SerializeField]
     private TMP_Text errorMessageText;
+    [SerializeField]
+    private GameObject _loadingPanel;
 
     private async void Start()
     {
@@ -93,6 +96,7 @@ public class AuthenticationManager : MonoBehaviour
 
     private async Promise SignUp()
     {
+        _loadingPanel.SetActive(true);
         string email = emailInputField.text;
         string userName = usernameInputField.text;
         string password = passwordInputField.text;
@@ -116,14 +120,25 @@ public class AuthenticationManager : MonoBehaviour
 
             await _beamContext.Api.StatsService.SetStats("public", userNameStat);
 
+            //await WaitOneSecondAsync(); 
+
+            _loadingPanel.SetActive(false);
+
             Debug.Log("Sign up successful.");
+
             SceneManager.LoadScene("SenetMainMenu");
         }
         catch (Exception e)
         {
+            _loadingPanel.SetActive(false);
             Debug.LogError(e.ToString());
             signUpButton.interactable = true;
         }
+    }
+
+    private async Task WaitOneSecondAsync()
+    {
+        await Task.Delay(TimeSpan.FromSeconds(3));
     }
 
     public void GoToSignUpPage()

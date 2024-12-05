@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +8,9 @@ public class DisplaySenetAmount : MonoBehaviour
 
     void Update()
     {
-        _senetAmount.text = $"{CurrencyManager.Instance.senet}";
+        if (CurrencyManager.instance)
+        {
+            _senetAmount.text = $"{CurrencyManager.instance.senet}";
+        }
     }
 }

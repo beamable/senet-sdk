@@ -1,28 +1,87 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TournamentResult : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _congratulationPanel;
+    private GameObject _congratulationsPanel;
     [SerializeField]
     private GameObject _betterLuckPanel;
+    [SerializeField]
+    private GameObject _congratulationsClaimPanel;
 
-    void Update()
+    [SerializeField]
+    private Sprite _firstPlace;
+    [SerializeField]
+    private Sprite _secondPlace;
+    [SerializeField]
+    private Sprite _thirdPlace;
+    [SerializeField]
+    private Sprite _badge;
+    [SerializeField]
+    private GameObject _trophy;
+
+    private void Start()
     {
-        var rank = TournamentManager.instance.rank;
+        if (TournamentManager.instance)
+        {
+            HandleRankUpdate(TournamentManager.instance.doneTournament);
+            TournamentManager.instance.OnDoneTournamentChanged += HandleRankUpdate;
+        }
+    }
 
-        if (rank == 1)
+    public async void ClaimReward()
+    {
+        _congratulationsClaimPanel.SetActive(false);
+        _congratulationsPanel.SetActive(true);
+        await TournamentManager.instance.ClaimRewardsInTournament();
+    }
+
+    void HandleRankUpdate(DoneTournament doneTournament)
+    {
+        if (doneTournament != null)
         {
-            _congratulationPanel.SetActive(true);
+            var rank = doneTournament.rank;
+            var image = _trophy.GetComponent<Image>();
+
+            if (rank > 0)
+            {
+                _congratulationsClaimPanel.SetActive(true);
+                if (rank >= 1 && rank <= 10)
+                {
+                    switch (rank)
+                    {
+                        case 1:
+                            image.sprite = _firstPlace;
+                            break;
+                        case 2:
+                            image.sprite = _secondPlace;
+                            break;
+                        case 3:
+                            image.sprite = _thirdPlace;
+                            break;
+                    }
+
+                    if (rank >= 4 && rank <= 10)
+                    {
+                        image.sprite = _badge;
+                        _trophy.transform.GetChild(0).GetComponent<TMP_Text>().text = rank.ToString();
+                    }
+                }
+                else
+                {
+                    _betterLuckPanel.SetActive(true);
+                }
+            }
         }
-        else if (rank > 1)
+    }
+
+    private void OnDisable()
+    {
+        if (TournamentManager.instance)
         {
-            _betterLuckPanel.SetActive(true);
-        }
-        else
-        {
-            _congratulationPanel.SetActive(false);
-            _betterLuckPanel.SetActive(false);
+            TournamentManager.instance.OnDoneTournamentChanged -= HandleRankUpdate;
         }
     }
 }

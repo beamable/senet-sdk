@@ -81,6 +81,7 @@ class SenetSettingsProvider : SettingsProvider
 
     private static void DrawCoreSettings()
     {
+        EditorGUILayout.PropertyField(m_SenetSettings.FindProperty("senetGameName"));
         EditorGUILayout.PropertyField(m_SenetSettings.FindProperty("simulatedLoading"));
         EditorGUILayout.PropertyField(m_SenetSettings.FindProperty("gameplaySceneName"));
         EditorGUILayout.PropertyField(m_SenetSettings.FindProperty("wheelCooldownSeconds"));

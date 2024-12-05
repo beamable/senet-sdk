@@ -1,13 +1,14 @@
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Advertisements;
 using Beamable;
 using Beamable.Server.Clients;
 using System;
+using TMPro;
+using UnityEngine;
+using UnityEngine.Advertisements;
+using UnityEngine.UI;
 
 public class WheelReward : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
-    [SerializeField] 
+    [SerializeField]
     private Button _spinButton;
     [SerializeField]
     private GameObject _rewardScreen;
@@ -18,6 +19,8 @@ public class WheelReward : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
     private long _amount;
     [SerializeField]
     private Rigidbody2D rbody;
+    [SerializeField]
+    private TMP_Text _reward;
     int inRotate;
     float t;
 
@@ -109,8 +112,12 @@ public class WheelReward : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     public async void ClaimReward()
     {
-        await CurrencyManager.Instance.AddOrRemoveSenet(+_amount);
+        //await CurrencyManager.instance.AddOrRemoveSenet(+_amount);
+        _spinButton.interactable = true;
         _rewardScreen.SetActive(false);
+        var countCoins = FindObjectOfType<CountCoins>();
+
+        countCoins.RemoveCoins();
     }
 
     public void SpinAgain()
@@ -123,6 +130,8 @@ public class WheelReward : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
     {
         rbody.gameObject.transform.eulerAngles = vector3;
         _amount = amount;
+        _reward.text = $"+{amount}";
+
         if (amount == 0)
         {
             _betterLuckScreen.SetActive(true);
@@ -137,6 +146,7 @@ public class WheelReward : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
     {
         if (adUnitId.Equals(_adUnitId) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
         {
+            _spinButton.interactable = false;
             Rotate();
         }
     }

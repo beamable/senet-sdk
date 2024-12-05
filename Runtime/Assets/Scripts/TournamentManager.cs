@@ -5,52 +5,88 @@ using Beamable.Server.Clients;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 #if UNITY_ANDROID
 using Unity.Notifications.Android;
 #endif
+
+public class DoneTournament
+{
+    public long rank = 0;
+    public long rewardAmount;
+}
+
+public class RunningTournament
+{
+    public long rank = 0;
+    public string eventId;
+    public bool hasPaid;
+    public long playerCount;
+}
 
 public class TournamentManager : MonoBehaviour
 {
     public static TournamentManager instance;
     public bool isTournament;
-    public string eventId;
     private BeamContext _beamContext;
 
     private DateTime daysLeft;
     public TimeSpan countdownTime;
 
-    public long rank;
-    public long rewardAmount;
+    public DoneTournament doneTournament;
+    public RunningTournament runningTournament;
+    public event Action<DoneTournament> OnDoneTournamentChanged;
+    public event Action<RunningTournament> OnRunningTournamentChanged;
+    public bool isPlacementBoardOpen = false;
 
-    private async void Awake()
+    void Awake()
     {
-        if (instance == null)
+        if (instance != null)
         {
-            instance = this;
+            Destroy(gameObject);
+            return;
         }
 
+        instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    async void Start()
+    {
 
         _beamContext = BeamContext.Default;
         await _beamContext.OnReady;
 
         _beamContext.Api.EventsService.Subscribe(eventsGetResponse =>
         {
-            if (eventsGetResponse.done.Count > 0)
+            var done = eventsGetResponse.GetSenetGameTournament(EventStatusType.Done);
+            var running = eventsGetResponse.GetSenetGameTournament(EventStatusType.Running);
+
+            if (done.Count > 0)
             {
-                var lastDoneEvent = eventsGetResponse.done[^1];
+                var lastDoneEvent = done[^1];
                 var lastEventEarned = lastDoneEvent.rankRewards.Find(i => i.earned);
 
                 if (lastEventEarned != null && !lastEventEarned.claimed)
                 {
-                    rank = lastDoneEvent.rank;
-                    rewardAmount = lastDoneEvent.rankRewards.Find(i => i.earned).currencies[0].amount;
+                    var doneTournamentData = new DoneTournament
+                    {
+                        rank = lastDoneEvent.rank,
+                        rewardAmount = lastDoneEvent.rankRewards.Find(i => i.earned).currencies[0].amount
+                    };
+
+                    OnDoneTournamentChanged?.Invoke(doneTournamentData);
+                    doneTournament = doneTournamentData;
                 }
             }
-            else if (eventsGetResponse.running.Count > 0)
+            else if (running.Count > 0)
             {
-                var eventView = eventsGetResponse.running[0];
+                var eventView = running[0];
                 SetRunningTournament(eventView);
+            }
+            else
+            {
+                ResetTournamentData();
             }
         });
     }
@@ -85,15 +121,14 @@ public class TournamentManager : MonoBehaviour
         var eventsGetResponse = await _beamContext.Api.EventsService.GetCurrent();
 
         var lastEvent = eventsGetResponse.done[^1];
-
         var userReward = lastEvent.rankRewards.Find(i => i.earned);
 
         if (userReward != null && !userReward.claimed)
         {
             try
             {
-                Debug.Log($"Claiming reward: {lastEvent.name}, {lastEvent.id} {rewardAmount} {rank}");
-                await _beamContext.Microservices().TournamentService().ClaimTournamentRewards(lastEvent.id, lastEvent.name, rewardAmount, rank);
+                var rewardAmount = userReward.currencies[0].amount;
+                await _beamContext.Microservices().TournamentService().ClaimTournamentRewards(lastEvent.id, lastEvent.name, rewardAmount, doneTournament.rank);
             }
             catch (Exception ex)
             {
@@ -103,10 +138,11 @@ public class TournamentManager : MonoBehaviour
             {
                 var newEventsGetResponse = await _beamContext.Api.EventsService.GetCurrent();
 
-                if (newEventsGetResponse.running.Count > 0)
+                var running = newEventsGetResponse.GetSenetGameTournament(EventStatusType.Running);
+                if (running.Count > 0)
                 {
-                    Debug.Log($"After claim: {newEventsGetResponse.running[0].id}");
-                    SetRunningTournament(newEventsGetResponse.running[0]);
+                    Debug.Log($"After claim: {running[0].id}");
+                    SetRunningTournament(running[0]);
                 }
                 else
                 {
@@ -119,14 +155,44 @@ public class TournamentManager : MonoBehaviour
 
     public async Promise SetScoreInEvents(int totalScore)
     {
+        var eventId = runningTournament.eventId;
         await _beamContext.Microservices().TournamentService().SetScore(eventId, totalScore);
         _beamContext.Api.EventsService.Subscribable.ForceRefresh();
         isTournament = false;
+
+        if (totalScore > 0) isPlacementBoardOpen = true;
     }
 
-    private void SetRunningTournament(EventView eventView)
+    private async void SetRunningTournament(EventView eventView)
     {
-        eventId = eventView.id;
+        var _tournamentServiceClient = new TournamentServiceClient();
+        var hasPaid = await _tournamentServiceClient.HasUserPaidForTournament(eventView.id);
+
+        var runningTournamentData = new RunningTournament
+        {
+            eventId = eventView.id,
+            hasPaid = hasPaid
+        };
+
+        var leaderboardId = eventView.leaderboardId;
+
+        if (leaderboardId != "")
+        {
+            var view = await _beamContext.Api.LeaderboardService.GetBoard(leaderboardId, 1, 500);
+
+            var rankings = view.rankings;
+            runningTournamentData.playerCount = rankings.Count;
+
+            await _beamContext.Accounts.OnReady;
+            var account = _beamContext.Accounts.Current;
+
+            var myRank = rankings.Where(i => i.gt == account.GamerTag).FirstOrDefault();
+
+            runningTournamentData.rank = myRank.rank;
+        }
+
+        OnRunningTournamentChanged?.Invoke(runningTournamentData);
+        runningTournament = runningTournamentData;
 
         var localTimeZone = TimeZoneInfo.Local;
         var localTime = TimeZoneInfo.ConvertTimeFromUtc(eventView.GetEndDate(), localTimeZone);
@@ -149,8 +215,10 @@ public class TournamentManager : MonoBehaviour
 
     private void ResetTournamentData()
     {
-        eventId = "";
-        rank = 0;
-        rewardAmount = 0;
+        doneTournament = null;
+        runningTournament = null;
+
+        OnDoneTournamentChanged?.Invoke(null);
+        OnRunningTournamentChanged?.Invoke(null);
     }
 }

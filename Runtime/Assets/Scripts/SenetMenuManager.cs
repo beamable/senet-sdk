@@ -57,6 +57,11 @@ public class SenetMenuManager : MonoBehaviour
         SceneManager.LoadSceneAsync("SenetShareAndEarn");
     }
 
+    public void Home()
+    {
+        SceneManager.LoadSceneAsync("SenetMainMenu");
+    }
+
     public void Redeem()
     {
         SceneManager.LoadSceneAsync("SenetRedeem");
@@ -64,7 +69,7 @@ public class SenetMenuManager : MonoBehaviour
 
     public async void JoinTournament()
     {
-        var eventId = TournamentManager.instance.eventId;
+        var eventId = TournamentManager.instance.runningTournament.eventId;
 
         if (eventId != "")
         {

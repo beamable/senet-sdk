@@ -15,7 +15,8 @@
         "Unity.Beamable.Customer.MicroserviceClients",
         "UnityEngine.Advertisements",
         "Unity.Notifications.Android",
-        "RewardModel"
+        "RewardModel",
+        "DOTween.Modules"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

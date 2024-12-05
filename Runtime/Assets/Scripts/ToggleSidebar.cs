@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ToggleSidebar : MonoBehaviour
@@ -9,7 +7,15 @@ public class ToggleSidebar : MonoBehaviour
 
     public void TurnOn()
     {
-        _sidebar.SetActive(true);
+        if (_sidebar.activeSelf == true)
+        {
+
+            _sidebar.SetActive(false);
+        }
+        else
+        {
+           _sidebar.SetActive(true);
+        }
     }
 
     public void TurnOff()

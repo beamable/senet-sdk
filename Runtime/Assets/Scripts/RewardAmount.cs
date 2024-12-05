@@ -8,6 +8,6 @@ public class RewardAmount : MonoBehaviour
 
     void Update()
     {
-        _rewardAmount.text = $"You Win {TournamentManager.instance.rewardAmount} Coins";
+        _rewardAmount.text = $"You Win {TournamentManager.instance.doneTournament.rewardAmount} Coins";
     }
 }

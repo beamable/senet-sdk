@@ -13,18 +13,6 @@ public class ClaimReward : MonoBehaviour
     {
         _congratulationsClaimPanel.SetActive(false);
         _congratulationsPanel.SetActive(true);
-        await ClaimRewardsInTournament();
-    }
-    public async Task ClaimRewardsInTournament()
-    {
-        _congratulationsClaimPanel.SetActive(false);
-        await Delay();
         await TournamentManager.instance.ClaimRewardsInTournament();
-    }
-
-    private async Task Delay()
-    {
-        await Task.Delay(TimeSpan.FromSeconds(3));
-        Debug.Log("Finished waiting.");
     }
 }
