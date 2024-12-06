@@ -1,17 +1,15 @@
 using DG.Tweening;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class CountCoins : MonoBehaviour
 {
-   private GameObject coins;
+    private GameObject coins;
     [SerializeField] private GameObject counter;
 
     void Start()
     {
         coins = transform.GetChild(0).gameObject;
     }
-
 
     public void AddCoins()
     {
@@ -39,7 +37,8 @@ public class CountCoins : MonoBehaviour
 
             delay += 0.1f;
 
-            counter.transform.DOScale(1.1f, 0.1f).SetLoops(6, LoopType.Yoyo).SetEase(Ease.InOutSine).SetDelay(1.2f);
+            if (counter != null) 
+                counter.transform.DOScale(1.1f, 0.1f).SetLoops(6, LoopType.Yoyo).SetEase(Ease.InOutSine).SetDelay(1.2f);
         }
 
         DOVirtual.DelayedCall(delay + 2f, () => coins.SetActive(false));
