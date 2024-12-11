@@ -577,6 +577,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Whoops
       objectReference: {fileID: 0}
+    - target: {fileID: 7317562246326161310, guid: af3794377777d5d408f2b769f80a766d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7317562246326161310, guid: af3794377777d5d408f2b769f80a766d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7317562246326161310, guid: af3794377777d5d408f2b769f80a766d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7317562246441918100, guid: af3794377777d5d408f2b769f80a766d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7317562246441918100, guid: af3794377777d5d408f2b769f80a766d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7317562246441918100, guid: af3794377777d5d408f2b769f80a766d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7317562247106304333, guid: af3794377777d5d408f2b769f80a766d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
