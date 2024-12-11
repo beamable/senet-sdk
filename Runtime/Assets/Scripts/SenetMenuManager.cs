@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SenetMenuManager : MonoBehaviour
 {
+    public GameObject popup; 
     private string _gameplaySceneName;
     private BeamContext _beamContext;
     private TournamentServiceClient _tournamentServiceClient;
@@ -67,6 +68,11 @@ public class SenetMenuManager : MonoBehaviour
         SceneManager.LoadSceneAsync("SenetRedeem");
     }
 
+    public void LoadDepositSenetScene()
+    {
+        SceneManager.LoadSceneAsync("SenetDeposit");
+    }
+
     public async void JoinTournament()
     {
         var eventId = TournamentManager.instance.runningTournament.eventId;
@@ -90,5 +96,29 @@ public class SenetMenuManager : MonoBehaviour
     {
         TournamentManager.instance.isTournament = true;
         SceneManager.LoadSceneAsync(_gameplaySceneName);
+    }
+    
+    public void OpenPopup()
+    {
+        if (popup != null)
+        {
+            popup.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning($"Popup with name ConfirmationPopup not found!");
+        }
+    }
+    
+    public void ClosePopup()
+    {
+        if (popup != null)
+        {
+            popup.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning($"Popup with name ConfirmationPopup not found!");
+        }
     }
 }

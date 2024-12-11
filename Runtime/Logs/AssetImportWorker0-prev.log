@@ -1,0 +1,358 @@
+Using pre-set license
+Built from '2021.3/staging' branch; Version is '2021.3.33f1 (ee5a2aa03ab2) revision 15620650'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 11  (10.0.22631) 64bit Professional' Language: 'en' Physical Memory: 16069 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2021.3.33f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker0
+-projectPath
+C:/dev/Senet/senet-sdk/Runtime
+-logFile
+Logs/AssetImportWorker0.log
+-srvPort
+52832
+Successfully changed project path to: C:/dev/Senet/senet-sdk/Runtime
+C:/dev/Senet/senet-sdk/Runtime
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [39632] Host "[IP] 172.17.48.1 [Port] 0 [Flags] 2 [Guid] 1554782819 [EditorId] 1554782819 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-2CUVNVK) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+
+Player connection [39632] Host "[IP] 172.17.48.1 [Port] 0 [Flags] 2 [Guid] 1554782819 [EditorId] 1554782819 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-2CUVNVK) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+
+[Physics::Module] Initialized MultithreadedJobDispatcher with {0} workers.
+Setting multithreaded rendering option only supported for iOS, tvOS and Android platforms, VisionOS provided
+Multithreaded rendering setting removed for platform VisionOS
+Refreshing native plugins compatible for Editor in 4.41 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2021.3.33f1 (ee5a2aa03ab2)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.3.33f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/dev/Senet/senet-sdk/Runtime/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: Intel(R) Iris(R) Xe Graphics (ID=0x46a6)
+    Vendor:   Intel
+    VRAM:     8034 MB
+    Driver:   31.0.101.4255
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.3.33f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.3.33f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.3.33f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56412
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.33f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.33f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.3.33f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.009196 seconds.
+Native extension for WindowsStandalone target not found
+[usbmuxd] Start listen thread
+[usbmuxd] Listen thread started
+Native extension for iOS target not found
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 306 ms
+Refreshing native plugins compatible for Editor in 2.78 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.963 seconds
+Domain Reload Profiling:
+	ReloadAssembly (963ms)
+		BeginReloadAssembly (132ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (0ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (1ms)
+		EndReloadAssembly (738ms)
+			LoadAssemblies (132ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (109ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (27ms)
+			SetupLoadedEditorAssemblies (562ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (423ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (3ms)
+				BeforeProcessingInitializeOnLoad (1ms)
+				ProcessInitializeOnLoadAttributes (91ms)
+				ProcessInitializeOnLoadMethodAttributes (43ms)
+				AfterProcessingInitializeOnLoad (0ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (0ms)
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.000000 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for iOS target not found
+Native extension for Android target not found
+Refreshing native plugins compatible for Editor in 0.05 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  0.600 seconds
+Domain Reload Profiling:
+	ReloadAssembly (601ms)
+		BeginReloadAssembly (131ms)
+			ExecutionOrderSort (0ms)
+			DisableScriptedObjects (5ms)
+			BackupInstance (0ms)
+			ReleaseScriptingObjects (0ms)
+			CreateAndSetChildDomain (19ms)
+		EndReloadAssembly (411ms)
+			LoadAssemblies (85ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (100ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (24ms)
+			SetupLoadedEditorAssemblies (185ms)
+				LogAssemblyErrors (0ms)
+				InitializePlatformSupportModulesInManaged (28ms)
+				SetLoadedEditorAssemblies (0ms)
+				RefreshPlugins (0ms)
+				BeforeProcessingInitializeOnLoad (24ms)
+				ProcessInitializeOnLoadAttributes (109ms)
+				ProcessInitializeOnLoadMethodAttributes (18ms)
+				AfterProcessingInitializeOnLoad (6ms)
+				EditorAssembliesLoaded (0ms)
+			ExecutionOrderSort2 (0ms)
+			AwakeInstancesAfterBackupRestoration (6ms)
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Setting multithreaded rendering option only supported for iOS, tvOS and Android platforms, VisionOS provided
+Multithreaded rendering setting removed for platform VisionOS
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
+Refreshing native plugins compatible for Editor in 0.05 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 53 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 2 unused Assets / (46.7 KB). Loaded Objects now: 526.
+Memory consumption went from 28.1 MB to 28.1 MB.
+Total: 2.162300 ms (FindLiveObjects: 0.055400 ms CreateObjectMapping: 0.004300 ms MarkObjects: 2.047200 ms  DeleteObjects: 0.054200 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:video-codec-MediaFoundation-h265: 746d11721c4dcdbdad8f713fa42b33f4 -> 
+  custom:CustomObjectIndexerAttribute: bc11b3a6c3213fcdd17b65e7da85e133 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 1090873.266791 seconds.
+  path: Assets/BeamableInstaller/Beamable.Installer.asmdef
+  artifactKey: Guid(ded03cb3bd34544a190e25f38904aedc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/BeamableInstaller/Beamable.Installer.asmdef using Guid(ded03cb3bd34544a190e25f38904aedc) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '41ee97d4b45f6862cd8a60256a673fde') in 0.041668 seconds 
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 4.979848 seconds.
+  path: Assets/BeamableInstaller/Editor
+  artifactKey: Guid(1a97e75990fd64e7e97a28dbe65134f8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/BeamableInstaller/Editor using Guid(1a97e75990fd64e7e97a28dbe65134f8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '19515ca0f28110a9d23e8979b4d4633f') in 0.019192 seconds 
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 0.695573 seconds.
+  path: Assets/BeamableInstaller/SmallerJson
+  artifactKey: Guid(6ad5bc4cf90f94ee0af00025a7d3631f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/BeamableInstaller/SmallerJson using Guid(6ad5bc4cf90f94ee0af00025a7d3631f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8157b6298e47bc83df379df4480745ff') in 0.016533 seconds 
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 11.541089 seconds.
+  path: Assets/senet coin.asset
+  artifactKey: Guid(ab9f3b51db7df694c9157fe959153197) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/senet coin.asset using Guid(ab9f3b51db7df694c9157fe959153197) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1a3eaefb16b1f745c845182b40f52cbe') in 0.021089 seconds 
+Number of asset objects unloaded after import = 1
+========================================================================
+Received Import Request.
+  Time since last request: 13.135470 seconds.
+  path: Assets/BeamableInstaller/Editor/BeamableInstallerIcon.png
+  artifactKey: Guid(3164f0c73c6e74dcb9da404b47dbcee8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/BeamableInstaller/Editor/BeamableInstallerIcon.png using Guid(3164f0c73c6e74dcb9da404b47dbcee8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7ad8774116a2dc6f6cc470a0d3300aaf') in 0.086240 seconds 
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.895500 seconds.
+  path: Assets/BeamableInstaller/SmallerJson/Beamable.Installer.SmallerJson.asmdef
+  artifactKey: Guid(151c7cffe869f4624b5d25f6d51c6dd9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/BeamableInstaller/SmallerJson/Beamable.Installer.SmallerJson.asmdef using Guid(151c7cffe869f4624b5d25f6d51c6dd9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'aecccf249843228c0e6d796ad135bd40') in 0.017365 seconds 
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 4.431745 seconds.
+  path: Assets/BeamableInstaller/Editor/BeamableInstallerReadme.cs
+  artifactKey: Guid(07df9645011542f28edcc5419377e5ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/BeamableInstaller/Editor/BeamableInstallerReadme.cs using Guid(07df9645011542f28edcc5419377e5ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '47d2a9ca5e7c6aa97eeb67096b87d0db') in 0.024777 seconds 
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 0.732292 seconds.
+  path: Assets/BeamableInstaller/Editor/BeamableInstaller.cs
+  artifactKey: Guid(315f9abb466224ba09d84073604a312b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/BeamableInstaller/Editor/BeamableInstaller.cs using Guid(315f9abb466224ba09d84073604a312b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3b16359abfd3e600093b880e0d3761b6') in 0.017334 seconds 
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 0.367097 seconds.
+  path: Assets/BeamableInstaller/Editor/ReadmeEditor.cs
+  artifactKey: Guid(8c8fb4415dad4ff79faa543bbf4eeaf0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/BeamableInstaller/Editor/ReadmeEditor.cs using Guid(8c8fb4415dad4ff79faa543bbf4eeaf0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'dbf1c83ff8040e10687fc91b39e9a743') in 0.015171 seconds 
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 1.333576 seconds.
+  path: Assets/BeamableInstaller/SmallerJson/IRawJsonProvider.cs
+  artifactKey: Guid(2545cc365195f4e8e98ff9e76bc5f180) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/BeamableInstaller/SmallerJson/IRawJsonProvider.cs using Guid(2545cc365195f4e8e98ff9e76bc5f180) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '29c46ebeedd940c6f48a220b0000930e') in 0.017358 seconds 
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 0.415865 seconds.
+  path: Assets/BeamableInstaller/SmallerJson/SmallerJSON.ArrayDict.cs
+  artifactKey: Guid(67d7cc5fcc0f046a19b21ec4260ffa20) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/BeamableInstaller/SmallerJson/SmallerJSON.ArrayDict.cs using Guid(67d7cc5fcc0f046a19b21ec4260ffa20) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3ddd84000ce695a3258fc68e2c64993d') in 0.017199 seconds 
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 0.503859 seconds.
+  path: Assets/BeamableInstaller/SmallerJson/SmallerJSON.cs
+  artifactKey: Guid(93f9c9924b9534c45bb29f492dd980f2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/BeamableInstaller/SmallerJson/SmallerJSON.cs using Guid(93f9c9924b9534c45bb29f492dd980f2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd82bf733df966126b4c229c363096e3a') in 0.016836 seconds 
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 0.732959 seconds.
+  path: Assets/BeamableInstaller/SmallerJson/SmallerJSON.FromString.cs
+  artifactKey: Guid(39a41db0c48e44899b088348c2ab4e9e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/BeamableInstaller/SmallerJson/SmallerJSON.FromString.cs using Guid(39a41db0c48e44899b088348c2ab4e9e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a400b08154ae30058bb90882e26fc065') in 0.017439 seconds 
+Number of asset objects unloaded after import = 0
+========================================================================
+Received Import Request.
+  Time since last request: 18.455720 seconds.
+  path: Assets/Senet New UI Assets/Badge.png
+  artifactKey: Guid(fcf88c37f4b792344ae69091d834adb8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/Senet New UI Assets/Badge.png using Guid(fcf88c37f4b792344ae69091d834adb8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a163a9d955dbb1d5d18005dd15a3bd16') in 0.093959 seconds 
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000127 seconds.
+  path: Assets/Senet New UI Assets/Button_PFT.png
+  artifactKey: Guid(f154bda060175204b99ef9a526a2e5f0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/Senet New UI Assets/Button_PFT.png using Guid(f154bda060175204b99ef9a526a2e5f0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0cf76dcb7a5fede0f1eec2f550e61af2') in 0.045415 seconds 
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Senet New UI Assets/Button_PFP_Generic.png
+  artifactKey: Guid(4db9405d84574af4b8f2e6b304d2eea0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/Senet New UI Assets/Button_PFP_Generic.png using Guid(4db9405d84574af4b8f2e6b304d2eea0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '70590caa63ed20c2cf3bcb57cf25dfc5') in 0.058057 seconds 
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Senet New UI Assets/Button_PFT_Header.png
+  artifactKey: Guid(c7888c2eb1656454c9d715aa02fb489a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/Senet New UI Assets/Button_PFT_Header.png using Guid(c7888c2eb1656454c9d715aa02fb489a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '339c78f718634ee3f7e57fc050c0dfe1') in 0.064655 seconds 
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Senet New UI Assets/Button_Yellow.png
+  artifactKey: Guid(2e079646130d8cb4eade48c0927315dd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/Senet New UI Assets/Button_Yellow.png using Guid(2e079646130d8cb4eade48c0927315dd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '979fa5027ead830e8db9dda8ff4ab094') in 0.042443 seconds 
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000039 seconds.
+  path: Assets/Senet New UI Assets/Button_PFT_Footer.png
+  artifactKey: Guid(966bfa42e04b8c24c9f3bf498d992cab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/Senet New UI Assets/Button_PFT_Footer.png using Guid(966bfa42e04b8c24c9f3bf498d992cab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b9bf4c351dd6b01bb5052b055f56d105') in 0.046131 seconds 
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000027 seconds.
+  path: Assets/Senet New UI Assets/Button_Spinner.png
+  artifactKey: Guid(2d5e79ad3c89ce643a318f0818b75e4b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/Senet New UI Assets/Button_Spinner.png using Guid(2d5e79ad3c89ce643a318f0818b75e4b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6dd275a0dca918d1f34ecb0c6e6adc16') in 0.061224 seconds 
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Senet New UI Assets/Button_PFT_FooterRank.png
+  artifactKey: Guid(3932f0bc75319c04192369545847cc6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/Senet New UI Assets/Button_PFT_FooterRank.png using Guid(3932f0bc75319c04192369545847cc6c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'db63bb050f41c3982ed8304600a26c8b') in 0.038398 seconds 
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000033 seconds.
+  path: Assets/Senet New UI Assets/Button_PFP.png
+  artifactKey: Guid(fd5c674827269df458a2d0fe2dd24fd7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Number of updated assets reloaded before import = 0
+Start importing Assets/Senet New UI Assets/Button_PFP.png using Guid(fd5c674827269df458a2d0fe2dd24fd7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5e3e6270bebf061fbeadee33d03e0212') in 0.055451 seconds 
+Number of asset objects unloaded after import = 3
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0
