@@ -1147,7 +1147,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1732069720}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SenetMenuManager, Beamable.SenetSDK
         m_MethodName: Activity
         m_Mode: 1
@@ -3302,8 +3302,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1732069720}
-        m_TargetAssemblyTypeName: SenetMenuManager, Beamable.SenetSDK
-        m_MethodName: ClosePopup
+        m_TargetAssemblyTypeName: ToggleVisibility, Beamable.SenetSDK
+        m_MethodName: SetInactive
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3841,8 +3841,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1732069720}
-        m_TargetAssemblyTypeName: SenetMenuManager, Beamable.SenetSDK
-        m_MethodName: OpenPopup
+        m_TargetAssemblyTypeName: ToggleVisibility, Beamable.SenetSDK
+        m_MethodName: SetActive
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5297,7 +5297,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1732069720}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SenetMenuManager, Beamable.SenetSDK
         m_MethodName: Home
         m_Mode: 1
@@ -5511,7 +5511,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1732069720}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SenetMenuManager, Beamable.SenetSDK
         m_MethodName: Activity
         m_Mode: 1
@@ -6135,10 +6135,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1732069718}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b540f281855cbf24f97e4e8c4a7c0169, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d93773b438327c40b6cf93615d5b62b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popup: {fileID: 605744092}
+  _gameObject: {fileID: 605744092}
 --- !u!1 &1756679311
 GameObject:
   m_ObjectHideFlags: 0
@@ -6223,7 +6223,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1732069720}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SenetMenuManager, Beamable.SenetSDK
         m_MethodName: Leaderboard
         m_Mode: 1

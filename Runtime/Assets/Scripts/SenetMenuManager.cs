@@ -97,28 +97,4 @@ public class SenetMenuManager : MonoBehaviour
         TournamentManager.instance.isTournament = true;
         SceneManager.LoadSceneAsync(_gameplaySceneName);
     }
-    
-    public void OpenPopup()
-    {
-        if (popup != null)
-        {
-            popup.SetActive(true);
-        }
-        else
-        {
-            Debug.LogWarning($"Popup with name ConfirmationPopup not found!");
-        }
-    }
-    
-    public void ClosePopup()
-    {
-        if (popup != null)
-        {
-            popup.SetActive(false);
-        }
-        else
-        {
-            Debug.LogWarning($"Popup with name ConfirmationPopup not found!");
-        }
-    }
 }
