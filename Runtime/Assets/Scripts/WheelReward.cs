@@ -112,7 +112,7 @@ public class WheelReward : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     public async void ClaimReward()
     {
-        //await CurrencyManager.instance.AddOrRemoveSenet(+_amount);
+        await CurrencyManager.instance.AddOrRemoveSenet(+_amount);
         _spinButton.interactable = true;
         _rewardScreen.SetActive(false);
         var countCoins = FindObjectOfType<CountCoins>();

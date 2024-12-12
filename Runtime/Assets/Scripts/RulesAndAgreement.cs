@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,13 +17,18 @@ public class RulesAndAgreement : MonoBehaviour
     [SerializeField]
     private GameObject _rulesAndAgreement;
     [SerializeField]
+    private GameObject _confirmation;
+    [SerializeField]
     private GameObject _scroll;
     [SerializeField]
     private Toggle _toggle;
     private bool _hasPaid;
+    private SenetMenuManager _senetMenuManager;
 
     void Start()
     {
+        _senetMenuManager = gameObject.GetComponent<SenetMenuManager>();
+
         var runningTournament = TournamentManager.instance.runningTournament;
         if (runningTournament != null)
         {
@@ -43,8 +49,7 @@ public class RulesAndAgreement : MonoBehaviour
                 _scroll.GetComponent<RectTransform>().sizeDelta = new Vector2(_scroll.GetComponent<RectTransform>().rect.width, 740);
                 _tournamentButton.onClick.AddListener(() =>
                 {
-                    _rulesAndAgreement.SetActive(false);
-                    _welcome.SetActive(true);
+                    _confirmation.SetActive(true);
                 });
             }
         }
@@ -52,8 +57,20 @@ public class RulesAndAgreement : MonoBehaviour
 
     public void JoinTournament()
     {
-        var senetMenuManager = gameObject.GetComponent<SenetMenuManager>();
-        senetMenuManager.JoinTournament();
+        _senetMenuManager.StartTournament();
+    }
+
+    public async void PayForTournament()
+    {
+        await _senetMenuManager.PayForTournament();
+        var countCoins = FindObjectOfType<CountCoins>();
+        countCoins.RemoveCoins();
+
+        await Task.Delay(2000);
+
+        _confirmation.SetActive(false);
+        _rulesAndAgreement.SetActive(false);
+        _welcome.SetActive(true);
     }
 
     void Update()
