@@ -67,6 +67,11 @@ public class SenetMenuManager : MonoBehaviour
         SceneManager.LoadSceneAsync("SenetRedeem");
     }
 
+    public void LoadDepositSenetScene()
+    {
+        SceneManager.LoadSceneAsync("SenetDeposit");
+    }
+
     public async void JoinTournament()
     {
         var eventId = TournamentManager.instance.runningTournament.eventId;
