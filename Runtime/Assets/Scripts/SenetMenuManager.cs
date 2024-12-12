@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class SenetMenuManager : MonoBehaviour
 {
-    public GameObject popup; 
     private string _gameplaySceneName;
     private BeamContext _beamContext;
     private TournamentServiceClient _tournamentServiceClient;
