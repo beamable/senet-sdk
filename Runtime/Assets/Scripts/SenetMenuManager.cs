@@ -1,6 +1,7 @@
 using Beamable;
 using Beamable.Server.Clients;
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -67,12 +68,12 @@ public class SenetMenuManager : MonoBehaviour
         SceneManager.LoadSceneAsync("SenetRedeem");
     }
 
-    public void LoadDepositSenetScene()
+     public void LoadDepositSenetScene()
     {
         SceneManager.LoadSceneAsync("SenetDeposit");
     }
 
-    public async void JoinTournament()
+    public async Task PayForTournament()
     {
         var eventId = TournamentManager.instance.runningTournament.eventId;
 
@@ -81,17 +82,15 @@ public class SenetMenuManager : MonoBehaviour
             try
             {
                 await _tournamentServiceClient.CheckOrCreatePayment(eventId);
-                StartTournament();
             }
             catch (Exception ex)
             {
                 Debug.LogError(ex.ToString());
             }
-
         }
     }
 
-    private void StartTournament()
+    public void StartTournament()
     {
         TournamentManager.instance.isTournament = true;
         SceneManager.LoadSceneAsync(_gameplaySceneName);
