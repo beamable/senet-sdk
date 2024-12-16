@@ -26,6 +26,8 @@ public class WithdrawToken : MonoBehaviour
         var beamContext = BeamContext.Default;
         await beamContext.OnReady;
         _web3FederationClient = beamContext.Microservices().Web3Federation();
+
+        _withdrawalButton.onClick.AddListener(WithdrawSenet);
     }
 
     public async void WithdrawSenet()
@@ -35,17 +37,17 @@ public class WithdrawToken : MonoBehaviour
 
         if (address == "" && amountText == "")
         {
-            DisplayNotificationPanel("Address and amount are empty", true);
+            //DisplayNotificationPanel("Address and amount are empty", true);
             return;
         }
         else if (address == "")
         {
-            DisplayNotificationPanel("Address is empty", true);
+            //DisplayNotificationPanel("Address is empty", true);
             return;
         }
         else if (amountText == "")
         {
-            DisplayNotificationPanel("Amount is empty", true);
+            //DisplayNotificationPanel("Amount is empty", true);
             return;
         }
 
@@ -58,12 +60,12 @@ public class WithdrawToken : MonoBehaviour
             long withdrawalAmount = (amount * gweiPerSenet);
 
             await _web3FederationClient.Withdrawal(guid.ToString(), address, "currency.senet_currency.senet_token", withdrawalAmount);
-            DisplayNotificationPanel("Withdrawal Successfull");
+            //DisplayNotificationPanel("Withdrawal Successfull");
         }
         catch (Exception ex)
         {
             Debug.LogException(ex);
-            DisplayNotificationPanel(ex.ToString(), true);
+            //DisplayNotificationPanel(ex.ToString(), true);
         }
         finally
         {

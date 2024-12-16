@@ -1,31 +1,37 @@
+using Beamable;
+using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class CopyWallet : MonoBehaviour
 {
-    [SerializeField]
-    private Text _walletAddressText;
-
     [SerializeField]
     private GameObject _copyButton;
     [SerializeField]
     private GameObject _copied;
     [SerializeField]
     private TMP_InputField _pasteTargetInputField;
+    [SerializeField]
+    private TMP_Text _walletAddressInput;
 
-    private string _walletAddress = "adgfjgdufg7646qbdaaaajvwt7358fjczxbMB";
+    private string _walletAddress = "";
 
-    private void Start()
+    private async void Start()
     {
-        if (_walletAddressText == null)
+        if (_walletAddressInput != null)
         {
-            Debug.LogError("Wallet Address Text is not assigned in the Inspector.");
-            return;
+            var beamContext = BeamContext.Default;
+            await beamContext.OnReady;
+            await beamContext.Accounts.OnReady;
+
+            var account = beamContext.Accounts.Current;
+
+            var address = account.ExternalIdentities.Where(i => i.providerService == "Web3Federation").Select(i => i.userId).FirstOrDefault();
+            _walletAddress = address;
+            _walletAddressInput.text = address;
         }
-    
-        _walletAddressText.text = _walletAddress;    }
+    }
 
     public async void CopyToClipboard()
     {
@@ -38,7 +44,7 @@ public class CopyWallet : MonoBehaviour
         _copyButton.SetActive(true);
         _copied.SetActive(false);
     }
-    
+
     public void PasteFromClipboard()
     {
         Debug.Log("PasteFromClipboard called.");
