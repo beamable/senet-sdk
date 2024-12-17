@@ -73,12 +73,12 @@ public class SenetMenuManager : MonoBehaviour
         SceneManager.LoadSceneAsync("SenetRedeem");
     }
 
-     public void LoadDepositSenetScene()
+     public void DepositSenet()
      {
         SceneManager.LoadSceneAsync("SenetDeposit");
      }
      
-     public void LoadSenetNewPasswordScene()
+     public void  SenetNewPassword()
      {
          SceneManager.LoadSceneAsync("SenetNewPassword");
      }

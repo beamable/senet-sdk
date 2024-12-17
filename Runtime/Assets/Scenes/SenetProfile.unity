@@ -3178,10 +3178,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff75c7140109dc14f92f6a2cf3ecc583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walletAddressText: {fileID: 0}
   _copyButton: {fileID: 2126261634}
   _copied: {fileID: 206826790}
   _pasteTargetInputField: {fileID: 0}
+  _walletAddressInput: {fileID: 0}
 --- !u!1 &1020962806
 GameObject:
   m_ObjectHideFlags: 0
@@ -4645,7 +4645,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7457137967034023262}
         m_TargetAssemblyTypeName: SenetMenuManager, Beamable.SenetSDK
-        m_MethodName: LoadSenetNewPasswordScene
+        m_MethodName: SenetNewPassword
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

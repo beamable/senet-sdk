@@ -718,7 +718,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1147754772}
         m_TargetAssemblyTypeName: SenetMenuManager, Beamable.SenetSDK
-        m_MethodName: LoadDepositSenetScene
+        m_MethodName: DepositSenet
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
