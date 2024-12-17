@@ -21,6 +21,8 @@ public class RulesAndAgreement : MonoBehaviour
     [SerializeField]
     private GameObject _scroll;
     [SerializeField]
+    private GameObject _notEnoughTokens;
+    [SerializeField]
     private Toggle _toggle;
     private bool _hasPaid;
     private SenetMenuManager _senetMenuManager;
@@ -29,28 +31,40 @@ public class RulesAndAgreement : MonoBehaviour
     {
         _senetMenuManager = gameObject.GetComponent<SenetMenuManager>();
 
-        var runningTournament = TournamentManager.instance.runningTournament;
-        if (runningTournament != null)
+        var senetAmount = CurrencyManager.instance.senet;
+
+        if (senetAmount < 25)
         {
-            var hasPaid = runningTournament.hasPaid;
-
-            _hasPaid = hasPaid;
-
-            if (hasPaid)
+            _notEnoughTokens.SetActive(true);
+            _rulesAndAgreement.SetActive(false);
+        }
+        else
+        {
+            _notEnoughTokens.SetActive(false);
+            _rulesAndAgreement.SetActive(true);
+            var runningTournament = TournamentManager.instance.runningTournament;
+            if (runningTournament != null)
             {
-                _scroll.GetComponent<RectTransform>().sizeDelta = new Vector2(_scroll.GetComponent<RectTransform>().rect.width, 1110);
-                _terms.SetActive(false);
-                _entryCost.SetActive(false);
-                _tournamentButtonText.text = "Play Now";
-                _tournamentButton.onClick.AddListener(JoinTournament);
-            }
-            else
-            {
-                _scroll.GetComponent<RectTransform>().sizeDelta = new Vector2(_scroll.GetComponent<RectTransform>().rect.width, 740);
-                _tournamentButton.onClick.AddListener(() =>
+                var hasPaid = runningTournament.hasPaid;
+
+                _hasPaid = hasPaid;
+
+                if (hasPaid)
                 {
-                    _confirmation.SetActive(true);
-                });
+                    _scroll.GetComponent<RectTransform>().sizeDelta = new Vector2(_scroll.GetComponent<RectTransform>().rect.width, 1110);
+                    _terms.SetActive(false);
+                    _entryCost.SetActive(false);
+                    _tournamentButtonText.text = "Play Now";
+                    _tournamentButton.onClick.AddListener(JoinTournament);
+                }
+                else
+                {
+                    _scroll.GetComponent<RectTransform>().sizeDelta = new Vector2(_scroll.GetComponent<RectTransform>().rect.width, 740);
+                    _tournamentButton.onClick.AddListener(() =>
+                    {
+                        _confirmation.SetActive(true);
+                    });
+                }
             }
         }
     }

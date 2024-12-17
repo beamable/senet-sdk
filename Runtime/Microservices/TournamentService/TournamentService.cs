@@ -46,7 +46,7 @@ namespace Beamable.Microservices
 
                 if (payment == null)
                 {
-                    var paymentAmount = 20;
+                    var paymentAmount = 25;
                     await AddOrRemoveSenet(-paymentAmount);
                     await collection.InsertOneAsync(new Payment()
                     {

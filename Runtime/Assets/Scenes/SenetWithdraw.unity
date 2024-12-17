@@ -612,7 +612,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.4749146, y: -277}
+  m_AnchoredPosition: {x: -2.4748535, y: -277}
   m_SizeDelta: {x: 1280.06, y: 144.04}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &273705962
@@ -1944,7 +1944,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.5700073, y: -296.3125}
+  m_AnchoredPosition: {x: 0.57006836, y: -296.3125}
   m_SizeDelta: {x: 690.5952, y: 148}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &621487147
@@ -1990,6 +1990,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 621487148}
   m_OnClick:
     m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1732069721}
+        m_TargetAssemblyTypeName: WithdrawToken, Beamable.SenetSDK
+        m_MethodName: WithdrawSenet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       m_Calls:
       - m_Target: {fileID: 529416835}
         m_TargetAssemblyTypeName: CountCoins, Beamable.SenetSDK
@@ -2093,6 +2106,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -4.339966, y: 10.839844}
   m_AnchoredPosition: {x: -4.340088, y: 10.839966}
   m_SizeDelta: {x: -121.41, y: -654.72}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2169,7 +2183,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.419983, y: 0.91999817}
+  m_AnchoredPosition: {x: 2.4199219, y: 0.91999817}
   m_SizeDelta: {x: -116.28, y: -59.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &654836791
@@ -2728,6 +2742,7 @@ GameObject:
   - component: {fileID: 721951931}
   - component: {fileID: 721951933}
   - component: {fileID: 721951932}
+  - component: {fileID: 721951934}
   m_Layer: 5
   m_Name: Coin
   m_TagString: Untagged
@@ -2795,6 +2810,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 721951930}
   m_CullTransparentMesh: 1
+--- !u!114 &721951934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721951930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21ac2d1ee7365545a318718234918dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _senetAmount: {fileID: 1482043515}
+  isRemainingAfterPayment: 0
 --- !u!1 &724758023
 GameObject:
   m_ObjectHideFlags: 0
@@ -2910,7 +2939,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 6.961731, y: 807.52}
+  m_AnchoredPosition: {x: 6.96167, y: 807.52}
   m_SizeDelta: {x: -1316.8768, y: 112}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &733680323
@@ -3028,7 +3057,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.419983, y: -2}
+  m_AnchoredPosition: {x: 2.4199219, y: -2}
   m_SizeDelta: {x: -116.28, y: -59.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &740490441
@@ -3166,7 +3195,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -0.00018310547, y: -299.99982}
+  m_AnchoredPosition: {x: -0.00012207031, y: -300}
   m_SizeDelta: {x: 0, y: 158}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &747503521
@@ -3385,10 +3414,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff75c7140109dc14f92f6a2cf3ecc583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walletAddressText: {fileID: 0}
   _copyButton: {fileID: 0}
   _copied: {fileID: 0}
   _pasteTargetInputField: {fileID: 1012638149}
+  _walletAddressInput: {fileID: 0}
 --- !u!1001 &763525986
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3402,11 +3431,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 975405631555154625, guid: 22600a2ddf5aec448a7b3c89f68c1e1e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -119.14581
+      value: -119.14575
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607818072887933095, guid: 22600a2ddf5aec448a7b3c89f68c1e1e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -220.32935
       objectReference: {fileID: 0}
     - target: {fileID: 3134277021686283949, guid: 22600a2ddf5aec448a7b3c89f68c1e1e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -350.90594
+      value: -350.906
       objectReference: {fileID: 0}
     - target: {fileID: 5344988675761072809, guid: 22600a2ddf5aec448a7b3c89f68c1e1e, type: 3}
       propertyPath: m_Pivot.x
@@ -3540,7 +3573,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.5700073, y: -487.31256}
+  m_AnchoredPosition: {x: 0.57006836, y: -487.31256}
   m_SizeDelta: {x: 690.5952, y: 148}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &823444778
@@ -3786,8 +3819,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.2598877, y: -196.13}
-  m_SizeDelta: {x: -188.33, y: 122.91}
+  m_AnchoredPosition: {x: 0, y: -196.13}
+  m_SizeDelta: {x: 0, y: 122.91}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &835044120
 MonoBehaviour:
@@ -4079,7 +4112,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.62994385, y: -542}
+  m_AnchoredPosition: {x: 0.6300049, y: -542}
   m_SizeDelta: {x: 816.103, y: 148}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &934678981
@@ -4213,7 +4246,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.14813232, y: -0.000015258789}
+  m_AnchoredPosition: {x: 0.14819336, y: -0.000015258789}
   m_SizeDelta: {x: 940.06, y: 269.09}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1012638149
@@ -4767,6 +4800,7 @@ GameObject:
   - component: {fileID: 1175883217}
   - component: {fileID: 1175883219}
   - component: {fileID: 1175883218}
+  - component: {fileID: 1175883220}
   m_Layer: 5
   m_Name: Tokens Sent
   m_TagString: Untagged
@@ -4833,6 +4867,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1175883216}
   m_CullTransparentMesh: 1
+--- !u!114 &1175883220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175883216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d93773b438327c40b6cf93615d5b62b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameObject: {fileID: 1175883216}
 --- !u!1 &1181315975
 GameObject:
   m_ObjectHideFlags: 0
@@ -5076,7 +5123,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.2588501, y: 253.47998}
+  m_AnchoredPosition: {x: -0.25891113, y: 253.47998}
   m_SizeDelta: {x: 801.473, y: 10}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1303646278
@@ -5247,7 +5294,7 @@ GameObject:
   - component: {fileID: 1482043516}
   - component: {fileID: 1482043515}
   m_Layer: 5
-  m_Name: Adress
+  m_Name: Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5350,7 +5397,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.6217651, y: 658.48}
+  m_AnchoredPosition: {x: 2.621704, y: 658.48}
   m_SizeDelta: {x: -456.287, y: 112}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1514398808
@@ -5749,7 +5796,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.5700073, y: 123}
+  m_AnchoredPosition: {x: 0.57006836, y: 123}
   m_SizeDelta: {x: -137.40479, y: 148}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1558930395
@@ -5796,9 +5843,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SenetMenuManager, Beamable.SenetSDK
-        m_MethodName: Activity
+      - m_Target: {fileID: 1175883220}
+        m_TargetAssemblyTypeName: ToggleVisibility, Beamable.SenetSDK
+        m_MethodName: SetInactive
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6290,7 +6337,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 6.961731, y: -409.48004}
+  m_AnchoredPosition: {x: 6.96167, y: -409.47998}
   m_SizeDelta: {x: -1316.877, y: 112}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1687084595
@@ -6379,6 +6426,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1732069719}
   - component: {fileID: 1732069720}
+  - component: {fileID: 1732069721}
   m_Layer: 5
   m_Name: Withdraw Senet Screen
   m_TagString: Untagged
@@ -6408,7 +6456,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000061035156, y: 0}
+  m_AnchoredPosition: {x: 0.00012207031, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1732069720
@@ -6424,6 +6472,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameObject: {fileID: 605744092}
+--- !u!114 &1732069721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732069718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab06408c624cde240ba5be5a9ed634c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _addressField: {fileID: 1012638149}
+  _amountField: {fileID: 273705962}
+  _notificationPanel: {fileID: 0}
+  _withdrawalButton: {fileID: 621487147}
+  _notificationText: {fileID: 0}
 --- !u!1 &1756679311
 GameObject:
   m_ObjectHideFlags: 0
@@ -6842,7 +6907,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 6.961731, y: -137.48007}
+  m_AnchoredPosition: {x: 6.96167, y: -137.47998}
   m_SizeDelta: {x: -1316.8768, y: 112}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1866219444
@@ -7069,7 +7134,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: You are about to withdraw
+  m_Text: Your balance will be
 --- !u!222 &1898850297
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7788,6 +7853,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.6217651, y: 293.47998}
+  m_AnchoredPosition: {x: 2.621704, y: 293.47998}
   m_SizeDelta: {x: -456.287, y: 112}
   m_Pivot: {x: 0.5, y: 0.5}
