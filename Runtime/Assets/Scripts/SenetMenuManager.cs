@@ -63,15 +63,25 @@ public class SenetMenuManager : MonoBehaviour
         SceneManager.LoadSceneAsync("SenetMainMenu");
     }
 
+    public void Profile()
+    {
+        SceneManager.LoadSceneAsync("SenetProfile");
+    }
+    
     public void Redeem()
     {
         SceneManager.LoadSceneAsync("SenetRedeem");
     }
 
      public void LoadDepositSenetScene()
-    {
+     {
         SceneManager.LoadSceneAsync("SenetDeposit");
-    }
+     }
+     
+     public void LoadSenetNewPasswordScene()
+     {
+         SceneManager.LoadSceneAsync("SenetNewPassword");
+     }
 
     public async Task PayForTournament()
     {
