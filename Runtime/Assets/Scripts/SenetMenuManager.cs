@@ -78,7 +78,7 @@ public class SenetMenuManager : MonoBehaviour
         SceneManager.LoadSceneAsync("SenetDeposit");
      }
      
-     public void  SenetNewPassword()
+     public void SenetNewPassword()
      {
          SceneManager.LoadSceneAsync("SenetNewPassword");
      }
