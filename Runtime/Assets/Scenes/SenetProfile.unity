@@ -4483,7 +4483,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 7457137967034023264}
         m_TargetAssemblyTypeName: Assets.Scripts.ProfileManager, Beamable.SenetSDK
-        m_MethodName: OnSaveAliasClicked
+        m_MethodName: OnSaveChanges
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6513,7 +6513,7 @@ MonoBehaviour:
   editAliasButton: {fileID: 589277651}
   closeButton: {fileID: 2099917197}
   confirmPopup: {fileID: 490699505}
-  saveChangesButton: {fileID: 1491602852}
+  saveChangesButton: {fileID: 129924940}
   discardChangesButton: {fileID: 1202837390}
 --- !u!222 &7457137967466835840
 CanvasRenderer:
