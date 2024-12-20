@@ -5,6 +5,7 @@ using Beamable.Player;
 using Beamable.Server.Clients;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Assets.Scripts
@@ -27,17 +28,26 @@ namespace Assets.Scripts
 
         [Header("Edit Alias")]
         [SerializeField] private TMP_InputField aliasInputField;
-        [SerializeField] private Button saveAliasButton;
-        [SerializeField] private Button editAliasButton; 
+        [SerializeField] private Button editAliasButton;
+
+        [Header("Navigation")]
+        [SerializeField] private Button closeButton; // The 'X' button
+        [SerializeField] private GameObject confirmPopup; // Pop-up UI GameObject
+        [SerializeField] private Button saveChangesButton; // Save button in the pop-up
+        [SerializeField] private Button discardChangesButton; // Discard button in the pop-up
 
         private bool isEditingAlias = false;
 
         private void Start()
         {
             InitializeBeamable();
+
             uploadButton.onClick.AddListener(OnUploadButtonClicked);
-            saveAliasButton.onClick.AddListener(OnSaveAliasClicked);
             editAliasButton.onClick.AddListener(OnEditAliasClicked);
+            closeButton.onClick.AddListener(OnCloseButtonClicked);
+
+            saveChangesButton.onClick.AddListener(OnSaveChanges);
+            discardChangesButton.onClick.AddListener(OnDiscardChanges);
         }
 
         private async void InitializeBeamable()
@@ -84,7 +94,48 @@ namespace Assets.Scripts
             editAliasButton.gameObject.SetActive(false); // Hide edit button
         }
 
-        private async void OnSaveAliasClicked()
+        private void OnCloseButtonClicked()
+        {
+            if (isEditingAlias)
+            {
+                confirmPopup.SetActive(true); // Show confirmation pop-up
+            }
+            else
+            {
+                NavigateToHome();
+            }
+        }
+
+        private void OnSaveChanges()
+        {
+            OnSaveAliasClicked(); // Save changes
+            ClosePopupAndNavigate();
+        }
+
+        private void OnDiscardChanges()
+        {
+            aliasInputField.text = usernameText.text; // Revert to the original alias
+            ClosePopupAndNavigate();
+        }
+
+        private void OnCancelPopup()
+        {
+            confirmPopup.SetActive(false); // Hide pop-up without navigating
+        }
+
+        private void ClosePopupAndNavigate()
+        {
+            confirmPopup.SetActive(false); // Hide pop-up
+            NavigateToHome();
+        }
+
+        private void NavigateToHome()
+        {
+            Debug.Log("Navigating to home..."); 
+            SceneManager.LoadSceneAsync("SenetMainMenu");
+        }
+
+        public async void OnSaveAliasClicked()
         {
             var newAlias = aliasInputField.text;
 
@@ -107,7 +158,6 @@ namespace Assets.Scripts
                 // Toggle UI back to view mode
                 aliasInputField.gameObject.SetActive(false);
                 usernameText.gameObject.SetActive(true);
-                saveAliasButton.gameObject.SetActive(false);
                 editAliasButton.gameObject.SetActive(true);
 
                 isEditingAlias = false;
