@@ -31,10 +31,10 @@ namespace Assets.Scripts
         [SerializeField] private Button editAliasButton;
 
         [Header("Navigation")]
-        [SerializeField] private Button closeButton; // The 'X' button
-        [SerializeField] private GameObject confirmPopup; // Pop-up UI GameObject
-        [SerializeField] private Button saveChangesButton; // Save button in the pop-up
-        [SerializeField] private Button discardChangesButton; // Discard button in the pop-up
+        [SerializeField] private Button closeButton; 
+        [SerializeField] private GameObject confirmPopup; 
+        [SerializeField] private Button saveChangesButton; 
+        [SerializeField] private Button discardChangesButton; 
 
         private bool isEditingAlias = false;
 
@@ -81,24 +81,24 @@ namespace Assets.Scripts
                 emailText.text = email;
                 aliasInputField.text = username;
 
-                aliasInputField.gameObject.SetActive(false); // Initially hide input field
-                usernameText.gameObject.SetActive(true); // Show username text
+                aliasInputField.gameObject.SetActive(false); 
+                usernameText.gameObject.SetActive(true); 
             }
         }
 
         private void OnEditAliasClicked()
         {
             isEditingAlias = true;
-            aliasInputField.gameObject.SetActive(true); // Show input field
-            usernameText.gameObject.SetActive(false); // Hide username text
-            editAliasButton.gameObject.SetActive(false); // Hide edit button
+            aliasInputField.gameObject.SetActive(true);
+            usernameText.gameObject.SetActive(false); 
+            editAliasButton.gameObject.SetActive(false); 
         }
 
         private void OnCloseButtonClicked()
         {
             if (isEditingAlias)
             {
-                confirmPopup.SetActive(true); // Show confirmation pop-up
+                confirmPopup.SetActive(true); 
             }
             else
             {
@@ -108,24 +108,24 @@ namespace Assets.Scripts
 
         private void OnSaveChanges()
         {
-            OnSaveAliasClicked(); // Save changes
+            OnSaveAliasClicked(); 
             ClosePopupAndNavigate();
         }
 
         private void OnDiscardChanges()
         {
-            aliasInputField.text = usernameText.text; // Revert to the original alias
+            aliasInputField.text = usernameText.text;
             ClosePopupAndNavigate();
         }
 
         private void OnCancelPopup()
         {
-            confirmPopup.SetActive(false); // Hide pop-up without navigating
+            confirmPopup.SetActive(false); 
         }
 
         private void ClosePopupAndNavigate()
         {
-            confirmPopup.SetActive(false); // Hide pop-up
+            confirmPopup.SetActive(false); 
             NavigateToHome();
         }
 

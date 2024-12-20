@@ -43,7 +43,7 @@ public class ConfirmPasswordManager : MonoBehaviour
         }
         catch (System.Exception ex)
         {
-            confirmUpdateMessage.text = $"Error updating password: {ex.Message}";
+            confirmUpdateMessage.text = $"Invalid Confirmation Code";
         }
     }
 }
