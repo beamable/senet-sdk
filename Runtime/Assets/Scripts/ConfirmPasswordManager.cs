@@ -10,17 +10,15 @@ public class ConfirmPasswordManager : MonoBehaviour
     public TMP_InputField newPasswordInputField;
     public TMP_InputField confirmPasswordInputField;
     public TextMeshProUGUI confirmUpdateMessage;
-    public Button submitButton;
 
     private BeamContext _beamContext;
 
     private async void Start()
     {
         _beamContext = await BeamContext.Default.Instance;
-        submitButton.onClick.AddListener(UpdatePassword);
     }
 
-    private async void UpdatePassword()
+    public async void UpdatePassword()
     {
         var code = codeInputField.text;
         var newPassword = newPasswordInputField.text;
