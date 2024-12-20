@@ -48,6 +48,8 @@ namespace Assets.Scripts
 
             saveChangesButton.onClick.AddListener(OnSaveChanges);
             discardChangesButton.onClick.AddListener(OnDiscardChanges);
+                
+            saveChangesButton.interactable = false;  
         }
 
         private async void InitializeBeamable()
@@ -92,6 +94,7 @@ namespace Assets.Scripts
             aliasInputField.gameObject.SetActive(true);
             usernameText.gameObject.SetActive(false); 
             editAliasButton.gameObject.SetActive(false); 
+            saveChangesButton.interactable = true;
         }
 
         private void OnCloseButtonClicked()
@@ -106,7 +109,7 @@ namespace Assets.Scripts
             }
         }
 
-        private void OnSaveChanges()
+        public void OnSaveChanges()
         {
             OnSaveAliasClicked(); 
             ClosePopupAndNavigate();
@@ -159,7 +162,7 @@ namespace Assets.Scripts
                 aliasInputField.gameObject.SetActive(false);
                 usernameText.gameObject.SetActive(true);
                 editAliasButton.gameObject.SetActive(true);
-
+                saveChangesButton.interactable = false;
                 isEditingAlias = false;
             }
             catch (Exception ex)
