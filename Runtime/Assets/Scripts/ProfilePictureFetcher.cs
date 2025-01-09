@@ -44,8 +44,25 @@ namespace Assets.Scripts
                         _playerAccount.SetAlias(alias);
                     }
 
-                    usernameText.text = _playerAccount.Alias;
-                    userEmail.text = _playerAccount.Email;
+                    if (usernameText != null)
+                    {
+                        usernameText.text = _playerAccount.Alias;
+                        Debug.Log($"Alias displayed in UI: {_playerAccount.Alias}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("usernameText is not assigned in the Inspector.");
+                    }
+
+                    if (userEmail != null)
+                    {
+                        userEmail.text = _playerAccount.Email;
+                        Debug.Log($"Email displayed in UI: {_playerAccount.Email}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("userEmail is not assigned in the Inspector.");
+                    }
                 }
                 else
                 {
@@ -62,6 +79,7 @@ namespace Assets.Scripts
 
         private async Task<string> FetchAliasFromStats()
         {
+            Debug.Log("Fetching alias from stats...");
             try
             {
                 var playerId = BeamContext.Default.PlayerId;
@@ -90,6 +108,7 @@ namespace Assets.Scripts
 
         private async Task FetchAndDisplayProfilePicture()
         {
+            Debug.Log("Fetching profile picture...");
             try
             {
                 var playerId = BeamContext.Default.PlayerId;
@@ -114,7 +133,7 @@ namespace Assets.Scripts
             }
         }
 
-        private async Task LoadImageFromUrl(string url)
+        public async Task LoadImageFromUrl(string url)
         {
             try
             {

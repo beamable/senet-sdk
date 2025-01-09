@@ -6819,6 +6819,7 @@ GameObject:
   - component: {fileID: 7457137967034023262}
   - component: {fileID: 7457137967034023263}
   - component: {fileID: 7457137967034023264}
+  - component: {fileID: 7457137967034023265}
   m_Layer: 5
   m_Name: Profile Screen
   m_TagString: Untagged
@@ -6890,8 +6891,8 @@ MonoBehaviour:
   usernameText: {fileID: 2115968573}
   gidText: {fileID: 149595899}
   emailText: {fileID: 1786495202}
-  profileImage: {fileID: 679340330}
   uploadButton: {fileID: 1309470602}
+  profilePictureFetcher: {fileID: 7457137967034023265}
   aliasInputField: {fileID: 601614351}
   editAliasButton: {fileID: 589277651}
   closeButton: {fileID: 2099917197}
@@ -6899,6 +6900,21 @@ MonoBehaviour:
   confirmChangesButton: {fileID: 1491602852}
   saveChangesButton: {fileID: 129924940}
   discardChangesButton: {fileID: 1202837390}
+--- !u!114 &7457137967034023265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7457137967034023260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48d6c21258bd419f9f4f3a65f2895039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profileImage: {fileID: 679340330}
+  usernameText: {fileID: 0}
+  userEmail: {fileID: 0}
 --- !u!222 &7457137967646016760
 CanvasRenderer:
   m_ObjectHideFlags: 0

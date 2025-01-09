@@ -8,7 +8,6 @@ using Beamable.Player;
 using Beamable.Server.Clients;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -26,8 +25,8 @@ namespace Assets.Scripts
         [SerializeField] private TextMeshProUGUI emailText;
 
         [Header("Profile Picture")]
-        [SerializeField] private Image profileImage;
         [SerializeField] private Button uploadButton;
+        [SerializeField] private ProfilePictureFetcher profilePictureFetcher; 
         private string _localImagePath;
 
         [Header("Edit Alias")]
@@ -43,9 +42,9 @@ namespace Assets.Scripts
 
         private bool _isEditingAlias;
 
-        private void Start()
+        private async void Start()
         {
-            InitializeBeamable();
+            await InitializeBeamable();
             SetupButtonListeners();
             saveChangesButton.interactable = false;  
         }
@@ -59,7 +58,7 @@ namespace Assets.Scripts
             discardChangesButton.onClick.AddListener(OnDiscardChanges);
         }
 
-        private async void InitializeBeamable()
+        private async Task InitializeBeamable()
         {
             try
             {
@@ -67,7 +66,7 @@ namespace Assets.Scripts
                 _beamContext = await BeamContext.Default.Instance;
                 await _beamContext.Accounts.OnReady;
                 _playerAccount = _beamContext.Accounts.Current;
-                DisplayPlayerProfile();
+                await DisplayPlayerProfile();
             }
             catch (Exception ex)
             {
@@ -75,7 +74,7 @@ namespace Assets.Scripts
             }
         }
 
-        private async void DisplayPlayerProfile()
+        private async Task DisplayPlayerProfile()
         {
             if (_playerAccount != null)
             {
@@ -90,8 +89,6 @@ namespace Assets.Scripts
                 aliasInputField.text = _playerAccount.Alias;
 
                 ToggleUIElements(true);
-
-                await FetchAndDisplayProfileUrl();
             }
         }
         
@@ -218,8 +215,10 @@ namespace Assets.Scripts
                 }
 
                 var image = await File.ReadAllBytesAsync(_localImagePath);
+                
                 var md5Bytes = GetMd5Checksum(image);
                 var renderChecksum = BitConverter.ToString(md5Bytes).Replace("-", "");
+                
                 var hostedUrl = await _service.UploadImage(renderChecksum, image, md5Bytes);
                 Debug.Log($"Profile picture uploaded successfully. Hosted URL: {hostedUrl}");
 
@@ -227,7 +226,8 @@ namespace Assets.Scripts
                 var statsDictionary = new Dictionary<string, string> { { "ProfileUrl", hostedUrl } };
                 await _beamContext.Api.StatsService.SetStats("public", statsDictionary);
 
-                await LoadImageFromUrl(hostedUrl);
+                // Trigger the ProfilePictureFetcher to load the new picture
+                await profilePictureFetcher.LoadImageFromUrl(hostedUrl);
             }
             catch (Exception ex)
             {
@@ -240,75 +240,6 @@ namespace Assets.Scripts
             using var md5 = MD5.Create();
             return md5.ComputeHash(image);
         }
-
-        private async Task FetchAndDisplayProfileUrl()
-        {
-            try
-            {
-                var playerId = BeamContext.Default.PlayerId;
-                const string access = "public";
-                const string domain = "client";
-                const string type = "player";
-
-                var stats = await _beamContext.Api.StatsService.GetStats(domain, access, type, playerId);
-
-                if (stats.TryGetValue("ProfileUrl", out var profileUrl))
-                {
-                    Debug.Log($"Profile URL retrieved: {profileUrl}");
-                    await LoadImageFromUrl(profileUrl);
-                }
-                else
-                {
-                    Debug.Log("ProfileUrl stat not found.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"Failed to fetch profile URL: {ex.Message}");
-            }
-        }
-        
-        private async Task LoadImageFromUrl(string url)
-        {
-            Debug.Log($"Starting image load from URL: {url}");
-    
-            using var webRequest = UnityWebRequestTexture.GetTexture(url);
-            var operation = webRequest.SendWebRequest();
-
-            Debug.Log("Waiting for web request to complete...");
-            while (!operation.isDone)
-                await Task.Yield();
-
-            if (webRequest.result == UnityWebRequest.Result.Success)
-            {
-                Debug.Log("Web request completed successfully.");
-        
-                var texture = DownloadHandlerTexture.GetContent(webRequest);
-                if (texture != null)
-                {
-                    Debug.Log($"Texture loaded successfully. Dimensions: {texture.width}x{texture.height}");
-
-                    var sprite = Sprite.Create(
-                        texture,
-                        new Rect(0, 0, texture.width, texture.height),
-                        new Vector2(0.5f, 0.5f)
-                    );
-
-                    profileImage.sprite = sprite;
-                    Debug.Log("Profile image updated successfully.");
-                }
-                else
-                {
-                    Debug.LogError("Failed to create texture from downloaded content.");
-                }
-            }
-            else
-            {
-                Debug.LogError($"Failed to load image from URL: {url}. Error: {webRequest.error}");
-            }
-        }
-
-
 
         private static string ShortenGamerTag(string gid)
         {
