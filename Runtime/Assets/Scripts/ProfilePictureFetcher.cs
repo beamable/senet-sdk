@@ -23,6 +23,7 @@ namespace Assets.Scripts
 
         private async void OnEnable()
         {
+            Debug.Log("Initializing profile picture fetcher...");
             await InitializeBeamableAndFetchProfilePicture();
         }
 
@@ -32,20 +33,59 @@ namespace Assets.Scripts
             {
                 _beamContext = await BeamContext.Default.Instance;
                 await _beamContext.Accounts.OnReady;
+
                 _playerAccount = _beamContext.Accounts.Current;
 
                 if (_playerAccount != null)
                 {
+                    if (string.IsNullOrEmpty(_playerAccount.Alias))
+                    {
+                        var alias = await FetchAliasFromStats();
+                        _playerAccount.SetAlias(alias);
+                    }
+
                     usernameText.text = _playerAccount.Alias;
                     userEmail.text = _playerAccount.Email;
+                }
+                else
+                {
+                    Debug.LogWarning("No player account found.");
                 }
 
                 await FetchAndDisplayProfilePicture();
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed to initialize Beamable or fetch profile picture: {ex.Message}");
+                Debug.LogError($"Error initializing Beamable or fetching profile: {ex.Message}");
             }
+        }
+
+        private async Task<string> FetchAliasFromStats()
+        {
+            try
+            {
+                var playerId = BeamContext.Default.PlayerId;
+                const string access = "public";
+                const string domain = "client";
+                const string type = "player";
+
+                var stats = await _beamContext.Api.StatsService.GetStats(domain, access, type, playerId);
+
+                if (stats.TryGetValue("alias", out var alias))
+                {
+                    return alias;
+                }
+                else
+                {
+                    Debug.Log("Alias not found in stats.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Error fetching alias from stats: {ex.Message}");
+            }
+
+            return "Unknown";
         }
 
         private async Task FetchAndDisplayProfilePicture()
@@ -61,62 +101,52 @@ namespace Assets.Scripts
 
                 if (stats.TryGetValue("ProfileUrl", out var profileUrl))
                 {
-                    Debug.Log($"Profile URL retrieved: {profileUrl}");
                     await LoadImageFromUrl(profileUrl);
                 }
                 else
                 {
-                    Debug.Log("ProfileUrl stat not found.");
+                    Debug.Log("No profile picture URL found.");
                 }
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed to fetch profile URL: {ex.Message}");
+                Debug.LogError($"Error fetching profile picture: {ex.Message}");
             }
         }
 
         private async Task LoadImageFromUrl(string url)
         {
-            Debug.Log($"Starting image load from URL: {url}");
-
-            profileImage.sprite = null;
-
-            using var webRequest = UnityWebRequestTexture.GetTexture(url);
-            var operation = webRequest.SendWebRequest();
-
-            Debug.Log("Waiting for web request to complete...");
-            while (!operation.isDone)
-                await Task.Yield();
-
-            if (webRequest.result == UnityWebRequest.Result.Success)
+            try
             {
-                Debug.Log("Web request completed successfully.");
+                using var webRequest = UnityWebRequestTexture.GetTexture(url);
+                var operation = webRequest.SendWebRequest();
 
-                var texture = DownloadHandlerTexture.GetContent(webRequest);
-                if (texture != null)
+                while (!operation.isDone)
+                    await Task.Yield();
+
+                if (webRequest.result == UnityWebRequest.Result.Success)
                 {
-                    Debug.Log($"Texture loaded successfully. Dimensions: {texture.width}x{texture.height}");
+                    var texture = DownloadHandlerTexture.GetContent(webRequest);
+                    if (texture != null)
+                    {
+                        var sprite = Sprite.Create(
+                            texture,
+                            new Rect(0, 0, texture.width, texture.height),
+                            new Vector2(0.5f, 0.5f)
+                        );
 
-                    var sprite = Sprite.Create(
-                        texture,
-                        new Rect(0, 0, texture.width, texture.height),
-                        new Vector2(0.5f, 0.5f)
-                    );
-
-                    // Apply the new sprite and force UI update.
-                    profileImage.sprite = sprite;
-                    profileImage.preserveAspect = true;
-
-                    Debug.Log("Profile image updated successfully.");
+                        profileImage.sprite = sprite;
+                        profileImage.preserveAspect = true;
+                    }
                 }
                 else
                 {
-                    Debug.LogError("Failed to create texture from downloaded content.");
+                    Debug.LogError($"Failed to load image from URL: {url}, Error: {webRequest.error}");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Debug.LogError($"Failed to load image from URL: {url}. Error: {webRequest.error}");
+                Debug.LogError($"Error loading image from URL: {ex.Message}");
             }
         }
     }

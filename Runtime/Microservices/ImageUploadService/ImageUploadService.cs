@@ -27,35 +27,11 @@ namespace Microservices.ImageUploadService
             {
                 var contentUploader = Provider.GetService<ContentUploader>();
                 var hostedUrl = await contentUploader.UploadLocalImage(filePath, image, md5Byte);
-                await UpdateProfileUrlStat(hostedUrl);
                 return hostedUrl;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                throw;
-            }
-        }
-        
-        [ServerCallable]
-        private async Task UpdateProfileUrlStat(string hostedUrl)
-        {
-            try
-            {
-
-                const string statKey = "ProfileUrl";
-                const string access = "public";
-
-                var stats = new Dictionary<string, string>
-                {
-                    { statKey, hostedUrl }
-                };
-
-                await Services.Stats.SetStats(access, stats);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError($"Failed to update ProfileUrl stat. Exception: {e.Message}");
                 throw;
             }
         }

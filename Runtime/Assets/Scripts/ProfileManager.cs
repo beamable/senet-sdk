@@ -79,6 +79,11 @@ namespace Assets.Scripts
         {
             if (_playerAccount != null)
             {
+                if (string.IsNullOrEmpty(_playerAccount.Alias))
+                {
+                    var alias = await FetchAliasFromStats();
+                    _playerAccount.SetAlias(alias);
+                }
                 usernameText.text = _playerAccount.Alias;
                 gidText.text = ShortenGamerTag(_playerAccount.GamerTag.ToString());
                 emailText.text = _playerAccount.Email ?? "Email not set";
@@ -88,6 +93,34 @@ namespace Assets.Scripts
 
                 await FetchAndDisplayProfileUrl();
             }
+        }
+        
+        private async Task<string> FetchAliasFromStats()
+        {
+            try
+            {
+                var playerId = BeamContext.Default.PlayerId;
+                const string access = "public";
+                const string domain = "client";
+                const string type = "player";
+
+                var stats = await _beamContext.Api.StatsService.GetStats(domain, access, type, playerId);
+
+                if (stats.TryGetValue("alias", out var alias))
+                {
+                    return alias;
+                }
+                else
+                {
+                    Debug.Log("Alias not found in stats.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Error fetching alias from stats: {ex.Message}");
+            }
+
+            return "Unknown";
         }
 
         private void ToggleUIElements(bool isViewing)
@@ -184,12 +217,16 @@ namespace Assets.Scripts
                     return;
                 }
 
-                Debug.Log($"Reading image file from path: {_localImagePath}");
                 var image = await File.ReadAllBytesAsync(_localImagePath);
                 var md5Bytes = GetMd5Checksum(image);
                 var renderChecksum = BitConverter.ToString(md5Bytes).Replace("-", "");
                 var hostedUrl = await _service.UploadImage(renderChecksum, image, md5Bytes);
                 Debug.Log($"Profile picture uploaded successfully. Hosted URL: {hostedUrl}");
+
+                // Write the hosted URL to stats
+                var statsDictionary = new Dictionary<string, string> { { "ProfileUrl", hostedUrl } };
+                await _beamContext.Api.StatsService.SetStats("public", statsDictionary);
+
                 await LoadImageFromUrl(hostedUrl);
             }
             catch (Exception ex)

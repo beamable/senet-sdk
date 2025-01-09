@@ -3509,6 +3509,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b366cc3dd960efb4cab158ccfaeb0840, type: 3}
+--- !u!1 &1366509619 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3066420831298379623, guid: 072c81f7386ec484f9f6b16620d319be, type: 3}
+  m_PrefabInstance: {fileID: 1424972541}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1385003402 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7317562246286624917, guid: af3794377777d5d408f2b769f80a766d, type: 3}
@@ -4096,6 +4101,21 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3066420831298379620, guid: 072c81f7386ec484f9f6b16620d319be, type: 3}
   m_PrefabInstance: {fileID: 1424972541}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1488219866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366509619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48d6c21258bd419f9f4f3a65f2895039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profileImage: {fileID: 1424972544}
+  usernameText: {fileID: 264552394}
+  userEmail: {fileID: 1010980118}
 --- !u!1 &1488342185
 GameObject:
   m_ObjectHideFlags: 0
@@ -6314,7 +6334,6 @@ GameObject:
   - component: {fileID: 5553461223530265756}
   - component: {fileID: 5553461223530265762}
   - component: {fileID: 5553461223530265763}
-  - component: {fileID: 5553461223530265764}
   m_Layer: 5
   m_Name: Main menu
   m_TagString: Untagged
@@ -6348,21 +6367,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tournamentButton: {fileID: 1702350464}
   _noTournamentButton: {fileID: 535862639}
---- !u!114 &5553461223530265764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5553461223530265759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48d6c21258bd419f9f4f3a65f2895039, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  profileImage: {fileID: 1424972544}
-  usernameText: {fileID: 264552394}
-  userEmail: {fileID: 1010980118}
 --- !u!224 &5553461224395319904
 RectTransform:
   m_ObjectHideFlags: 0
