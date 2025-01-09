@@ -2688,6 +2688,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3066420831298379620}
   - component: {fileID: 3066420831298379621}
+  - component: {fileID: 4351590364150400512}
   m_Layer: 5
   m_Name: SidebarNavigation
   m_TagString: Untagged
@@ -2730,6 +2731,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sidebar: {fileID: 3066420831282489230}
+--- !u!114 &4351590364150400512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3066420831298379623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48d6c21258bd419f9f4f3a65f2895039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profileImage: {fileID: 1286567504923572770}
+  usernameText: {fileID: 3968883460820988959}
+  userEmail: {fileID: 3066420830715244954}
 --- !u!1 &3066420831489623900
 GameObject:
   m_ObjectHideFlags: 0
