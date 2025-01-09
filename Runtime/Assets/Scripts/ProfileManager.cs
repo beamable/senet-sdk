@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
 using Beamable;
 using Beamable.Player;
 using Beamable.Server.Clients;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -24,7 +28,7 @@ namespace Assets.Scripts
         [Header("Profile Picture")]
         [SerializeField] private Image profileImage;
         [SerializeField] private Button uploadButton;
-        [SerializeField] private string localImagePath;
+        private string _localImagePath;
 
         [Header("Edit Alias")]
         [SerializeField] private TMP_InputField aliasInputField;
@@ -33,23 +37,26 @@ namespace Assets.Scripts
         [Header("Navigation")]
         [SerializeField] private Button closeButton; 
         [SerializeField] private GameObject confirmPopup; 
+        [SerializeField] private Button confirmChangesButton; 
         [SerializeField] private Button saveChangesButton; 
         [SerializeField] private Button discardChangesButton; 
 
-        private bool isEditingAlias = false;
+        private bool _isEditingAlias;
 
         private void Start()
         {
             InitializeBeamable();
+            SetupButtonListeners();
+            saveChangesButton.interactable = false;  
+        }
 
+        private void SetupButtonListeners()
+        {
             uploadButton.onClick.AddListener(OnUploadButtonClicked);
             editAliasButton.onClick.AddListener(OnEditAliasClicked);
             closeButton.onClick.AddListener(OnCloseButtonClicked);
-
-            saveChangesButton.onClick.AddListener(OnSaveChanges);
+            confirmChangesButton.onClick.AddListener(OnSaveChanges);
             discardChangesButton.onClick.AddListener(OnDiscardChanges);
-                
-            saveChangesButton.interactable = false;  
         }
 
         private async void InitializeBeamable()
@@ -59,7 +66,6 @@ namespace Assets.Scripts
                 _service = new ImageUploadServiceClient();
                 _beamContext = await BeamContext.Default.Instance;
                 await _beamContext.Accounts.OnReady;
-
                 _playerAccount = _beamContext.Accounts.Current;
                 DisplayPlayerProfile();
             }
@@ -69,37 +75,38 @@ namespace Assets.Scripts
             }
         }
 
-        private void DisplayPlayerProfile()
+        private async void DisplayPlayerProfile()
         {
             if (_playerAccount != null)
             {
-                var username = _playerAccount.Alias;
-                var gid = _playerAccount.GamerTag.ToString();
-                var shortenedGid = ShortenGamerTag(gid);
-                var email = _playerAccount.Email ?? "Email not set";
+                usernameText.text = _playerAccount.Alias;
+                gidText.text = ShortenGamerTag(_playerAccount.GamerTag.ToString());
+                emailText.text = _playerAccount.Email ?? "Email not set";
+                aliasInputField.text = _playerAccount.Alias;
 
-                usernameText.text = username;
-                gidText.text = shortenedGid;
-                emailText.text = email;
-                aliasInputField.text = username;
+                ToggleUIElements(true);
 
-                aliasInputField.gameObject.SetActive(false); 
-                usernameText.gameObject.SetActive(true); 
+                await FetchAndDisplayProfileUrl();
             }
+        }
+
+        private void ToggleUIElements(bool isViewing)
+        {
+            aliasInputField.gameObject.SetActive(!isViewing); 
+            usernameText.gameObject.SetActive(isViewing); 
+            editAliasButton.gameObject.SetActive(isViewing);
         }
 
         private void OnEditAliasClicked()
         {
-            isEditingAlias = true;
-            aliasInputField.gameObject.SetActive(true);
-            usernameText.gameObject.SetActive(false); 
-            editAliasButton.gameObject.SetActive(false); 
+            _isEditingAlias = true;
+            ToggleUIElements(false); 
             saveChangesButton.interactable = true;
         }
 
         private void OnCloseButtonClicked()
         {
-            if (isEditingAlias)
+            if (_isEditingAlias)
             {
                 confirmPopup.SetActive(true); 
             }
@@ -109,7 +116,7 @@ namespace Assets.Scripts
             }
         }
 
-        public void OnSaveChanges()
+        private void OnSaveChanges()
         {
             OnSaveAliasClicked(); 
             ClosePopupAndNavigate();
@@ -121,11 +128,6 @@ namespace Assets.Scripts
             ClosePopupAndNavigate();
         }
 
-        private void OnCancelPopup()
-        {
-            confirmPopup.SetActive(false); 
-        }
-
         private void ClosePopupAndNavigate()
         {
             confirmPopup.SetActive(false); 
@@ -134,36 +136,23 @@ namespace Assets.Scripts
 
         private void NavigateToHome()
         {
-            Debug.Log("Navigating to home..."); 
+            Debug.Log("Navigating to home...");
             SceneManager.LoadSceneAsync("SenetMainMenu");
         }
 
-        public async void OnSaveAliasClicked()
+        private async void OnSaveAliasClicked()
         {
             var newAlias = aliasInputField.text;
-
-            if (string.IsNullOrEmpty(newAlias))
-            {
-                return;
-            }
+            if (string.IsNullOrEmpty(newAlias)) return;
 
             try
             {
-                var aliasStat = new Dictionary<string, string>
-                {
-                    { "alias", newAlias }
-                };
-
-                await _beamContext.Api.StatsService.SetStats("public", aliasStat);
-
+                await _playerAccount.SetAlias(newAlias);
+                
                 usernameText.text = newAlias;
-
-                // Toggle UI back to view mode
-                aliasInputField.gameObject.SetActive(false);
-                usernameText.gameObject.SetActive(true);
-                editAliasButton.gameObject.SetActive(true);
+                ToggleUIElements(true); // Revert to viewing mode
                 saveChangesButton.interactable = false;
-                isEditingAlias = false;
+                _isEditingAlias = false;
             }
             catch (Exception ex)
             {
@@ -177,20 +166,31 @@ namespace Assets.Scripts
             {
                 if (!string.IsNullOrEmpty(path))
                 {
-                    localImagePath = path;
+                    _localImagePath = path;
                     UploadProfilePicture();
                 }
             });
         }
 
-        public async void UploadProfilePicture()
+        private async void UploadProfilePicture()
         {
+            if (string.IsNullOrEmpty(_localImagePath)) return;
+
             try
             {
-                if (string.IsNullOrEmpty(localImagePath)) return;
+                if (!File.Exists(_localImagePath))
+                {
+                    Debug.LogError($"File not found: {_localImagePath}");
+                    return;
+                }
 
-                var hostedUrl = await _service.UploadImage(localImagePath);
+                Debug.Log($"Reading image file from path: {_localImagePath}");
+                var image = await File.ReadAllBytesAsync(_localImagePath);
+                var md5Bytes = GetMd5Checksum(image);
+                var renderChecksum = BitConverter.ToString(md5Bytes).Replace("-", "");
+                var hostedUrl = await _service.UploadImage(renderChecksum, image, md5Bytes);
                 Debug.Log($"Profile picture uploaded successfully. Hosted URL: {hostedUrl}");
+                await LoadImageFromUrl(hostedUrl);
             }
             catch (Exception ex)
             {
@@ -198,14 +198,86 @@ namespace Assets.Scripts
             }
         }
 
-        private string ShortenGamerTag(string gid)
+        private static byte[] GetMd5Checksum(byte[] image)
+        {
+            using var md5 = MD5.Create();
+            return md5.ComputeHash(image);
+        }
+
+        private async Task FetchAndDisplayProfileUrl()
+        {
+            try
+            {
+                var playerId = BeamContext.Default.PlayerId;
+                const string access = "public";
+                const string domain = "client";
+                const string type = "player";
+
+                var stats = await _beamContext.Api.StatsService.GetStats(domain, access, type, playerId);
+
+                if (stats.TryGetValue("ProfileUrl", out var profileUrl))
+                {
+                    Debug.Log($"Profile URL retrieved: {profileUrl}");
+                    await LoadImageFromUrl(profileUrl);
+                }
+                else
+                {
+                    Debug.Log("ProfileUrl stat not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to fetch profile URL: {ex.Message}");
+            }
+        }
+        
+        private async Task LoadImageFromUrl(string url)
+        {
+            Debug.Log($"Starting image load from URL: {url}");
+    
+            using var webRequest = UnityWebRequestTexture.GetTexture(url);
+            var operation = webRequest.SendWebRequest();
+
+            Debug.Log("Waiting for web request to complete...");
+            while (!operation.isDone)
+                await Task.Yield();
+
+            if (webRequest.result == UnityWebRequest.Result.Success)
+            {
+                Debug.Log("Web request completed successfully.");
+        
+                var texture = DownloadHandlerTexture.GetContent(webRequest);
+                if (texture != null)
+                {
+                    Debug.Log($"Texture loaded successfully. Dimensions: {texture.width}x{texture.height}");
+
+                    var sprite = Sprite.Create(
+                        texture,
+                        new Rect(0, 0, texture.width, texture.height),
+                        new Vector2(0.5f, 0.5f)
+                    );
+
+                    profileImage.sprite = sprite;
+                    Debug.Log("Profile image updated successfully.");
+                }
+                else
+                {
+                    Debug.LogError("Failed to create texture from downloaded content.");
+                }
+            }
+            else
+            {
+                Debug.LogError($"Failed to load image from URL: {url}. Error: {webRequest.error}");
+            }
+        }
+
+
+
+        private static string ShortenGamerTag(string gid)
         {
             if (string.IsNullOrEmpty(gid) || gid.Length <= 12) return gid;
 
-            var firstPart = gid[..9];
-            var lastPart = gid[^3..];
-
-            return $"{firstPart}...{lastPart}";
+            return $"{gid[..9]}...{gid[^3..]}";
         }
     }
 }

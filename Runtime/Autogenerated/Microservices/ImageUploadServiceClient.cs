@@ -35,12 +35,28 @@ namespace Beamable.Server.Clients
         /// Call the UploadImage method on the ImageUploadService microservice
         /// <see cref="Microservices.ImageUploadService.ImageUploadService.UploadImage"/>
         /// </summary>
-        public Beamable.Common.Promise<string> UploadImage(string filePath)
+        public Beamable.Common.Promise<string> UploadImage(string filePath, byte[] image, byte[] md5Byte)
         {
             object raw_filePath = filePath;
+            object raw_image = image;
+            object raw_md5Byte = md5Byte;
             System.Collections.Generic.Dictionary<string, object> serializedFields = new System.Collections.Generic.Dictionary<string, object>();
             serializedFields.Add("filePath", raw_filePath);
+            serializedFields.Add("image", raw_image);
+            serializedFields.Add("md5Byte", raw_md5Byte);
             return this.Request<string>("ImageUploadService", "UploadImage", serializedFields);
+        }
+        
+        /// <summary>
+        /// Call the UpdateProfileUrlStat method on the ImageUploadService microservice
+        /// <see cref="Microservices.ImageUploadService.ImageUploadService.UpdateProfileUrlStat"/>
+        /// </summary>
+        public Beamable.Common.Promise<System.Threading.Tasks.Task> UpdateProfileUrlStat(string hostedUrl)
+        {
+            object raw_hostedUrl = hostedUrl;
+            System.Collections.Generic.Dictionary<string, object> serializedFields = new System.Collections.Generic.Dictionary<string, object>();
+            serializedFields.Add("hostedUrl", raw_hostedUrl);
+            return this.Request<System.Threading.Tasks.Task>("ImageUploadService", "UpdateProfileUrlStat", serializedFields);
         }
     }
     
@@ -49,6 +65,11 @@ namespace Beamable.Server.Clients
         
         [System.SerializableAttribute()]
         internal sealed class ParameterSystem_String : MicroserviceClientDataWrapper<string>
+        {
+        }
+        
+        [System.SerializableAttribute()]
+        internal sealed class ParameterSystem_Array_System_Byte : MicroserviceClientDataWrapper<byte[]>
         {
         }
     }
