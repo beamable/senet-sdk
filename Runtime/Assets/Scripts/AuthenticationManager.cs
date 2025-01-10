@@ -113,6 +113,8 @@ public class AuthenticationManager : MonoBehaviour
             await _beamContext.Api.AuthService.RegisterDBCredentials(email, password);
             await _beamContext.Accounts.AddExternalIdentity<SuiIdentity, Web3FederationClient>("");
             await _beamContext.Api.AuthService.Login(email, password);
+            await _beamContext.Accounts.Current.SetAlias(userName);
+            
             var userNameStat = new Dictionary<string, string>()
             {
                 { "alias", userName }
