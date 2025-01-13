@@ -2768,6 +2768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   usernameInputField: {fileID: 624709852}
+  emailInputField: {fileID: 0}
   passwordInputField: {fileID: 316539274}
   confirmPasswordInputField: {fileID: 0}
   signInButton: {fileID: 1765325453554006380}
@@ -2776,3 +2777,4 @@ MonoBehaviour:
   toggleConfirmPassword: {fileID: 0}
   errorMessagePanel: {fileID: 0}
   errorMessageText: {fileID: 0}
+  _loadingPanel: {fileID: 0}
