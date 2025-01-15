@@ -146,9 +146,9 @@ namespace Assets.Scripts
             }
         }
 
-        private void OnSaveChanges()
+        private async void OnSaveChanges()
         {
-            OnSaveAliasClicked(); 
+            await OnSaveAliasClicked(); 
             ClosePopupAndNavigate();
         }
 
@@ -170,7 +170,7 @@ namespace Assets.Scripts
             SceneManager.LoadSceneAsync("SenetMainMenu");
         }
 
-        private async void OnSaveAliasClicked()
+        private async Task OnSaveAliasClicked()
         {
             var newAlias = aliasInputField.text;
             if (string.IsNullOrEmpty(newAlias)) return;
@@ -180,6 +180,14 @@ namespace Assets.Scripts
                 await _playerAccount.SetAlias(newAlias);
                 
                 usernameText.text = newAlias;
+                
+                var userNameStat = new Dictionary<string, string>()
+                {
+                    { "alias", newAlias}
+                };
+
+                await _beamContext.Api.StatsService.SetStats("public", userNameStat);
+                
                 ToggleUIElements(true); // Revert to viewing mode
                 saveChangesButton.interactable = false;
                 _isEditingAlias = false;

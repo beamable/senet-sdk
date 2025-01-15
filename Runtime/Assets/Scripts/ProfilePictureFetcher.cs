@@ -23,7 +23,6 @@ namespace Assets.Scripts
 
         private async void OnEnable()
         {
-            Debug.Log("Initializing profile picture fetcher...");
             await InitializeBeamableAndFetchProfilePicture();
         }
 

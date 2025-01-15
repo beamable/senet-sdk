@@ -2768,7 +2768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   usernameInputField: {fileID: 624709852}
-  emailInputField: {fileID: 0}
+  emailInputField: {fileID: 624709852}
   passwordInputField: {fileID: 316539274}
   confirmPasswordInputField: {fileID: 0}
   signInButton: {fileID: 1765325453554006380}
