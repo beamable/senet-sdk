@@ -1,9 +1,5 @@
 using Beamable;
-using Beamable.Common;
-using Beamable.Common.Api.Auth;
 using System.Threading.Tasks;
-using Beamable.Api;
-using Beamable.Api.Sessions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
