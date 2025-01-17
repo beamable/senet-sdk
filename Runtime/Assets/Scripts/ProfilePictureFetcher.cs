@@ -71,7 +71,7 @@ namespace Assets.Scripts
        }
 
 
-        private async Task<string> FetchAliasFromStats()
+        public async Task<string> FetchAliasFromStats()
         {
             try
             {

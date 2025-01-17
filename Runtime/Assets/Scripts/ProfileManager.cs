@@ -26,7 +26,7 @@ namespace Assets.Scripts
 
         [Header("Profile Picture")]
         [SerializeField] private Button uploadButton;
-        [SerializeField] private ProfilePictureFetcher profilePictureFetcher; 
+        [SerializeField] private ProfilePictureFetcher profilePictureFetcher;
         private string _localImagePath;
 
         [Header("Edit Alias")]
@@ -34,11 +34,11 @@ namespace Assets.Scripts
         [SerializeField] private Button editAliasButton;
 
         [Header("Navigation")]
-        [SerializeField] private Button closeButton; 
-        [SerializeField] private GameObject confirmPopup; 
-        [SerializeField] private Button confirmChangesButton; 
-        [SerializeField] private Button saveChangesButton; 
-        [SerializeField] private Button discardChangesButton; 
+        [SerializeField] private Button closeButton;
+        [SerializeField] private GameObject confirmPopup;
+        [SerializeField] private Button confirmChangesButton;
+        [SerializeField] private Button saveChangesButton;
+        [SerializeField] private Button discardChangesButton;
 
         private bool _isEditingAlias;
 
@@ -46,7 +46,7 @@ namespace Assets.Scripts
         {
             await InitializeBeamable();
             SetupButtonListeners();
-            saveChangesButton.interactable = false;  
+            saveChangesButton.interactable = false;
         }
 
         private void SetupButtonListeners()
@@ -80,7 +80,7 @@ namespace Assets.Scripts
             {
                 if (string.IsNullOrEmpty(_playerAccount.Alias))
                 {
-                    var alias = await FetchAliasFromStats();
+                    var alias = await profilePictureFetcher.FetchAliasFromStats(); 
                     await _playerAccount.SetAlias(alias);
                 }
                 usernameText.text = _playerAccount.Alias;
@@ -91,46 +91,18 @@ namespace Assets.Scripts
                 ToggleUIElements(true);
             }
         }
-        
-        private async Task<string> FetchAliasFromStats()
-        {
-            try
-            {
-                var playerId = BeamContext.Default.PlayerId;
-                const string access = "public";
-                const string domain = "client";
-                const string type = "player";
-
-                var stats = await _beamContext.Api.StatsService.GetStats(domain, access, type, playerId);
-
-                if (stats.TryGetValue("alias", out var alias))
-                {
-                    return alias;
-                }
-                else
-                {
-                    Debug.Log("Alias not found in stats.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"Error fetching alias from stats: {ex.Message}");
-            }
-
-            return "Unknown";
-        }
 
         private void ToggleUIElements(bool isViewing)
         {
-            aliasInputField.gameObject.SetActive(!isViewing); 
-            usernameText.gameObject.SetActive(isViewing); 
+            aliasInputField.gameObject.SetActive(!isViewing);
+            usernameText.gameObject.SetActive(isViewing);
             editAliasButton.gameObject.SetActive(isViewing);
         }
 
         private void OnEditAliasClicked()
         {
             _isEditingAlias = true;
-            ToggleUIElements(false); 
+            ToggleUIElements(false);
             saveChangesButton.interactable = true;
         }
 
@@ -138,7 +110,7 @@ namespace Assets.Scripts
         {
             if (_isEditingAlias)
             {
-                confirmPopup.SetActive(true); 
+                confirmPopup.SetActive(true);
             }
             else
             {
@@ -148,7 +120,7 @@ namespace Assets.Scripts
 
         private async void OnSaveChanges()
         {
-            await OnSaveAliasClicked(); 
+            await OnSaveAliasClicked();
             ClosePopupAndNavigate();
         }
 
@@ -160,7 +132,7 @@ namespace Assets.Scripts
 
         private void ClosePopupAndNavigate()
         {
-            confirmPopup.SetActive(false); 
+            confirmPopup.SetActive(false);
             NavigateToHome();
         }
 
@@ -178,16 +150,16 @@ namespace Assets.Scripts
             try
             {
                 await _playerAccount.SetAlias(newAlias);
-                
+
                 usernameText.text = newAlias;
-                
+
                 var userNameStat = new Dictionary<string, string>()
                 {
-                    { "alias", newAlias}
+                    { "alias", newAlias }
                 };
 
                 await _beamContext.Api.StatsService.SetStats("public", userNameStat);
-                
+
                 ToggleUIElements(true); // Revert to viewing mode
                 saveChangesButton.interactable = false;
                 _isEditingAlias = false;
@@ -223,20 +195,17 @@ namespace Assets.Scripts
                 }
 
                 var image = await File.ReadAllBytesAsync(_localImagePath);
-                
+
                 var md5Bytes = GetMd5Checksum(image);
                 var renderChecksum = BitConverter.ToString(md5Bytes).Replace("-", "");
-                
+
                 var hostedUrl = await _service.UploadImage(renderChecksum, image, md5Bytes);
                 Debug.Log($"Profile picture uploaded successfully. Hosted URL: {hostedUrl}");
 
-                // Write the hosted URL to stats
                 var statsDictionary = new Dictionary<string, string> { { "profile_url", hostedUrl } };
                 await _beamContext.Api.StatsService.SetStats("public", statsDictionary);
 
-                // Trigger the ProfilePictureFetcher to load the new picture
-                await profilePictureFetcher.LoadImageFromUrl(hostedUrl);
-
+                await profilePictureFetcher.LoadImageFromUrl(hostedUrl); 
             }
             catch (Exception ex)
             {

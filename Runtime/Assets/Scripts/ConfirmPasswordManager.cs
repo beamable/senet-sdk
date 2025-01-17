@@ -1,5 +1,4 @@
 using Beamable;
-using Beamable.Common.Api.Auth;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -65,9 +64,7 @@ public class ConfirmPasswordManager : MonoBehaviour
             NavigateToProfile();
         }
     }
-
-   
-
+    
     private void NavigateToProfile()
     {
         SceneManager.LoadSceneAsync("SenetProfile");
