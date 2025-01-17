@@ -60,6 +60,13 @@ public class WheelReward : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     public void ShowAd()
     {
+        Debug.Log("Current Orientation: " + Screen.orientation);
+        Screen.orientation = ScreenOrientation.Portrait;
+        Screen.autorotateToLandscapeLeft = false;
+        Screen.autorotateToLandscapeRight = false;
+        Screen.autorotateToPortrait = true;
+        Screen.autorotateToPortraitUpsideDown = false;
+
         //_showAdButton.interactable = false;
         Advertisement.Show(_adUnitId, this);
     }

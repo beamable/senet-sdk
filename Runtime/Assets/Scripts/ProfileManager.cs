@@ -81,7 +81,7 @@ namespace Assets.Scripts
                 if (string.IsNullOrEmpty(_playerAccount.Alias))
                 {
                     var alias = await FetchAliasFromStats();
-                    _playerAccount.SetAlias(alias);
+                    await _playerAccount.SetAlias(alias);
                 }
                 usernameText.text = _playerAccount.Alias;
                 gidText.text = ShortenGamerTag(_playerAccount.GamerTag.ToString());
@@ -231,11 +231,12 @@ namespace Assets.Scripts
                 Debug.Log($"Profile picture uploaded successfully. Hosted URL: {hostedUrl}");
 
                 // Write the hosted URL to stats
-                var statsDictionary = new Dictionary<string, string> { { "ProfileUrl", hostedUrl } };
+                var statsDictionary = new Dictionary<string, string> { { "profile_url", hostedUrl } };
                 await _beamContext.Api.StatsService.SetStats("public", statsDictionary);
 
                 // Trigger the ProfilePictureFetcher to load the new picture
                 await profilePictureFetcher.LoadImageFromUrl(hostedUrl);
+
             }
             catch (Exception ex)
             {

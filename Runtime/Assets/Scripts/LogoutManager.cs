@@ -2,6 +2,8 @@ using Beamable;
 using Beamable.Common;
 using Beamable.Common.Api.Auth;
 using System.Threading.Tasks;
+using Beamable.Api;
+using Beamable.Api.Sessions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,12 +25,17 @@ public class LogoutManager : MonoBehaviour
     {
         _loadingPopup.SetActive(true);
         _confirmationPopup.SetActive(false);
-
+        
         var beamContext = BeamContext.Default;
         await beamContext.OnReady;
 
-        beamContext.Api.ClearDeviceUsers();
-
+        beamContext.ClearPlayerAndStop();
+        
+        if (beamContext.IsStopped)
+        {
+            await BeamContext.Default.Instance;
+        }
+        
         await Task.Delay(2000);
 
         _logoutSuccessfulPopup.SetActive(true);

@@ -21,64 +21,58 @@ namespace Assets.Scripts
         private BeamContext _beamContext;
         private PlayerAccount _playerAccount;
 
-        private async void OnEnable()
+        private async void Start()
         {
             await InitializeBeamableAndFetchProfilePicture();
         }
 
-        private async Task InitializeBeamableAndFetchProfilePicture()
-        {
-            try
-            {
-                _beamContext = await BeamContext.Default.Instance;
-                await _beamContext.Accounts.OnReady;
+       private async Task InitializeBeamableAndFetchProfilePicture()
+       {
+           try
+           {
+               _beamContext = await BeamContext.Default.Instance;
+               await _beamContext.Accounts.OnReady;
+       
+               _playerAccount = _beamContext.Accounts.Current;
+               if (_playerAccount == null)
+               {
+                   Debug.LogWarning("No player account found after account switch.");
+                   return;
+               }
+       
+               Debug.Log($"Player Account GamerTag: {_playerAccount.GamerTag}");
+       
+               if (string.IsNullOrEmpty(_playerAccount.Alias))
+               {
+                   Debug.Log("Alias is empty. Fetching alias from stats...");
+                   var alias = await FetchAliasFromStats();
+                   await _playerAccount.SetAlias(alias);
+               }
+       
+               if (usernameText != null)
+               {
+                   usernameText.text = _playerAccount.Alias;
+                   Debug.Log($"Alias displayed in UI: {_playerAccount.Alias}");
+               }
+       
+               if (userEmail != null)
+               {
+                   userEmail.text = _playerAccount.Email;
+                   Debug.Log($"Email displayed in UI: {_playerAccount.Email}");
+               }
+       
+               await FetchAndDisplayProfilePicture();
+           }
+           catch (Exception ex)
+           {
+               Debug.LogError($"Error initializing Beamable or fetching profile: {ex.Message}");
+               Debug.LogError($"Stack Trace: {ex.StackTrace}");
+           }
+       }
 
-                _playerAccount = _beamContext.Accounts.Current;
-
-                if (_playerAccount != null)
-                {
-                    if (string.IsNullOrEmpty(_playerAccount.Alias))
-                    {
-                        var alias = await FetchAliasFromStats();
-                        _playerAccount.SetAlias(alias);
-                    }
-
-                    if (usernameText != null)
-                    {
-                        usernameText.text = _playerAccount.Alias;
-                        Debug.Log($"Alias displayed in UI: {_playerAccount.Alias}");
-                    }
-                    else
-                    {
-                        Debug.LogWarning("usernameText is not assigned in the Inspector.");
-                    }
-
-                    if (userEmail != null)
-                    {
-                        userEmail.text = _playerAccount.Email;
-                        Debug.Log($"Email displayed in UI: {_playerAccount.Email}");
-                    }
-                    else
-                    {
-                        Debug.LogWarning("userEmail is not assigned in the Inspector.");
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning("No player account found.");
-                }
-
-                await FetchAndDisplayProfilePicture();
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"Error initializing Beamable or fetching profile: {ex.Message}");
-            }
-        }
 
         private async Task<string> FetchAliasFromStats()
         {
-            Debug.Log("Fetching alias from stats...");
             try
             {
                 var playerId = BeamContext.Default.PlayerId;
@@ -107,7 +101,6 @@ namespace Assets.Scripts
 
         private async Task FetchAndDisplayProfilePicture()
         {
-            Debug.Log("Fetching profile picture...");
             try
             {
                 var playerId = BeamContext.Default.PlayerId;
@@ -117,7 +110,7 @@ namespace Assets.Scripts
 
                 var stats = await _beamContext.Api.StatsService.GetStats(domain, access, type, playerId);
 
-                if (stats.TryGetValue("ProfileUrl", out var profileUrl))
+                if (stats.TryGetValue("profile_url", out var profileUrl))
                 {
                     await LoadImageFromUrl(profileUrl);
                 }

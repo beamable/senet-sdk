@@ -62,30 +62,56 @@ public class AuthenticationManager : MonoBehaviour
         }
     }
 
-    public async void LoginUser()
+    private async void LoginUser()
     {
-        if (emailInputField.text != "" && emailInputField.text != "Anonymous" && signInButton != null)
-        {
-            signInButton.interactable = false;
-            await Login();
-        }
+        if (emailInputField.text == "" || emailInputField.text == "Anonymous" || signInButton == null) return;
+        signInButton.interactable = false;
+        await Login();
     }
 
-    public async void SignUpUser()
+    private async void SignUpUser()
     {
-        if (emailInputField.text != "" && usernameInputField.text != "" && passwordInputField.text != "" && signUpButton != null)
-        {
-            signUpButton.interactable = false;
-            await SignUp();
-        }
+        if (emailInputField.text == "" || usernameInputField.text == "" || passwordInputField.text == "" ||
+            signUpButton == null) return;
+        signUpButton.interactable = false;
+        await SignUp();
     }
 
-    private async Promise Login()
+    private async Task Login()
     {
         try
         {
-            await _beamContext.Api.AuthService.Login(emailInputField.text, passwordInputField.text);
-            SceneManager.LoadScene("SenetMainMenu");
+            var email = emailInputField.text;
+            var password = passwordInputField.text;
+
+            var operation = await _beamContext.Accounts.RecoverAccountWithEmail(email, password);
+            if (operation.isSuccess)
+            {
+                // Successfully recovered account, switch to the recovered account
+                if (operation.account != null)
+                {
+                    await operation.SwitchToAccount();
+                }
+                else
+                {
+                    Debug.LogError("Recovered account is null. Cannot switch accounts.");
+                    signInButton.interactable = true;
+                    return;
+                }
+
+                SceneManager.LoadScene("SenetMainMenu"); 
+            }
+            else
+            {
+                // Failed to recover the account
+                Debug.LogError($"Failed to recover account: {operation.error}");
+                signInButton.interactable = true; 
+            }
+        }
+        catch (Beamable.Api.PlatformRequesterException ex)
+        {
+            Debug.LogError($"Beamable API error: {ex.Message}");
+            signInButton.interactable = true;
         }
         catch (Exception e)
         {
@@ -93,6 +119,7 @@ public class AuthenticationManager : MonoBehaviour
             signInButton.interactable = true;
         }
     }
+
 
     private async Promise SignUp()
     {

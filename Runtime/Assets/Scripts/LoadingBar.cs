@@ -57,7 +57,7 @@ public class LoadingBar : MonoBehaviour
 
         var account = beamContext.Accounts.Current;
 
-        Debug.Log($"Player Email: {account.Email},\n Player GamerTag: {account.GamerTag}");
+        Debug.Log($"Player Email: {account.Email},\n Player GamerTag: {account.GamerTag}, \n Cid: {beamContext.Cid}");
 
         if (account != null && !string.IsNullOrEmpty(account.Email))
         {
