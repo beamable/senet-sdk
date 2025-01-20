@@ -2227,7 +2227,7 @@ MonoBehaviour:
   toggleConfirmPassword: {fileID: 2682366244232736086}
   errorMessagePanel: {fileID: 261217749}
   errorMessageText: {fileID: 1217339841}
-  _loadingPanel: {fileID: 113606366}
+  loadingPanel: {fileID: 113606366}
 --- !u!1 &1663651802269593459
 GameObject:
   m_ObjectHideFlags: 0
