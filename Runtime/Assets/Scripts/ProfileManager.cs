@@ -56,8 +56,9 @@ namespace Assets.Scripts
             closeButton.onClick.AddListener(OnCloseButtonClicked);
             confirmChangesButton.onClick.AddListener(OnSaveChanges);
             discardChangesButton.onClick.AddListener(OnDiscardChanges);
+            saveChangesButton.onClick.AddListener(OnSaveAliasButtonClicked);
         }
-
+        
         private async Task InitializeBeamable()
         {
             try
@@ -99,6 +100,11 @@ namespace Assets.Scripts
             editAliasButton.gameObject.SetActive(isViewing);
         }
 
+        private void OnSaveAliasButtonClicked()
+        {
+            _ = OnSaveAliasClicked();
+        }
+        
         private void OnEditAliasClicked()
         {
             _isEditingAlias = true;

@@ -26,48 +26,47 @@ namespace Assets.Scripts
             await InitializeBeamableAndFetchProfilePicture();
         }
 
-       private async Task InitializeBeamableAndFetchProfilePicture()
-       {
-           try
-           {
-               _beamContext = await BeamContext.Default.Instance;
-               await _beamContext.Accounts.OnReady;
-       
-               _playerAccount = _beamContext.Accounts.Current;
-               if (_playerAccount == null)
-               {
-                   Debug.LogWarning("No player account found after account switch.");
-                   return;
-               }
-       
-               if (string.IsNullOrEmpty(_playerAccount.Alias))
-               {
-                   Debug.Log("Alias is empty. Fetching alias from stats...");
-                   var alias = await FetchAliasFromStats();
-                   await _playerAccount.SetAlias(alias);
-               }
-       
-               if (usernameText != null)
-               {
-                   usernameText.text = _playerAccount.Alias;
-                   Debug.Log($"Alias displayed in UI: {_playerAccount.Alias}");
-               }
-       
-               if (userEmail != null)
-               {
-                   userEmail.text = _playerAccount.Email;
-                   Debug.Log($"Email displayed in UI: {_playerAccount.Email}");
-               }
-       
-               await FetchAndDisplayProfilePicture();
-           }
-           catch (Exception ex)
-           {
-               Debug.LogError($"Error initializing Beamable or fetching profile: {ex.Message}");
-               Debug.LogError($"Stack Trace: {ex.StackTrace}");
-           }
-       }
+        private async Task InitializeBeamableAndFetchProfilePicture()
+        {
+            try
+            {
+                _beamContext = await BeamContext.Default.Instance;
+                await _beamContext.Accounts.OnReady;
 
+                _playerAccount = _beamContext.Accounts.Current;
+                if (_playerAccount == null)
+                {
+                    Debug.LogWarning("No player account found after account switch.");
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(_playerAccount.Alias))
+                {
+                    Debug.Log("Alias is empty. Fetching alias from stats...");
+                    var alias = await FetchAliasFromStats();
+                    await _playerAccount.SetAlias(alias);
+                }
+
+                if (usernameText != null)
+                {
+                    usernameText.text = _playerAccount.Alias;
+                    Debug.Log($"Alias displayed in UI: {_playerAccount.Alias}");
+                }
+
+                if (userEmail != null)
+                {
+                    userEmail.text = _playerAccount.Email;
+                    Debug.Log($"Email displayed in UI: {_playerAccount.Email}");
+                }
+
+                await FetchAndDisplayProfilePicture();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Error initializing Beamable or fetching profile: {ex.Message}");
+                Debug.LogError($"Stack Trace: {ex.StackTrace}");
+            }
+        }
 
         public async Task<string> FetchAliasFromStats()
         {
@@ -145,7 +144,7 @@ namespace Assets.Scripts
                         );
 
                         profileImage.sprite = sprite;
-                        profileImage.preserveAspect = true;
+                        AdjustImageToFill(sprite);
                     }
                 }
                 else
@@ -157,6 +156,19 @@ namespace Assets.Scripts
             {
                 Debug.LogError($"Error loading image from URL: {ex.Message}");
             }
+        }
+
+        private void AdjustImageToFill(Sprite sprite)
+        {
+            if (sprite == null || profileImage == null) return;
+
+            var rectTransform = profileImage.rectTransform;
+            var imageRatio = (float)sprite.texture.width / sprite.texture.height;
+            var parentSize = rectTransform.parent.GetComponent<RectTransform>().rect;
+
+            var parentRatio = parentSize.width / parentSize.height;
+
+            rectTransform.sizeDelta = imageRatio > parentRatio ? new Vector2(parentSize.height * imageRatio, parentSize.height) : new Vector2(parentSize.width, parentSize.width / imageRatio);
         }
     }
 }
