@@ -10816,9 +10816,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: OpenRules, Assembly-CSharp
-        m_MethodName: OpenRulesAndAgreement
+      - m_Target: {fileID: 5997810564731801592}
+        m_TargetAssemblyTypeName: ToggleVisibility, Beamable.SenetSDK
+        m_MethodName: SetActive
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

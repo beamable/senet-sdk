@@ -40,8 +40,6 @@ namespace Assets.Scripts
                    return;
                }
        
-               Debug.Log($"Player Account GamerTag: {_playerAccount.GamerTag}");
-       
                if (string.IsNullOrEmpty(_playerAccount.Alias))
                {
                    Debug.Log("Alias is empty. Fetching alias from stats...");
