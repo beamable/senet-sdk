@@ -35,7 +35,7 @@ public class AuthenticationManager : MonoBehaviour
     [SerializeField]
     private TMP_Text errorMessageText;
     [SerializeField]
-    private GameObject _loadingPanel;
+    private GameObject loadingPanel;
 
     private async void Start()
     {
@@ -123,14 +123,16 @@ public class AuthenticationManager : MonoBehaviour
 
     private async Promise SignUp()
     {
-        _loadingPanel.SetActive(true);
-        string email = emailInputField.text;
-        string userName = usernameInputField.text;
-        string password = passwordInputField.text;
-        string confirmPassword = confirmPasswordInputField.text;
+        loadingPanel.SetActive(true);
+        var email = emailInputField.text;
+        var userName = usernameInputField.text;
+        var password = passwordInputField.text;
+        var confirmPassword = confirmPasswordInputField.text;
 
         if (password != confirmPassword)
         {
+            loadingPanel.SetActive(false);
+            DisplayErrorMessage("Passwords do not match.");
             signUpButton.interactable = true;
             return;
         }
@@ -141,7 +143,7 @@ public class AuthenticationManager : MonoBehaviour
             await _beamContext.Accounts.AddExternalIdentity<SuiIdentity, Web3FederationClient>("");
             await _beamContext.Api.AuthService.Login(email, password);
             await _beamContext.Accounts.Current.SetAlias(userName);
-            
+        
             var userNameStat = new Dictionary<string, string>()
             {
                 { "alias", userName }
@@ -149,17 +151,24 @@ public class AuthenticationManager : MonoBehaviour
 
             await _beamContext.Api.StatsService.SetStats("public", userNameStat);
 
-            //await WaitOneSecondAsync(); 
-
-            _loadingPanel.SetActive(false);
+            loadingPanel.SetActive(false);
 
             Debug.Log("Sign up successful.");
-
             SceneManager.LoadScene("SenetMainMenu");
+        }
+        catch (Beamable.Api.PlatformRequesterException ex)
+        {
+            loadingPanel.SetActive(false);
+            DisplayErrorMessage(ex.Message.Contains("EmailAlreadyRegisteredError")
+                ? "This email is already registered. Please use a different email or log in."
+                : "An error occurred during sign-up. Please try again.");
+            Debug.LogError($"Beamable API error: {ex.Message}");
+            signUpButton.interactable = true;
         }
         catch (Exception e)
         {
-            _loadingPanel.SetActive(false);
+            loadingPanel.SetActive(false);
+            DisplayErrorMessage("An unexpected error occurred. Please try again.");
             Debug.LogError(e.ToString());
             signUpButton.interactable = true;
         }
