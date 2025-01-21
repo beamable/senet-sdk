@@ -42,6 +42,10 @@ namespace Assets.Scripts
         [SerializeField] private Button saveChangesButton;
         [SerializeField] private Button discardChangesButton;
 
+        
+        [Header("Loading")]
+        [SerializeField] private GameObject loadingPanel;
+        
         private bool _isEditingAlias;
 
         private async void Start()
@@ -222,6 +226,8 @@ namespace Assets.Scripts
         {
             if (string.IsNullOrEmpty(_localImagePath)) return;
 
+            loadingPanel.SetActive(true);
+
             try
             {
                 var image = await File.ReadAllBytesAsync(_localImagePath);
@@ -240,8 +246,36 @@ namespace Assets.Scripts
             catch (Exception ex)
             {
                 Debug.LogError($"Failed to upload profile picture: {ex.Message}");
+                DisplayErrorMessage("Failed to upload the profile picture. Please try again.");
+            }
+            finally
+            {
+                loadingPanel.SetActive(false);
+                DisplayErrorMessage("Failed to upload the profile picture. Please try again.");
+
             }
         }
+        
+        private void DisplayErrorMessage(string message)
+        {
+            warningPopup.SetActive(true);
+
+            var messageText = warningPopup.transform
+                .Find("Panel/Error Message") 
+                .GetComponent<TextMeshProUGUI>();
+
+            if (messageText != null)
+            {
+                messageText.text = message; 
+            }
+            else
+            {
+                Debug.LogError("Error Message TextMeshPro component not found.");
+            }
+
+            StartCoroutine(ClosePopupAfterDelay(warningPopup, 3f)); // Close the popup after 3 seconds
+        }
+
 
         private static byte[] GetMd5Checksum(byte[] image)
         {
