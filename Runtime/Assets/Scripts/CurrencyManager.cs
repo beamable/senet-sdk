@@ -9,7 +9,7 @@ public class CurrencyManager : MonoBehaviour
     public double senet = 0;
     private BeamContext _beamContext;
     private const long gweiPerSenet = 1000000000;
-    private string senetToken = "currency.senet_currency.senet_token";
+    private string senetToken = "currency.Senet";
 
     private void Awake()
     {

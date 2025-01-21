@@ -1,6 +1,7 @@
 using Beamable;
 using Beamable.Server.Clients;
 using System;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Advertisements;
@@ -60,6 +61,13 @@ public class WheelReward : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     public void ShowAd()
     {
+        Debug.Log("Current Orientation: " + Screen.orientation);
+        Screen.orientation = ScreenOrientation.Portrait;
+        Screen.autorotateToLandscapeLeft = false;
+        Screen.autorotateToLandscapeRight = false;
+        Screen.autorotateToPortrait = true;
+        Screen.autorotateToPortraitUpsideDown = false;
+
         //_showAdButton.interactable = false;
         Advertisement.Show(_adUnitId, this);
     }
@@ -112,12 +120,14 @@ public class WheelReward : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     public async void ClaimReward()
     {
-        await CurrencyManager.instance.AddOrRemoveSenet(+_amount);
         _spinButton.interactable = true;
         _rewardScreen.SetActive(false);
         var countCoins = FindObjectOfType<CountCoins>();
 
-        countCoins.RemoveCoins();
+        countCoins.AddCoins();
+        await Task.Delay(1000);
+        await CurrencyManager.instance.AddOrRemoveSenet(_amount);
+
     }
 
     public void SpinAgain()

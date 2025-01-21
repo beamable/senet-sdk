@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
@@ -26,7 +27,7 @@ namespace Assets.Scripts
 
         [Header("Profile Picture")]
         [SerializeField] private Button uploadButton;
-        [SerializeField] private ProfilePictureFetcher profilePictureFetcher; 
+        [SerializeField] private ProfilePictureFetcher profilePictureFetcher;
         private string _localImagePath;
 
         [Header("Edit Alias")]
@@ -34,19 +35,24 @@ namespace Assets.Scripts
         [SerializeField] private Button editAliasButton;
 
         [Header("Navigation")]
-        [SerializeField] private Button closeButton; 
-        [SerializeField] private GameObject confirmPopup; 
-        [SerializeField] private Button confirmChangesButton; 
-        [SerializeField] private Button saveChangesButton; 
-        [SerializeField] private Button discardChangesButton; 
+        [SerializeField] private Button closeButton;
+        [SerializeField] private GameObject confirmPopup;
+        [SerializeField] private GameObject warningPopup;
+        [SerializeField] private Button confirmChangesButton;
+        [SerializeField] private Button saveChangesButton;
+        [SerializeField] private Button discardChangesButton;
 
+        
+        [Header("Loading")]
+        [SerializeField] private GameObject loadingPanel;
+        
         private bool _isEditingAlias;
 
         private async void Start()
         {
             await InitializeBeamable();
             SetupButtonListeners();
-            saveChangesButton.interactable = false;  
+            saveChangesButton.interactable = false;
         }
 
         private void SetupButtonListeners()
@@ -56,8 +62,9 @@ namespace Assets.Scripts
             closeButton.onClick.AddListener(OnCloseButtonClicked);
             confirmChangesButton.onClick.AddListener(OnSaveChanges);
             discardChangesButton.onClick.AddListener(OnDiscardChanges);
+            saveChangesButton.onClick.AddListener(OnSaveAliasButtonClicked);
         }
-
+        
         private async Task InitializeBeamable()
         {
             try
@@ -80,8 +87,8 @@ namespace Assets.Scripts
             {
                 if (string.IsNullOrEmpty(_playerAccount.Alias))
                 {
-                    var alias = await FetchAliasFromStats();
-                    _playerAccount.SetAlias(alias);
+                    var alias = await profilePictureFetcher.FetchAliasFromStats(); 
+                    await _playerAccount.SetAlias(alias);
                 }
                 usernameText.text = _playerAccount.Alias;
                 gidText.text = ShortenGamerTag(_playerAccount.GamerTag.ToString());
@@ -91,46 +98,23 @@ namespace Assets.Scripts
                 ToggleUIElements(true);
             }
         }
-        
-        private async Task<string> FetchAliasFromStats()
-        {
-            try
-            {
-                var playerId = BeamContext.Default.PlayerId;
-                const string access = "public";
-                const string domain = "client";
-                const string type = "player";
-
-                var stats = await _beamContext.Api.StatsService.GetStats(domain, access, type, playerId);
-
-                if (stats.TryGetValue("alias", out var alias))
-                {
-                    return alias;
-                }
-                else
-                {
-                    Debug.Log("Alias not found in stats.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"Error fetching alias from stats: {ex.Message}");
-            }
-
-            return "Unknown";
-        }
 
         private void ToggleUIElements(bool isViewing)
         {
-            aliasInputField.gameObject.SetActive(!isViewing); 
-            usernameText.gameObject.SetActive(isViewing); 
+            aliasInputField.gameObject.SetActive(!isViewing);
+            usernameText.gameObject.SetActive(isViewing);
             editAliasButton.gameObject.SetActive(isViewing);
         }
 
+        private void OnSaveAliasButtonClicked()
+        {
+            _ = OnSaveAliasClicked();
+        }
+        
         private void OnEditAliasClicked()
         {
             _isEditingAlias = true;
-            ToggleUIElements(false); 
+            ToggleUIElements(false);
             saveChangesButton.interactable = true;
         }
 
@@ -138,7 +122,7 @@ namespace Assets.Scripts
         {
             if (_isEditingAlias)
             {
-                confirmPopup.SetActive(true); 
+                confirmPopup.SetActive(true);
             }
             else
             {
@@ -146,9 +130,9 @@ namespace Assets.Scripts
             }
         }
 
-        private void OnSaveChanges()
+        private async void OnSaveChanges()
         {
-            OnSaveAliasClicked(); 
+            await OnSaveAliasClicked();
             ClosePopupAndNavigate();
         }
 
@@ -160,7 +144,7 @@ namespace Assets.Scripts
 
         private void ClosePopupAndNavigate()
         {
-            confirmPopup.SetActive(false); 
+            confirmPopup.SetActive(false);
             NavigateToHome();
         }
 
@@ -170,7 +154,7 @@ namespace Assets.Scripts
             SceneManager.LoadSceneAsync("SenetMainMenu");
         }
 
-        private async void OnSaveAliasClicked()
+        private async Task OnSaveAliasClicked()
         {
             var newAlias = aliasInputField.text;
             if (string.IsNullOrEmpty(newAlias)) return;
@@ -178,8 +162,16 @@ namespace Assets.Scripts
             try
             {
                 await _playerAccount.SetAlias(newAlias);
-                
+
                 usernameText.text = newAlias;
+
+                var userNameStat = new Dictionary<string, string>()
+                {
+                    { "alias", newAlias }
+                };
+
+                await _beamContext.Api.StatsService.SetStats("public", userNameStat);
+
                 ToggleUIElements(true); // Revert to viewing mode
                 saveChangesButton.interactable = false;
                 _isEditingAlias = false;
@@ -194,46 +186,96 @@ namespace Assets.Scripts
         {
             NativeGallery.GetImageFromGallery((path) =>
             {
-                if (!string.IsNullOrEmpty(path))
+                if (string.IsNullOrEmpty(path)) return;
+                
+                const int maxFileSizeInBytes = 5 * 1024 * 1024; // 5 MB size limit
+                
+                _localImagePath = path;
+                
+                if (!File.Exists(_localImagePath))
                 {
-                    _localImagePath = path;
-                    UploadProfilePicture();
+                    Debug.LogError($"File not found: {_localImagePath}");
+                    return;
                 }
+                
+                var fileInfo = new FileInfo(_localImagePath);
+                if (fileInfo.Length > maxFileSizeInBytes)
+                {
+                    DisplayTemporaryPopup();
+                    return;
+                }
+                
+                UploadProfilePicture();
             });
+        }
+        
+        private void DisplayTemporaryPopup()
+        {
+            warningPopup.SetActive(true);
+
+            StartCoroutine(ClosePopupAfterDelay(warningPopup, 3f));
+        }
+        
+        private static IEnumerator ClosePopupAfterDelay(GameObject popup, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            Destroy(popup);
         }
 
         private async void UploadProfilePicture()
         {
             if (string.IsNullOrEmpty(_localImagePath)) return;
 
+            loadingPanel.SetActive(true);
+
             try
             {
-                if (!File.Exists(_localImagePath))
-                {
-                    Debug.LogError($"File not found: {_localImagePath}");
-                    return;
-                }
-
                 var image = await File.ReadAllBytesAsync(_localImagePath);
-                
+
                 var md5Bytes = GetMd5Checksum(image);
                 var renderChecksum = BitConverter.ToString(md5Bytes).Replace("-", "");
-                
+
                 var hostedUrl = await _service.UploadImage(renderChecksum, image, md5Bytes);
                 Debug.Log($"Profile picture uploaded successfully. Hosted URL: {hostedUrl}");
 
-                // Write the hosted URL to stats
-                var statsDictionary = new Dictionary<string, string> { { "ProfileUrl", hostedUrl } };
+                var statsDictionary = new Dictionary<string, string> { { "profile_url", hostedUrl } };
                 await _beamContext.Api.StatsService.SetStats("public", statsDictionary);
 
-                // Trigger the ProfilePictureFetcher to load the new picture
-                await profilePictureFetcher.LoadImageFromUrl(hostedUrl);
+                await profilePictureFetcher.LoadImageFromUrl(hostedUrl); 
             }
             catch (Exception ex)
             {
                 Debug.LogError($"Failed to upload profile picture: {ex.Message}");
+                DisplayErrorMessage("Failed to upload the profile picture. Please try again.");
+            }
+            finally
+            {
+                loadingPanel.SetActive(false);
+                DisplayErrorMessage("Failed to upload the profile picture. Please try again.");
+
             }
         }
+        
+        private void DisplayErrorMessage(string message)
+        {
+            warningPopup.SetActive(true);
+
+            var messageText = warningPopup.transform
+                .Find("Panel/Error Message") 
+                .GetComponent<TextMeshProUGUI>();
+
+            if (messageText != null)
+            {
+                messageText.text = message; 
+            }
+            else
+            {
+                Debug.LogError("Error Message TextMeshPro component not found.");
+            }
+
+            StartCoroutine(ClosePopupAfterDelay(warningPopup, 3f)); // Close the popup after 3 seconds
+        }
+
 
         private static byte[] GetMd5Checksum(byte[] image)
         {

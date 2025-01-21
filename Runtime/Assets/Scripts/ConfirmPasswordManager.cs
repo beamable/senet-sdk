@@ -1,8 +1,7 @@
 using Beamable;
-using Beamable.Common.Api.Auth;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ConfirmPasswordManager : MonoBehaviour
 {
@@ -10,6 +9,7 @@ public class ConfirmPasswordManager : MonoBehaviour
     public TMP_InputField newPasswordInputField;
     public TMP_InputField confirmPasswordInputField;
     public TextMeshProUGUI confirmUpdateMessage;
+    public GameObject confirmationPopup; 
 
     private BeamContext _beamContext;
 
@@ -40,10 +40,33 @@ public class ConfirmPasswordManager : MonoBehaviour
         {
             await _beamContext.Api.AuthService.ConfirmPasswordUpdate(code, newPassword);
             confirmUpdateMessage.text = "Password successfully updated!";
+
+            // Clear the fields after a successful password update
+            codeInputField.text = string.Empty;
+            newPasswordInputField.text = string.Empty;
+            confirmPasswordInputField.text = string.Empty;
         }
         catch (System.Exception ex)
         {
             confirmUpdateMessage.text = $"Invalid Confirmation Code";
         }
+    }
+
+    public void OnCloseButtonClicked()
+    {
+        if (!string.IsNullOrEmpty(newPasswordInputField.text) || 
+            !string.IsNullOrEmpty(confirmPasswordInputField.text))
+        {
+            confirmationPopup.SetActive(true);
+        }
+        else
+        {
+            NavigateToProfile();
+        }
+    }
+    
+    private void NavigateToProfile()
+    {
+        SceneManager.LoadSceneAsync("SenetProfile");
     }
 }

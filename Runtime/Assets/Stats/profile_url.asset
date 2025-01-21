@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09d6340212c9c4c22b2d0d6e5e2450db, type: 3}
-  m_Name: ProfileUrl
+  m_Name: profile_url
   m_EditorClassIdentifier: 
-  StatKey: ProfilleUrl
+  StatKey: profile_url
   Access: 0
   DefaultValue: 
   ProfanityChecked: 0

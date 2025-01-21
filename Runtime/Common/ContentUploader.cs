@@ -48,9 +48,7 @@ namespace Beamable.Common
                 Console.WriteLine(e);
                 throw;
             }
-
         }
-
 
         private async Task<BinaryReference> GenerateSignedUrl(string renderChecksum)
         {
