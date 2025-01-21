@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
@@ -36,6 +37,7 @@ namespace Assets.Scripts
         [Header("Navigation")]
         [SerializeField] private Button closeButton;
         [SerializeField] private GameObject confirmPopup;
+        [SerializeField] private GameObject warningPopup;
         [SerializeField] private Button confirmChangesButton;
         [SerializeField] private Button saveChangesButton;
         [SerializeField] private Button discardChangesButton;
@@ -180,12 +182,40 @@ namespace Assets.Scripts
         {
             NativeGallery.GetImageFromGallery((path) =>
             {
-                if (!string.IsNullOrEmpty(path))
+                if (string.IsNullOrEmpty(path)) return;
+                
+                const int maxFileSizeInBytes = 5 * 1024 * 1024; // 5 MB size limit
+                
+                _localImagePath = path;
+                
+                if (!File.Exists(_localImagePath))
                 {
-                    _localImagePath = path;
-                    UploadProfilePicture();
+                    Debug.LogError($"File not found: {_localImagePath}");
+                    return;
                 }
+                
+                var fileInfo = new FileInfo(_localImagePath);
+                if (fileInfo.Length > maxFileSizeInBytes)
+                {
+                    DisplayTemporaryPopup();
+                    return;
+                }
+                
+                UploadProfilePicture();
             });
+        }
+        
+        private void DisplayTemporaryPopup()
+        {
+            warningPopup.SetActive(true);
+
+            StartCoroutine(ClosePopupAfterDelay(warningPopup, 3f));
+        }
+        
+        private static IEnumerator ClosePopupAfterDelay(GameObject popup, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            Destroy(popup);
         }
 
         private async void UploadProfilePicture()
@@ -194,12 +224,6 @@ namespace Assets.Scripts
 
             try
             {
-                if (!File.Exists(_localImagePath))
-                {
-                    Debug.LogError($"File not found: {_localImagePath}");
-                    return;
-                }
-
                 var image = await File.ReadAllBytesAsync(_localImagePath);
 
                 var md5Bytes = GetMd5Checksum(image);
