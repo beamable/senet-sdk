@@ -16,7 +16,9 @@
         "UnityEngine.Advertisements",
         "Unity.Notifications.Android",
         "RewardModel",
-        "DOTween.Modules"
+        "DOTween.Modules",
+        "NativeGallery.Runtime",
+        "NativeGallery.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
