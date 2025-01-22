@@ -78,62 +78,75 @@ public class AuthenticationManager : MonoBehaviour
     }
 
     private async Task Login()
-{
-    try
     {
-        var email = emailInputField.text.Trim();
-        var password = passwordInputField.text;
-
-        if (!IsValidEmail(email))
+        try
         {
-            DisplayErrorMessage("Invalid email format. Please enter a valid email address.");
-            signInButton.interactable = true;
-            return;
-        }
+            var email = emailInputField.text.Trim();
+            var password = passwordInputField.text;
 
-        var operation = await _beamContext.Accounts.RecoverAccountWithEmail(email, password);
-        if (operation.isSuccess)
-        {
-            if (operation.account != null)
+            if (!IsValidEmail(email))
             {
-                await operation.SwitchToAccount();
-            }
-            else
-            {
-                Debug.LogError("Recovered account is null. Cannot switch accounts.");
-                DisplayErrorMessage("Unable to login. Please try again.");
+                DisplayErrorMessage("Invalid email format. Please enter a valid email address.");
                 signInButton.interactable = true;
                 return;
             }
 
-            SceneManager.LoadScene("SenetMainMenu");
-        }
-        else
-        {
-            switch (operation.error.ToString())
+            var operation = await _beamContext.Accounts.RecoverAccountWithEmail(email, password);
+            if (operation.isSuccess)
             {
-                case "UNKNOWN_ERROR":
-                    DisplayErrorMessage("The account does not exist. Please sign up first.");
-                    break;
-                case "UNKNOWN_CREDENTIALS":
-                    DisplayErrorMessage("Incorrect password. Please try again.");
-                    break;
-                default:
-                    DisplayErrorMessage("Failed to recover account. Please check your email and password.");
-                    break;
-            }
+                if (operation.account != null)
+                {
+                    await operation.SwitchToAccount();
+                }
+                else
+                {
+                    Debug.LogError("Recovered account is null. Cannot switch accounts.");
+                    DisplayErrorMessage("Unable to login. Please try again.");
+                    signInButton.interactable = true;
+                    return;
+                }
 
-            Debug.LogError($"Failed to recover account: {operation.error}");
+                // Show the beta message and navigate to the main menu
+                StartCoroutine(ShowBetaMessageAndNavigate());
+            }
+            else
+            {
+                switch (operation.error.ToString())
+                {
+                    case "UNKNOWN_ERROR":
+                        DisplayErrorMessage("The account does not exist. Please sign up first.");
+                        break;
+                    case "UNKNOWN_CREDENTIALS":
+                        DisplayErrorMessage("Incorrect password. Please try again.");
+                        break;
+                    default:
+                        DisplayErrorMessage("Failed to recover account. Please check your email and password.");
+                        break;
+                }
+
+                Debug.LogError($"Failed to recover account: {operation.error}");
+                signInButton.interactable = true;
+            }
+        }
+        catch (Exception e)
+        {
+            DisplayErrorMessage("An unexpected error occurred. Please try again.");
+            Debug.LogError(e.ToString());
             signInButton.interactable = true;
         }
     }
-    catch (Exception e)
+    private IEnumerator ShowBetaMessageAndNavigate()
     {
-        DisplayErrorMessage("An unexpected error occurred. Please try again.");
-        Debug.LogError(e.ToString());
-        signInButton.interactable = true;
+        // Display the beta message in the popup
+        DisplayErrorMessage("This version of the app is beta.");
+    
+        // Wait for 3 seconds to allow the user to read the message
+        yield return new WaitForSeconds(3f);
+    
+        // Navigate to the main menu
+        SceneManager.LoadScene("SenetMainMenu");
     }
-}
+
 
 private static bool IsValidEmail(string email)
 {
