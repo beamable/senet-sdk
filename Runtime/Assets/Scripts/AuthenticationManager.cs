@@ -247,14 +247,14 @@ public class AuthenticationManager : MonoBehaviour
     private void DisplayErrorMessage(string message)
     {
         errorMessageText.text = ParseErrorMessage(message);
-        errorMessagePanel.SetActive(true); // Display the error message panel
+        errorMessagePanel.SetActive(true); 
         StartCoroutine(HideErrorMessageAfterDelay());
     }
 
     private IEnumerator HideErrorMessageAfterDelay()
     {
-        yield return new WaitForSeconds(3f); // Wait for 3 seconds
-        errorMessagePanel.SetActive(false); // Hide the error message panel
+        yield return new WaitForSeconds(3f); 
+        errorMessagePanel.SetActive(false); 
     }
 
     private string ParseErrorMessage(string error)
