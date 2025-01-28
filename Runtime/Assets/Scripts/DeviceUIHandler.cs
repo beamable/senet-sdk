@@ -24,7 +24,7 @@ public class DeviceUIHandler : MonoBehaviour
     private GameObject tabletContainer; // Container for tablet.
 
     private const float TabletScreenWidthThresholdPixels = 403f;  // Tablet width threshold in pixels.
-    private const float TabletScreenHeightThresholdPixels = 603f; // Tablet height threshold in pixels.
+    private const float TabletScreenHeightThresholdPixels = 500f; // Tablet height threshold in pixels.
 
     private void Start()
     {
