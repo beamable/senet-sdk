@@ -34,7 +34,7 @@ public class CurrencyManager : MonoBehaviour
             if (inventoryView.currencies.ContainsKey(senetToken))
             {
                 var senetAmount = inventoryView.currencies[senetToken];
-                senet = senetAmount / gweiPerSenet;
+                senet = senetAmount;
             }
         });
     }
@@ -42,7 +42,7 @@ public class CurrencyManager : MonoBehaviour
     public async Promise AddOrRemoveSenet(long amount = default)
     {
         var inventoryUpdateBuilder = new InventoryUpdateBuilder();
-        inventoryUpdateBuilder.CurrencyChange(senetToken, amount * gweiPerSenet);
+        inventoryUpdateBuilder.CurrencyChange(senetToken, amount);
 
         await _beamContext.Inventory.Update(inventoryUpdateBuilder);
         return;
