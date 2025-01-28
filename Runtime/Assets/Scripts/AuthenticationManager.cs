@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Assets.Scripts.Constants;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -93,7 +94,7 @@ public class AuthenticationManager : MonoBehaviour
 
             if (!IsValidEmail(email))
             {
-                DisplayErrorMessage("Invalid email format. Please enter a valid email address.");
+                DisplayErrorMessage(ErrorMessages.InvalidEmailFormat);
                 signInButton.interactable = true;
                 return;
             }
@@ -107,8 +108,8 @@ public class AuthenticationManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError("Recovered account is null. Cannot switch accounts.");
-                    DisplayErrorMessage("Unable to login. Please try again.");
+                    Debug.LogError(ErrorMessages.AccountSwitchError);
+                    DisplayErrorMessage(ErrorMessages.LoginError);
                     signInButton.interactable = true;
                     return;
                 }
@@ -120,13 +121,13 @@ public class AuthenticationManager : MonoBehaviour
                 switch (operation.error.ToString())
                 {
                     case "UNKNOWN_ERROR":
-                        DisplayErrorMessage("The account does not exist. Please sign up first.");
+                        DisplayErrorMessage(ErrorMessages.AccountDoesNotExist);
                         break;
                     case "UNKNOWN_CREDENTIALS":
-                        DisplayErrorMessage("Incorrect password. Please try again.");
+                        DisplayErrorMessage(ErrorMessages.IncorrectPassword);
                         break;
                     default:
-                        DisplayErrorMessage("Failed to recover account. Please check your email and password.");
+                        DisplayErrorMessage(ErrorMessages.FailedToRecoverAccount);
                         break;
                 }
 
@@ -136,7 +137,7 @@ public class AuthenticationManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            DisplayErrorMessage("An unexpected error occurred. Please try again.");
+            DisplayErrorMessage(ErrorMessages.UnableToLogin);
             Debug.LogError(e.ToString());
             signInButton.interactable = true;
         }
@@ -169,7 +170,7 @@ public class AuthenticationManager : MonoBehaviour
         if (!IsValidEmail(email))
         {
             loadingPanel.SetActive(false);
-            DisplayErrorMessage("Invalid email format. Please enter a valid email address.");
+            DisplayErrorMessage(ErrorMessages.InvalidEmailFormat);
             signUpButton.interactable = true;
             return;
         }
@@ -177,7 +178,7 @@ public class AuthenticationManager : MonoBehaviour
         if (password != confirmPassword)
         {
             loadingPanel.SetActive(false);
-            DisplayErrorMessage("Passwords do not match.");
+            DisplayErrorMessage(ErrorMessages.PasswordsDoNotMatch);
             signUpButton.interactable = true;
             return;
         }
@@ -205,15 +206,15 @@ public class AuthenticationManager : MonoBehaviour
         {
             loadingPanel.SetActive(false);
             DisplayErrorMessage(ex.Message.Contains("EmailAlreadyRegisteredError")
-                ? "This email is already registered. Please use a different email or log in."
-                : "An error occurred during sign-up. Please try again.");
+                ? ErrorMessages.EmailAlreadyRegistered
+                : ErrorMessages.SignUpError);
             Debug.LogError($"Beamable API error: {ex.Message}");
             signUpButton.interactable = true;
         }
         catch (Exception e)
         {
             loadingPanel.SetActive(false);
-            DisplayErrorMessage("An unexpected error occurred. Please try again.");
+            DisplayErrorMessage(ErrorMessages.SignUpError);
             Debug.LogError(e.ToString());
             signUpButton.interactable = true;
         }
