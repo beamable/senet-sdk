@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Assets.Scripts.Constants;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -29,13 +30,18 @@ public class AuthenticationManager : MonoBehaviour
     private Button togglePassword;
     [SerializeField]
     private Button toggleConfirmPassword;
-    private BeamContext _beamContext;
     [SerializeField]
     private GameObject errorMessagePanel;
     [SerializeField]
     private TMP_Text errorMessageText;
     [SerializeField]
     private GameObject loadingPanel;
+    [SerializeField]
+    private GameObject betaPopup; 
+    [SerializeField]
+    private Button betaPopupButton; 
+
+    private BeamContext _beamContext;
 
     private async void Start()
     {
@@ -60,6 +66,8 @@ public class AuthenticationManager : MonoBehaviour
         {
             toggleConfirmPassword.onClick.AddListener(() => TogglePassword(true));
         }
+
+        betaPopupButton.onClick.AddListener(NavigateToMainMenu);
     }
 
     private async void LoginUser()
@@ -78,132 +86,138 @@ public class AuthenticationManager : MonoBehaviour
     }
 
     private async Task Login()
-{
-    try
     {
-        var email = emailInputField.text.Trim();
-        var password = passwordInputField.text;
-
-        if (!IsValidEmail(email))
+        try
         {
-            DisplayErrorMessage("Invalid email format. Please enter a valid email address.");
-            signInButton.interactable = true;
-            return;
-        }
+            var email = emailInputField.text.Trim();
+            var password = passwordInputField.text;
 
-        var operation = await _beamContext.Accounts.RecoverAccountWithEmail(email, password);
-        if (operation.isSuccess)
-        {
-            if (operation.account != null)
+            if (!IsValidEmail(email))
             {
-                await operation.SwitchToAccount();
-            }
-            else
-            {
-                Debug.LogError("Recovered account is null. Cannot switch accounts.");
-                DisplayErrorMessage("Unable to login. Please try again.");
+                DisplayErrorMessage(ErrorMessages.InvalidEmailFormat);
                 signInButton.interactable = true;
                 return;
             }
 
-            SceneManager.LoadScene("SenetMainMenu");
-        }
-        else
-        {
-            switch (operation.error.ToString())
+            var operation = await _beamContext.Accounts.RecoverAccountWithEmail(email, password);
+            if (operation.isSuccess)
             {
-                case "UNKNOWN_ERROR":
-                    DisplayErrorMessage("The account does not exist. Please sign up first.");
-                    break;
-                case "UNKNOWN_CREDENTIALS":
-                    DisplayErrorMessage("Incorrect password. Please try again.");
-                    break;
-                default:
-                    DisplayErrorMessage("Failed to recover account. Please check your email and password.");
-                    break;
-            }
+                if (operation.account != null)
+                {
+                    await operation.SwitchToAccount();
+                }
+                else
+                {
+                    Debug.LogError(ErrorMessages.AccountSwitchError);
+                    DisplayErrorMessage(ErrorMessages.LoginError);
+                    signInButton.interactable = true;
+                    return;
+                }
 
-            Debug.LogError($"Failed to recover account: {operation.error}");
+                ShowBetaPopup();
+            }
+            else
+            {
+                switch (operation.error.ToString())
+                {
+                    case "UNKNOWN_ERROR":
+                        DisplayErrorMessage(ErrorMessages.AccountDoesNotExist);
+                        break;
+                    case "UNKNOWN_CREDENTIALS":
+                        DisplayErrorMessage(ErrorMessages.IncorrectPassword);
+                        break;
+                    default:
+                        DisplayErrorMessage(ErrorMessages.FailedToRecoverAccount);
+                        break;
+                }
+
+                Debug.LogError($"Failed to recover account: {operation.error}");
+                signInButton.interactable = true;
+            }
+        }
+        catch (Exception e)
+        {
+            DisplayErrorMessage(ErrorMessages.UnableToLogin);
+            Debug.LogError(e.ToString());
             signInButton.interactable = true;
         }
     }
-    catch (Exception e)
+
+    private void ShowBetaPopup()
     {
-        DisplayErrorMessage("An unexpected error occurred. Please try again.");
-        Debug.LogError(e.ToString());
-        signInButton.interactable = true;
-    }
-}
-
-private static bool IsValidEmail(string email)
-{
-    return email.Contains("@") && email.Contains(".");
-}
-
-private async Promise SignUp()
-{
-    loadingPanel.SetActive(true);
-    var email = emailInputField.text.Trim();
-    var userName = usernameInputField.text.Trim();
-    var password = passwordInputField.text;
-    var confirmPassword = confirmPasswordInputField.text;
-
-    if (!IsValidEmail(email))
-    {
-        loadingPanel.SetActive(false);
-        DisplayErrorMessage("Invalid email format. Please enter a valid email address.");
-        signUpButton.interactable = true;
-        return;
+        betaPopup.SetActive(true);
     }
 
-    if (password != confirmPassword)
+    private void NavigateToMainMenu()
     {
-        loadingPanel.SetActive(false);
-        DisplayErrorMessage("Passwords do not match.");
-        signUpButton.interactable = true;
-        return;
-    }
-
-    try
-    {
-        await _beamContext.Api.AuthService.RegisterDBCredentials(email, password);
-        await _beamContext.Accounts.AddExternalIdentity<SuiIdentity, Web3FederationClient>("");
-        await _beamContext.Api.AuthService.Login(email, password);
-        await _beamContext.Accounts.Current.SetAlias(userName);
-        
-        var userNameStat = new Dictionary<string, string>()
-        {
-            { "alias", userName }
-        };
-
-        await _beamContext.Api.StatsService.SetStats("public", userNameStat);
-
-        loadingPanel.SetActive(false);
-
-        Debug.Log("Sign up successful.");
+        betaPopup.SetActive(false);
         SceneManager.LoadScene("SenetMainMenu");
     }
-    catch (Beamable.Api.PlatformRequesterException ex)
-    {
-        loadingPanel.SetActive(false);
-        DisplayErrorMessage(ex.Message.Contains("EmailAlreadyRegisteredError")
-            ? "This email is already registered. Please use a different email or log in."
-            : "An error occurred during sign-up. Please try again.");
-        Debug.LogError($"Beamable API error: {ex.Message}");
-        signUpButton.interactable = true;
-    }
-    catch (Exception e)
-    {
-        loadingPanel.SetActive(false);
-        DisplayErrorMessage("An unexpected error occurred. Please try again.");
-        Debug.LogError(e.ToString());
-        signUpButton.interactable = true;
-    }
-}
 
-    private async Task WaitOneSecondAsync()
+    private static bool IsValidEmail(string email)
     {
-        await Task.Delay(TimeSpan.FromSeconds(3));
+        return email.Contains("@") && email.Contains(".");
+    }
+
+    private async Task SignUp()
+    {
+        loadingPanel.SetActive(true);
+        var email = emailInputField.text.Trim();
+        var userName = usernameInputField.text.Trim();
+        var password = passwordInputField.text;
+        var confirmPassword = confirmPasswordInputField.text;
+
+        if (!IsValidEmail(email))
+        {
+            loadingPanel.SetActive(false);
+            DisplayErrorMessage(ErrorMessages.InvalidEmailFormat);
+            signUpButton.interactable = true;
+            return;
+        }
+
+        if (password != confirmPassword)
+        {
+            loadingPanel.SetActive(false);
+            DisplayErrorMessage(ErrorMessages.PasswordsDoNotMatch);
+            signUpButton.interactable = true;
+            return;
+        }
+
+        try
+        {
+            await _beamContext.Api.AuthService.RegisterDBCredentials(email, password);
+            await _beamContext.Accounts.AddExternalIdentity<SuiIdentity, Web3FederationClient>("");
+            await _beamContext.Api.AuthService.Login(email, password);
+            await _beamContext.Accounts.Current.SetAlias(userName);
+
+            var userNameStat = new Dictionary<string, string>()
+            {
+                { "alias", userName }
+            };
+
+            await _beamContext.Api.StatsService.SetStats("public", userNameStat);
+
+            loadingPanel.SetActive(false);
+
+            Debug.Log("Sign up successful.");
+            SceneManager.LoadScene("SenetMainMenu");
+        }
+        catch (Beamable.Api.PlatformRequesterException ex)
+        {
+            loadingPanel.SetActive(false);
+            DisplayErrorMessage(ex.Message.Contains("EmailAlreadyRegisteredError")
+                ? ErrorMessages.EmailAlreadyRegistered
+                : ErrorMessages.SignUpError);
+            Debug.LogError($"Beamable API error: {ex.Message}");
+            signUpButton.interactable = true;
+        }
+        catch (Exception e)
+        {
+            loadingPanel.SetActive(false);
+            DisplayErrorMessage(ErrorMessages.SignUpError);
+            Debug.LogError(e.ToString());
+            signUpButton.interactable = true;
+        }
     }
 
     public void GoToSignUpPage()
@@ -215,7 +229,7 @@ private async Promise SignUp()
     {
         SceneManager.LoadScene("SenetSignIn");
     }
-
+    
     private void TogglePassword(bool isConfirm)
     {
         var inputField = isConfirm ? confirmPasswordInputField : passwordInputField;
@@ -234,26 +248,23 @@ private async Promise SignUp()
     private void DisplayErrorMessage(string message)
     {
         errorMessageText.text = ParseErrorMessage(message);
-        errorMessagePanel.SetActive(true); // Display the error message panel
+        errorMessagePanel.SetActive(true); 
         StartCoroutine(HideErrorMessageAfterDelay());
     }
 
     private IEnumerator HideErrorMessageAfterDelay()
     {
-        yield return new WaitForSeconds(3f); // Wait for 3 seconds
-        errorMessagePanel.SetActive(false); // Hide the error message panel
+        yield return new WaitForSeconds(3f); 
+        errorMessagePanel.SetActive(false); 
     }
 
     private string ParseErrorMessage(string error)
     {
-        switch (error)
+        return error switch
         {
-            case "ALREADY_HAS_CREDENTIAL":
-                return "Account already exists.";
-            case "UNKNOWN_ERROR":
-                return "User doesn't exist";
-            default:
-                return error;
-        }
+            "ALREADY_HAS_CREDENTIAL" => "Account already exists.",
+            "UNKNOWN_ERROR" => "User doesn't exist",
+            _ => error
+        };
     }
 }
