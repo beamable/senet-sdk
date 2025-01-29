@@ -42,7 +42,6 @@ namespace Assets.Scripts
 
                 if (string.IsNullOrEmpty(_playerAccount.Alias))
                 {
-                    Debug.Log("Alias is empty. Fetching alias from stats...");
                     var alias = await FetchAliasFromStats();
                     await _playerAccount.SetAlias(alias);
                 }
@@ -83,10 +82,6 @@ namespace Assets.Scripts
                 {
                     return alias;
                 }
-                else
-                {
-                    Debug.Log("Alias not found in stats.");
-                }
             }
             catch (Exception ex)
             {
@@ -110,10 +105,6 @@ namespace Assets.Scripts
                 if (stats.TryGetValue("profile_url", out var profileUrl))
                 {
                     await LoadImageFromUrl(profileUrl);
-                }
-                else
-                {
-                    Debug.Log("No profile picture URL found.");
                 }
             }
             catch (Exception ex)

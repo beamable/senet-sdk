@@ -150,7 +150,6 @@ namespace Assets.Scripts
 
         private void NavigateToHome()
         {
-            Debug.Log("Navigating to home...");
             SceneManager.LoadSceneAsync("SenetMainMenu");
         }
 
@@ -236,7 +235,6 @@ namespace Assets.Scripts
                 var renderChecksum = BitConverter.ToString(md5Bytes).Replace("-", "");
 
                 var hostedUrl = await _service.UploadImage(renderChecksum, image, md5Bytes);
-                Debug.Log($"Profile picture uploaded successfully. Hosted URL: {hostedUrl}");
 
                 var statsDictionary = new Dictionary<string, string> { { "profile_url", hostedUrl } };
                 await _beamContext.Api.StatsService.SetStats("public", statsDictionary);
