@@ -81,6 +81,7 @@ public class RulesAndAgreement : MonoBehaviour
         countCoins.RemoveCoins();
 
         await Task.Delay(2000);
+        await CurrencyManager.instance.AddOrRemoveSenet(-25);
 
         _confirmation.SetActive(false);
         _rulesAndAgreement.SetActive(false);
