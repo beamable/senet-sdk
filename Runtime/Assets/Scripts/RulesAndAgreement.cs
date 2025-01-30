@@ -27,36 +27,27 @@ public class RulesAndAgreement : MonoBehaviour
     private bool _hasPaid;
     private SenetMenuManager _senetMenuManager;
 
-    void Start()
+    private void Start()
     {
         _senetMenuManager = gameObject.GetComponent<SenetMenuManager>();
-        Debug.Log("SenetMenuManager initialized.");
-
         var runningTournament = TournamentManager.instance.runningTournament;
-    
-        if (runningTournament != null)
+        
+        if (runningTournament is { hasPaid: true })
         {
-            Debug.Log($"Running tournament found. Has paid: {runningTournament.hasPaid}");
+            _hasPaid = true;
+            _notEnoughTokens.SetActive(false);
+            _rulesAndAgreement.SetActive(true);
 
-            if (runningTournament.hasPaid)
-            {
-                _hasPaid = true;
-                _notEnoughTokens.SetActive(false);
-                _rulesAndAgreement.SetActive(true);
+            _scroll.GetComponent<RectTransform>().sizeDelta = new Vector2(_scroll.GetComponent<RectTransform>().rect.width, 1110);
+            _terms.SetActive(false);
+            _entryCost.SetActive(false);
+            _tournamentButtonText.text = "Play Now";
+            _tournamentButton.onClick.AddListener(JoinTournament);
 
-                _scroll.GetComponent<RectTransform>().sizeDelta = new Vector2(_scroll.GetComponent<RectTransform>().rect.width, 1110);
-                _terms.SetActive(false);
-                _entryCost.SetActive(false);
-                _tournamentButtonText.text = "Play Now";
-                _tournamentButton.onClick.AddListener(JoinTournament);
-
-                Debug.Log("User has already paid. Tournament button set to 'Play Now'.");
-                return;
-            }
+            return;
         }
 
         var senetAmount = CurrencyManager.instance.senet;
-        Debug.Log($"User's current Senet balance: {senetAmount}");
 
         if (senetAmount < 25)
         {
