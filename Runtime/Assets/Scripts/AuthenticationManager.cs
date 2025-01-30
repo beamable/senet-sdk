@@ -1,16 +1,13 @@
+using Assets.Scripts.Constants;
 using Beamable;
-using Beamable.Common;
-using Beamable.Server.Clients;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Assets.Scripts.Constants;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Web3FederationCommon;
 
 public class AuthenticationManager : MonoBehaviour
 {
@@ -37,9 +34,9 @@ public class AuthenticationManager : MonoBehaviour
     [SerializeField]
     private GameObject loadingPanel;
     [SerializeField]
-    private GameObject betaPopup; 
+    private GameObject betaPopup;
     [SerializeField]
-    private Button betaPopupButton; 
+    private Button betaPopupButton;
 
     private BeamContext _beamContext;
 
@@ -58,6 +55,7 @@ public class AuthenticationManager : MonoBehaviour
         {
             signInButton.interactable = true;
             signInButton.onClick.AddListener(LoginUser);
+            betaPopupButton.onClick.AddListener(NavigateToMainMenu);
         }
 
         togglePassword.onClick.AddListener(() => TogglePassword(false));
@@ -66,8 +64,6 @@ public class AuthenticationManager : MonoBehaviour
         {
             toggleConfirmPassword.onClick.AddListener(() => TogglePassword(true));
         }
-
-        betaPopupButton.onClick.AddListener(NavigateToMainMenu);
     }
 
     private async void LoginUser()
@@ -229,7 +225,7 @@ public class AuthenticationManager : MonoBehaviour
     {
         SceneManager.LoadScene("SenetSignIn");
     }
-    
+
     private void TogglePassword(bool isConfirm)
     {
         var inputField = isConfirm ? confirmPasswordInputField : passwordInputField;
@@ -248,14 +244,14 @@ public class AuthenticationManager : MonoBehaviour
     private void DisplayErrorMessage(string message)
     {
         errorMessageText.text = ParseErrorMessage(message);
-        errorMessagePanel.SetActive(true); 
+        errorMessagePanel.SetActive(true);
         StartCoroutine(HideErrorMessageAfterDelay());
     }
 
     private IEnumerator HideErrorMessageAfterDelay()
     {
-        yield return new WaitForSeconds(3f); 
-        errorMessagePanel.SetActive(false); 
+        yield return new WaitForSeconds(3f);
+        errorMessagePanel.SetActive(false);
     }
 
     private string ParseErrorMessage(string error)
