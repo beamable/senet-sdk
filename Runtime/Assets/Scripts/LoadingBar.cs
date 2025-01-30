@@ -8,10 +8,17 @@ using UnityEngine.UI;
 public class LoadingBar : MonoBehaviour
 {
     [SerializeField]
-    private Image _progressBar;
+    private GameObject _betaPopup;
+    private Slider _slider;
 
-    async void Start()
+    private void Start()
     {
+        _slider = transform.GetChild(3).GetChild(2).GetComponent<Slider>();
+    }
+
+    public async void Continue()
+    {
+        _betaPopup.SetActive(false);
         var settings = Resources.Load<SenetSettings>("SenetSettings");
         var simulated = settings.simulatedLoading;
 
@@ -34,7 +41,7 @@ public class LoadingBar : MonoBehaviour
 
         while (loadingOperation.isDone == false)
         {
-            _progressBar.fillAmount = loadingOperation.progress;
+            _slider.value = loadingOperation.progress;
             yield return new WaitForEndOfFrame();
         }
     }
@@ -64,7 +71,7 @@ public class LoadingBar : MonoBehaviour
             return "SenetMainMenu";
         }
 
-        return "SenetSignUp";
+        return "SenetSignIn";
     }
 
     IEnumerator SimulatedLoading(string level)
@@ -72,7 +79,7 @@ public class LoadingBar : MonoBehaviour
         float i = 0;
         while (i < 1)
         {
-            _progressBar.fillAmount = i;
+            _slider.value = i;
             i += (float)0.0005;
             yield return new WaitForEndOfFrame();
         }
