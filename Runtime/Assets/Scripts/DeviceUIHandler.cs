@@ -47,7 +47,6 @@ public class DeviceUIHandler : MonoBehaviour
 
     private void HandleDeviceUI()
     {
-        Debug.Log($"Screen DPI: {Screen.dpi}, Screen Width (pixels): {Screen.width}, Screen Height (pixels): {Screen.height}");
         if (IsTablet())
         {
             // Switch containers

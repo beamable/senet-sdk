@@ -49,13 +49,11 @@ namespace Assets.Scripts
                 if (usernameText != null)
                 {
                     usernameText.text = _playerAccount.Alias;
-                    Debug.Log($"Alias displayed in UI: {_playerAccount.Alias}");
                 }
 
                 if (userEmail != null)
                 {
                     userEmail.text = _playerAccount.Email;
-                    Debug.Log($"Email displayed in UI: {_playerAccount.Email}");
                 }
 
                 await FetchAndDisplayProfilePicture();
