@@ -1153,7 +1153,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3829142047740167304, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3829142047740167304, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 378333217}
+    - target: {fileID: 3829142047740167304, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Home
+      objectReference: {fileID: 0}
+    - target: {fileID: 3829142047740167304, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SenetMenuManager, Beamable.SenetSDK
+      objectReference: {fileID: 0}
+    - target: {fileID: 3829142047740167304, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3829142047740167311, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1254,6 +1270,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3829142047424412074, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
   m_PrefabInstance: {fileID: 378333215}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &378333217 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3829142047424412084, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
+  m_PrefabInstance: {fileID: 378333215}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b540f281855cbf24f97e4e8c4a7c0169, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &529416833
 PrefabInstance:
   m_ObjectHideFlags: 0
