@@ -83,7 +83,7 @@ public class RulesAndAgreement : MonoBehaviour
         var countCoins = FindObjectOfType<CountCoins>();
         countCoins.RemoveCoins();
 
-        await Task.Delay(2000);
+        await Task.Delay(1000);
         await CurrencyManager.instance.AddOrRemoveSenet(-25);
         _hasPaid = true;
         Debug.Log(_hasPaid);

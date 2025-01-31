@@ -1,24 +1,21 @@
 using Beamable;
 using Beamable.Server.Clients;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TournamentButton : MonoBehaviour
 {
     [SerializeField]
-    private Text _timer;
+    private TextMeshProUGUI _timer;
     [SerializeField]
-    private Text _playersCount;
+    private TextMeshProUGUI _playersCount;
     [SerializeField]
     private GameObject _playNow;
     [SerializeField]
     private GameObject _entryCost;
     [SerializeField]
-    private Sprite _tournamentWithRank;
-    [SerializeField]
-    private Sprite _tournamentWithoutRank;
-    [SerializeField]
-    private Text _rankNumber;
+    private TextMeshProUGUI _rankNumber;
 
     void Start()
     {
@@ -35,35 +32,25 @@ public class TournamentButton : MonoBehaviour
         _timer.text = $"Next In {countdownTime.Days:D2}D : {countdownTime.Hours:D2}H : {countdownTime.Minutes:D2}M";
     }
 
-    void HandleComponentUpdate(RunningTournament runningTournament)
+    private void HandleComponentUpdate(RunningTournament runningTournament)
     {
-        if (runningTournament != null)
+        if (runningTournament == null) return;
+        var hasUserPaidForTournament = runningTournament.hasPaid;
+
+        if (hasUserPaidForTournament)
         {
-            _playersCount.text = $"Players: {runningTournament.playerCount}";
             var rank = runningTournament.rank;
 
-            if (rank > 0)
-            {
-                gameObject.transform.GetChild(0).GetComponent<Image>().sprite = _tournamentWithRank;
-                _rankNumber.text = ToOrdinal(rank);
-            }
-            else
-            {
-                gameObject.transform.GetChild(0).GetComponent<Image>().sprite = _tournamentWithoutRank;
-            }
+            _playNow.SetActive(true);
+            _entryCost.SetActive(false);
+            _rankNumber.text = rank > 0 ? $"Your Rank: {ToOrdinal(rank)}" : "";
+        }
+        else
+        {
+            _playNow.SetActive(false);
+            _entryCost.SetActive(true);
+            _playersCount.text = $"Players: {runningTournament.playerCount}";
 
-            var hasUserPaidForTournament = runningTournament.hasPaid;
-
-            if (hasUserPaidForTournament)
-            {
-                _playNow.SetActive(true);
-                _entryCost.SetActive(false);
-            }
-            else
-            {
-                _playNow.SetActive(false);
-                _entryCost.SetActive(true);
-            }
         }
     }
 
@@ -80,8 +67,8 @@ public class TournamentButton : MonoBehaviour
         if (number <= 0) return number.ToString();
 
         string suffix;
-        long lastDigit = number % 10;
-        long lastTwoDigits = number % 100;
+        var lastDigit = number % 10;
+        var lastTwoDigits = number % 100;
 
         if (lastTwoDigits == 11 || lastTwoDigits == 12 || lastTwoDigits == 13)
         {
