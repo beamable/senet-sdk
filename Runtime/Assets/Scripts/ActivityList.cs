@@ -41,7 +41,6 @@ public class ActivityList : MonoBehaviour
                 var youWonContainer = newActivity.transform.GetChild(4).gameObject;
                 var betterLuckContainer = newActivity.transform.GetChild(5).gameObject;
 
-                // Ensure both containers are disabled first
                 youWonContainer.SetActive(false);
                 betterLuckContainer.SetActive(false);
 
