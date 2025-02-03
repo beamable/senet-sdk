@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -36,6 +37,12 @@ public class TournamentResult : MonoBehaviour
         _congratulationsClaimPanel.SetActive(false);
         _congratulationsPanel.SetActive(true);
         await TournamentManager.instance.ClaimRewardsInTournament();
+
+        await Task.Delay(1000);
+
+        _congratulationsClaimPanel.SetActive(false);
+        _congratulationsPanel.SetActive(false);
+        _betterLuckPanel.SetActive(false);
     }
 
     void HandleRankUpdate(DoneTournament doneTournament)

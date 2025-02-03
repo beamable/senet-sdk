@@ -9,5 +9,4 @@ public class LoadManagers : MonoBehaviour
         TournamentManager.instance.Refresh();
         CurrencyManager.instance.Refresh();
     }
-
 }
