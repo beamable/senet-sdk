@@ -131,13 +131,7 @@ public class TournamentManager : MonoBehaviour
             {
                 var rewardAmount = userReward.currencies[0].amount;
                 await _beamContext.Microservices().TournamentService().ClaimTournamentRewards(lastEvent.id, lastEvent.name, rewardAmount, doneTournament.rank);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogException(ex);
-            }
-            finally
-            {
+
                 var newEventsGetResponse = await _beamContext.Api.EventsService.GetCurrent();
 
                 var running = newEventsGetResponse.GetSenetGameTournament(EventStatusType.Running);
@@ -150,7 +144,10 @@ public class TournamentManager : MonoBehaviour
                 {
                     ResetTournamentData();
                 }
-                SceneManager.LoadSceneAsync("SenetMainMenu");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
             }
         }
     }
