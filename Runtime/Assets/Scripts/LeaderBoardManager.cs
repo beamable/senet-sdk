@@ -25,8 +25,7 @@ namespace Beamable.Examples.Services.LeaderboardService
         [SerializeField]
         private GameObject _playerPrefab;
 
-
-        protected async void Start()
+        async void Start()
         {
             var beamContext = BeamContext.Default;
             await beamContext.OnReady;

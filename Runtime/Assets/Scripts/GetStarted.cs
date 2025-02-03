@@ -13,7 +13,7 @@ public class GetStarted : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("SenetSignUp");
+            SceneManager.LoadScene("SenetSignIn");
         }
     }
 }

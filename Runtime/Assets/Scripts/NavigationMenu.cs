@@ -11,4 +11,9 @@ public class NavigationMenu : MonoBehaviour
     {
         _logout.SetActive(true);
     }
+
+    public void CloseLogout()
+    {
+        _logout.SetActive(false);
+    }
 }

@@ -12,11 +12,6 @@ public class LogoutManager : MonoBehaviour
     [SerializeField]
     private GameObject _logoutSuccessfulPopup;
 
-    public void Cancel()
-    {
-        _confirmationPopup.SetActive(false);
-    }
-
     public async void OpenLoadingPopup()
     {
         _loadingPopup.SetActive(true);
@@ -25,7 +20,7 @@ public class LogoutManager : MonoBehaviour
         var beamContext = BeamContext.Default;
         await beamContext.OnReady;
 
-        beamContext.ClearPlayerAndStop();
+        await beamContext.ClearPlayerAndStop();
         
         if (beamContext.IsStopped)
         {

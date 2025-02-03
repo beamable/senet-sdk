@@ -3,17 +3,21 @@ using UnityEngine;
 public class TournamentButtonVariant : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _tournamentButton;
+    private GameObject _noTournamentAvailable;
 
-    [SerializeField]
-    private GameObject _noTournamentButton;
-
-    void Start()
+    private void Start()
     {
+        Debug.Log("TournamentButtonVariant initialized.");
+
         if (TournamentManager.instance)
         {
+            Debug.Log("TournamentManager instance found.");
             HandleButtonVariant(TournamentManager.instance.runningTournament);
             TournamentManager.instance.OnRunningTournamentChanged += HandleButtonVariant;
+        }
+        else
+        {
+            Debug.LogWarning("TournamentManager instance not found.");
         }
     }
 
@@ -22,6 +26,7 @@ public class TournamentButtonVariant : MonoBehaviour
         if (TournamentManager.instance)
         {
             TournamentManager.instance.OnRunningTournamentChanged -= HandleButtonVariant;
+            Debug.Log("Removed HandleButtonVariant listener.");
         }
     }
 
@@ -29,13 +34,13 @@ public class TournamentButtonVariant : MonoBehaviour
     {
         if (runningTournament != null)
         {
-            _tournamentButton.SetActive(true);
-            _noTournamentButton.SetActive(false);
+            _noTournamentAvailable.SetActive(false);
+            Debug.Log("Tournament found. Hiding no tournament available message.");
         }
         else
         {
-            _tournamentButton.SetActive(false);
-            _noTournamentButton.SetActive(true);
+            _noTournamentAvailable.SetActive(true);
+            Debug.Log("No running tournament. Showing no tournament available message.");
         }
     }
 }

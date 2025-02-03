@@ -14,6 +14,7 @@ namespace Beamable.Microservices
     public class TournamentService : Microservice
     {
         private const long gweiPerSenet = 1000000000;
+        private string senetToken = "currency.Senet";
 
         [ClientCallable]
         public async Task SetScore(string eventId, double score)
@@ -224,7 +225,7 @@ namespace Beamable.Microservices
             try
             {
                 var inventoryUpdateBuilder = new InventoryUpdateBuilder();
-                inventoryUpdateBuilder.CurrencyChange("currency.senet_currency.senet_token", amount * gweiPerSenet);
+                inventoryUpdateBuilder.CurrencyChange(senetToken, amount);
 
                 await Services.Inventory.Update(inventoryUpdateBuilder);
             }

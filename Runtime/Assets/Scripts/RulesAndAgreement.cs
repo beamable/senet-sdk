@@ -27,47 +27,50 @@ public class RulesAndAgreement : MonoBehaviour
     private bool _hasPaid;
     private SenetMenuManager _senetMenuManager;
 
-    void Start()
+    private void Start()
     {
         _senetMenuManager = gameObject.GetComponent<SenetMenuManager>();
+        var runningTournament = TournamentManager.instance.runningTournament;
+        
+        if (runningTournament is { hasPaid: true })
+        {
+            _hasPaid = true;
+            _notEnoughTokens.SetActive(false);
+            _rulesAndAgreement.SetActive(true);
+
+            _scroll.GetComponent<RectTransform>().sizeDelta = new Vector2(_scroll.GetComponent<RectTransform>().rect.width, 1110);
+            _terms.SetActive(false);
+            _entryCost.SetActive(false);
+            _tournamentButtonText.text = "Play Now";
+            _tournamentButton.onClick.AddListener(JoinTournament);
+
+            return;
+        }
 
         var senetAmount = CurrencyManager.instance.senet;
 
         if (senetAmount < 25)
         {
+            Debug.Log("Not enough tokens to join the tournament.");
             _notEnoughTokens.SetActive(true);
             _rulesAndAgreement.SetActive(false);
         }
         else
         {
+            Debug.Log("User has enough tokens, but needs to pay tournament fee.");
             _notEnoughTokens.SetActive(false);
             _rulesAndAgreement.SetActive(true);
-            var runningTournament = TournamentManager.instance.runningTournament;
-            if (runningTournament != null)
+
+            _scroll.GetComponent<RectTransform>().sizeDelta = new Vector2(_scroll.GetComponent<RectTransform>().rect.width, 740);
+            _tournamentButton.onClick.AddListener(() =>
             {
-                var hasPaid = runningTournament.hasPaid;
-
-                _hasPaid = hasPaid;
-
-                if (hasPaid)
-                {
-                    _scroll.GetComponent<RectTransform>().sizeDelta = new Vector2(_scroll.GetComponent<RectTransform>().rect.width, 1110);
-                    _terms.SetActive(false);
-                    _entryCost.SetActive(false);
-                    _tournamentButtonText.text = "Play Now";
-                    _tournamentButton.onClick.AddListener(JoinTournament);
-                }
-                else
-                {
-                    _scroll.GetComponent<RectTransform>().sizeDelta = new Vector2(_scroll.GetComponent<RectTransform>().rect.width, 740);
-                    _tournamentButton.onClick.AddListener(() =>
-                    {
-                        _confirmation.SetActive(true);
-                    });
-                }
-            }
+                Debug.Log("Opening confirmation popup for tournament payment.");
+                _confirmation.SetActive(true);
+            });
         }
     }
+
+
 
     public void JoinTournament()
     {
@@ -80,7 +83,10 @@ public class RulesAndAgreement : MonoBehaviour
         var countCoins = FindObjectOfType<CountCoins>();
         countCoins.RemoveCoins();
 
-        await Task.Delay(2000);
+        await Task.Delay(1000);
+        await CurrencyManager.instance.AddOrRemoveSenet(-25);
+        _hasPaid = true;
+        Debug.Log(_hasPaid);
 
         _confirmation.SetActive(false);
         _rulesAndAgreement.SetActive(false);

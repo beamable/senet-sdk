@@ -15,11 +15,11 @@ public class SenetMenuManager : MonoBehaviour
     {
         var settings = Resources.Load<SenetSettings>("SenetSettings");
         _gameplaySceneName = settings.gameplaySceneName;
-
         _beamContext = BeamContext.Default;
         await _beamContext.OnReady;
         await _beamContext.Accounts.OnReady;
         _tournamentServiceClient = new TournamentServiceClient();
+
     }
 
     public void RegularGame()
