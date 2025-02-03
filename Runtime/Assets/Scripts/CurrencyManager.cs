@@ -1,6 +1,7 @@
 using Beamable;
 using Beamable.Common;
 using Beamable.Common.Api.Inventory;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class CurrencyManager : MonoBehaviour
@@ -27,8 +28,10 @@ public class CurrencyManager : MonoBehaviour
     {
         _beamContext = BeamContext.Default;
         await _beamContext.OnReady;
-        await _beamContext.Accounts.OnReady;
+    }
 
+    public void Refresh()
+    {
         _beamContext.Api.InventoryService.Subscribe("currency", inventoryView =>
         {
             if (inventoryView.currencies.ContainsKey(senetToken))

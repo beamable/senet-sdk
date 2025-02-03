@@ -1,6 +1,9 @@
 using Assets.Senet.Scripts.Extensions;
 using Beamable;
+using Beamable.Api;
+using Beamable.Api.Leaderboard;
 using Beamable.Common.Api.Events;
+using Beamable.Common.Api.Leaderboards;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,6 +32,26 @@ public static class BeamableExtensions
         return currentGameEvents;
     }
 
+    public static async Task<LeaderBoardView> GetLeaderboard(this LeaderboardService leaderboardService, string eventId)
+    {
+        var view = new LeaderBoardView();
+        var leaderboardId = $"event_{eventId}.1";
+
+        try
+        {
+            view = await leaderboardService.GetBoard(leaderboardId, 1, 500);
+        }
+        catch (PlatformRequesterException e)
+        {
+            if (e.Message.Contains(leaderboardId))
+            {
+                view = await leaderboardService.GetBoard($"event_{eventId}", 1, 500);
+            }
+        }
+
+        return view;
+    }
+
     public static async Task<List<PlayerModel>> GetTournamentPlayers(this EventsGetResponse eventsGetResponse)
     {
         var running = eventsGetResponse.GetSenetGameTournament(EventStatusType.Running);
@@ -40,37 +63,33 @@ public static class BeamableExtensions
         if (running.Count > 0)
         {
             var eventView = running[0];
-            var leaderboardId = eventView.leaderboardId;
 
-            if (leaderboardId != "")
+            var view = await beamContext.Api.LeaderboardService.GetLeaderboard(eventView.id);
+
+            var rankings = view.rankings;
+
+            foreach (var (rankEntry, index) in rankings.WithIndex())
             {
-                var view = await beamContext.Api.LeaderboardService.GetBoard(leaderboardId, 1, 500);
+                long userId = rankEntry.gt;
+                var stats =
+                        await beamContext.Api.StatsService.GetStats("client", "public", "player", userId);
 
-                var rankings = view.rankings;
+                stats.TryGetValue("alias", out string alias);
 
-                foreach (var (rankEntry, index) in rankings.WithIndex())
+                if (string.IsNullOrEmpty(alias))
                 {
-                    long userId = rankEntry.gt;
-                    var stats =
-                            await beamContext.Api.StatsService.GetStats("client", "public", "player", userId);
-
-                    stats.TryGetValue("alias", out string alias);
-
-                    if (string.IsNullOrEmpty(alias))
-                    {
-                        alias = $"Player {index + 1}";
-                    }
-
-                    var player = new PlayerModel
-                    {
-                        id = userId,
-                        name = alias,
-                        rank = rankEntry.rank,
-                        score = rankEntry.score,
-                    };
-
-                    players.Add(player);
+                    alias = $"Player {index + 1}";
                 }
+
+                var player = new PlayerModel
+                {
+                    id = userId,
+                    name = alias,
+                    rank = rankEntry.rank,
+                    score = rankEntry.score,
+                };
+
+                players.Add(player);
             }
         }
 

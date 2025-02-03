@@ -53,10 +53,12 @@ public class TournamentManager : MonoBehaviour
 
     async void Start()
     {
-
         _beamContext = BeamContext.Default;
         await _beamContext.OnReady;
+    }
 
+    public void Refresh()
+    {
         _beamContext.Api.EventsService.Subscribe(eventsGetResponse =>
         {
             var done = eventsGetResponse.GetSenetGameTournament(EventStatusType.Done);
@@ -174,20 +176,18 @@ public class TournamentManager : MonoBehaviour
             hasPaid = hasPaid
         };
 
-        var leaderboardId = eventView.leaderboardId;
+        var view = await _beamContext.Api.LeaderboardService.GetLeaderboard(eventView.id);
 
-        if (leaderboardId != "")
+        var rankings = view.rankings;
+        runningTournamentData.playerCount = rankings.Count;
+
+        await _beamContext.Accounts.OnReady;
+        var account = _beamContext.Accounts.Current;
+
+        var myRank = rankings.Where(i => i.gt == account.GamerTag).FirstOrDefault();
+
+        if (myRank != null)
         {
-            var view = await _beamContext.Api.LeaderboardService.GetBoard(leaderboardId, 1, 500);
-
-            var rankings = view.rankings;
-            runningTournamentData.playerCount = rankings.Count;
-
-            await _beamContext.Accounts.OnReady;
-            var account = _beamContext.Accounts.Current;
-
-            var myRank = rankings.Where(i => i.gt == account.GamerTag).FirstOrDefault();
-
             runningTournamentData.rank = myRank.rank;
         }
 
