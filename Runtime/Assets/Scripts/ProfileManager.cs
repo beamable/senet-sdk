@@ -249,8 +249,6 @@ namespace Assets.Scripts
             finally
             {
                 loadingPanel.SetActive(false);
-                DisplayErrorMessage("Failed to upload the profile picture. Please try again.");
-
             }
         }
         
