@@ -22,36 +22,40 @@ public class ActivityList : MonoBehaviour
         var account = beamContext.Accounts.Current;
         Debug.Log($"Gamertag {account.GamerTag}");
         var paidTournamentList = await _tournamentServiceClient.GetUserActivities();
-        Debug.Log(paidTournamentList.Count);
+        Debug.Log($"Total Tournaments: {paidTournamentList.Count}");
 
         foreach (var item in paidTournamentList)
         {
             if (item.rank > 0)
             {
-                var tournamentName = activityPrefab.transform.GetChild(2).GetComponent<Text>();
+                GameObject newActivity = Instantiate(activityPrefab, verticalLayout.transform);
+
+                var tournamentName = newActivity.transform.GetChild(2).GetComponent<Text>();
                 tournamentName.text = item.tournamentName;
 
-                activityPrefab.transform.GetChild(3).GetComponent<Text>().text = $"You paid {item.paymentAmount}";
+                newActivity.transform.GetChild(3).GetComponent<Text>().text = $"You paid {item.paymentAmount}";
 
                 var rank = item.rank;
                 var hasWon = rank == 1;
 
-                var youWonContainer = activityPrefab.transform.GetChild(4);
-                var betterLuckContainer = activityPrefab.transform.GetChild(5);
+                var youWonContainer = newActivity.transform.GetChild(4).gameObject;
+                var betterLuckContainer = newActivity.transform.GetChild(5).gameObject;
+
+                youWonContainer.SetActive(false);
+                betterLuckContainer.SetActive(false);
 
                 if (hasWon)
                 {
-                    youWonContainer.gameObject.SetActive(true);
-                    var winAmount = youWonContainer.transform.GetChild(1);
-
-                    var winAmountText = $"{item.wonAmount}";
-                    winAmount.transform.GetComponent<Text>().text = winAmountText;
+                    youWonContainer.SetActive(true);
+                    var winAmount = youWonContainer.transform.GetChild(1).GetComponent<Text>();
+                    winAmount.text = $"{item.wonAmount}";
                 }
-                else betterLuckContainer.gameObject.SetActive(true);
+                else
+                {
+                    betterLuckContainer.SetActive(true);
+                }
 
-                Debug.Log($"{item.tournamentName} {item.rank} {item.wonAmount} {item.paymentAmount}");
-
-                Instantiate(activityPrefab, verticalLayout.transform);
+                Debug.Log($"Tournament: {item.tournamentName}, Rank: {item.rank}, Won: {item.wonAmount}, Paid: {item.paymentAmount}");
             }
         }
     }
