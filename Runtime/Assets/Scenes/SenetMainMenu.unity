@@ -4696,7 +4696,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.527, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1233.0002, y: 0}
+  m_AnchoredPosition: {x: 1233.0001, y: 0}
   m_SizeDelta: {x: -0.8899994, y: -0.8899994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &687691591
@@ -5354,7 +5354,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.897}
   m_AnchorMax: {x: 0.5, y: 0.897}
-  m_AnchoredPosition: {x: 0, y: 125.294586}
+  m_AnchoredPosition: {x: 0, y: 125.29458}
   m_SizeDelta: {x: 118, y: 118}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &832075106
@@ -5587,9 +5587,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 640524456}
-        m_TargetAssemblyTypeName: RankAfterGame, Beamable.SenetSDK
-        m_MethodName: JoinTournament
+      - m_Target: {fileID: 5553461223530265762}
+        m_TargetAssemblyTypeName: SenetMenuManager, Beamable.SenetSDK
+        m_MethodName: StartTournament
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6533,7 +6533,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 88.15
+  m_fontSize: 80.55
   m_fontSizeBase: 86.93
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -11382,7 +11382,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0.11842267, y: 1}
-  m_AnchoredPosition: {x: 233.69255, y: -143.143}
+  m_AnchoredPosition: {x: 233.69254, y: -143.143}
   m_SizeDelta: {x: 421.60687, y: 106.265}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2142742769

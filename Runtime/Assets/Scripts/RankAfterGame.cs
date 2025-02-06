@@ -17,7 +17,6 @@ public class RankAfterGame : MonoBehaviour
     private TMP_Text _rank;
     [SerializeField]
     private VerticalLayoutGroup _verticalLayoutGroup;
-    private SenetMenuManager _senetMenuManager;
 
 
     async void Start()
@@ -30,7 +29,6 @@ public class RankAfterGame : MonoBehaviour
                 await beamContext.OnReady;
                 await beamContext.Accounts.OnReady;
                 var account = beamContext.Accounts.Current;
-                _senetMenuManager = gameObject.GetComponent<SenetMenuManager>();
 
                 var eventsGetResponse = await beamContext.Api.EventsService.GetCurrent();
                 var players = await eventsGetResponse.GetTournamentPlayers();
@@ -150,11 +148,6 @@ public class RankAfterGame : MonoBehaviour
     {
         TournamentManager.instance.isPlacementBoardOpen = false;
         _rankAfterGamePanel.SetActive(false);
-    }
-    
-    public void JoinTournament()
-    {
-        _senetMenuManager.StartTournament();
     }
 
     private static string ToOrdinal(long number)
