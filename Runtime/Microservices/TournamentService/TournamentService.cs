@@ -21,7 +21,7 @@ namespace Beamable.Microservices
         {
             try
             {
-                await Services.Events.SetScore(eventId, score);
+                await Services.Events.SetScore(eventId, score, true);
             }
             catch (Exception e)
             {

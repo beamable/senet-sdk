@@ -28,9 +28,11 @@ public class CurrencyManager : MonoBehaviour
     {
         _beamContext = BeamContext.Default;
         await _beamContext.OnReady;
+
+        SubsribeToInventory();
     }
 
-    public void Refresh()
+    public void SubsribeToInventory()
     {
         _beamContext.Api.InventoryService.Subscribe("currency", inventoryView =>
         {

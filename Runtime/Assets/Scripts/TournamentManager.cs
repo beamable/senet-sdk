@@ -4,7 +4,6 @@ using Beamable.Common.Api.Events;
 using Beamable.Server.Clients;
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Linq;
 #if UNITY_ANDROID
 using Unity.Notifications.Android;
@@ -55,14 +54,18 @@ public class TournamentManager : MonoBehaviour
     {
         _beamContext = BeamContext.Default;
         await _beamContext.OnReady;
+
+        SubscribeToEvents();
     }
 
-    public void Refresh()
+    public void SubscribeToEvents()
     {
         _beamContext.Api.EventsService.Subscribe(eventsGetResponse =>
         {
             var done = eventsGetResponse.GetSenetGameTournament(EventStatusType.Done);
             var running = eventsGetResponse.GetSenetGameTournament(EventStatusType.Running);
+
+            Debug.Log($"Done Count {done.Count}");
 
             if (done.Count > 0)
             {
@@ -187,6 +190,9 @@ public class TournamentManager : MonoBehaviour
         {
             runningTournamentData.rank = myRank.rank;
         }
+
+        OnDoneTournamentChanged?.Invoke(null);
+        doneTournament = null;
 
         OnRunningTournamentChanged?.Invoke(runningTournamentData);
         runningTournament = runningTournamentData;
