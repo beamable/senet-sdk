@@ -1306,7 +1306,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0.11842267, y: 1}
-  m_AnchoredPosition: {x: 294.575, y: -143.143}
+  m_AnchoredPosition: {x: 294.57504, y: -143.143}
   m_SizeDelta: {x: 543.373, y: 106.265}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &135474522
@@ -4444,6 +4444,7 @@ GameObject:
   m_Component:
   - component: {fileID: 640524454}
   - component: {fileID: 640524456}
+  - component: {fileID: 640524457}
   m_Layer: 5
   m_Name: RankAfterGameManager
   m_TagString: Untagged
@@ -4489,6 +4490,18 @@ MonoBehaviour:
   _playerPrefab: {fileID: 2826554994314681639, guid: b6a07e4af0d427040b4d7af5509e743a, type: 3}
   _rank: {fileID: 312800422}
   _verticalLayoutGroup: {fileID: 539377607}
+--- !u!114 &640524457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640524453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b540f281855cbf24f97e4e8c4a7c0169, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &662142019
 GameObject:
   m_ObjectHideFlags: 0
@@ -4672,7 +4685,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.527, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1233.0002, y: 0}
+  m_AnchoredPosition: {x: 1233.0005, y: 0}
   m_SizeDelta: {x: -0.8899994, y: -0.8899994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &687691591
@@ -5330,7 +5343,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.897}
   m_AnchorMax: {x: 0.5, y: 0.897}
-  m_AnchoredPosition: {x: 0, y: 125.294586}
+  m_AnchoredPosition: {x: 0, y: 125.29458}
   m_SizeDelta: {x: 118, y: 118}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &832075106
@@ -5563,9 +5576,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ToggleVisibility, Assembly-CSharp
-        m_MethodName: SetActive
+      - m_Target: {fileID: 5553461223530265762}
+        m_TargetAssemblyTypeName: SenetMenuManager, Beamable.SenetSDK
+        m_MethodName: StartTournament
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6509,7 +6522,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 88.15
+  m_fontSize: 90
   m_fontSizeBase: 86.93
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6986,7 +6999,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0.11842267, y: 1}
-  m_AnchoredPosition: {x: 192.03412, y: -66.49991}
+  m_AnchoredPosition: {x: 192.03403, y: -66.49991}
   m_SizeDelta: {x: 338.29, y: 106.265}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1120658427
@@ -7581,7 +7594,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -124.64496, y: 11.0789795}
+  m_AnchoredPosition: {x: -124.645, y: 11.0789795}
   m_SizeDelta: {x: -20.396, y: 341.663}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1359454284
@@ -10644,7 +10657,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0.11842267, y: 1}
-  m_AnchoredPosition: {x: 233.69232, y: -143.143}
+  m_AnchoredPosition: {x: 233.69235, y: -143.143}
   m_SizeDelta: {x: 421.60687, y: 106.265}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2142742769
@@ -11675,7 +11688,6 @@ GameObject:
   - component: {fileID: 5553461223530265756}
   - component: {fileID: 5553461223530265762}
   - component: {fileID: 5553461223530265764}
-  - component: {fileID: 5553461223530265765}
   m_Layer: 5
   m_Name: Main menu
   m_TagString: Untagged
@@ -11708,18 +11720,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameObject: {fileID: 662142019}
---- !u!114 &5553461223530265765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5553461223530265759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc1a8267ffa44d44d82e7f0d1859f1a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &5553461224395319904
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12568,6 +12568,10 @@ PrefabInstance:
     - target: {fileID: 7317562246441918097, guid: af3794377777d5d408f2b769f80a766d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 5553461223530265762}
+    - target: {fileID: 7317562246441918097, guid: af3794377777d5d408f2b769f80a766d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RegularGame
       objectReference: {fileID: 0}
     - target: {fileID: 7317562247106304333, guid: af3794377777d5d408f2b769f80a766d, type: 3}
       propertyPath: m_AnchoredPosition.y

@@ -29,6 +29,9 @@ public class LogoutManager : MonoBehaviour
         
         await Task.Delay(2000);
 
+        Destroy(TournamentManager.instance);
+        Destroy(CurrencyManager.instance);
+
         _logoutSuccessfulPopup.SetActive(true);
         _loadingPopup.SetActive(false);
 
