@@ -17,8 +17,7 @@ public class RankAfterGame : MonoBehaviour
     private TMP_Text _rank;
     [SerializeField]
     private VerticalLayoutGroup _verticalLayoutGroup;
-
-
+    
     async void Start()
     {
         if (TournamentManager.instance)
