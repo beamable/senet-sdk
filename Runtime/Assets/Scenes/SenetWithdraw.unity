@@ -1095,7 +1095,8 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 97.01294
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3829142048565892282, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
 --- !u!224 &378333216 stripped
 RectTransform:
@@ -7712,7 +7713,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 2130285949}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
