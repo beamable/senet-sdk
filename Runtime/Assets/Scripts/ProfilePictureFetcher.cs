@@ -16,7 +16,8 @@ namespace Assets.Scripts
 
         [Header("UI Text References")]
         [SerializeField] private TextMeshProUGUI usernameText;
-        [SerializeField] private Text userEmail;
+        [SerializeField] private TextMeshProUGUI gid;
+        [SerializeField] private TextMeshProUGUI userEmail;
 
         private BeamContext _beamContext;
         private PlayerAccount _playerAccount;
@@ -54,6 +55,11 @@ namespace Assets.Scripts
                 if (userEmail != null)
                 {
                     userEmail.text = _playerAccount.Email;
+                }
+
+                if (gid != null)
+                {
+                    gid.text = $"GID: {_playerAccount.GamerTag.ToString()}";
                 }
 
                 await FetchAndDisplayProfilePicture();
