@@ -65,8 +65,6 @@ public class TournamentManager : MonoBehaviour
             var done = eventsGetResponse.GetSenetGameTournament(EventStatusType.Done);
             var running = eventsGetResponse.GetSenetGameTournament(EventStatusType.Running);
 
-            Debug.Log($"Done Count {done.Count}");
-
             if (done.Count > 0)
             {
                 var lastDoneEvent = done[^1];

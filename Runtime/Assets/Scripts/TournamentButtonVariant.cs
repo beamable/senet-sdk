@@ -7,11 +7,8 @@ public class TournamentButtonVariant : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("TournamentButtonVariant initialized.");
-
         if (TournamentManager.instance)
         {
-            Debug.Log("TournamentManager instance found.");
             HandleButtonVariant(TournamentManager.instance.runningTournament);
             TournamentManager.instance.OnRunningTournamentChanged += HandleButtonVariant;
         }
@@ -35,12 +32,10 @@ public class TournamentButtonVariant : MonoBehaviour
         if (runningTournament != null)
         {
             _noTournamentAvailable.SetActive(false);
-            Debug.Log("Tournament found. Hiding no tournament available message.");
         }
         else
         {
             _noTournamentAvailable.SetActive(true);
-            Debug.Log("No running tournament. Showing no tournament available message.");
         }
     }
 }
