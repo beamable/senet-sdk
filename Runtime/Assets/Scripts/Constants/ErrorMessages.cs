@@ -12,5 +12,6 @@ namespace Assets.Scripts.Constants
         public const string UnableToLogin = "Unable to login. Please try again.";
         public const string AccountSwitchError = "Recovered account is null. Cannot switch accounts.";
         public const string FailedToRecoverAccount = "Failed to recover account. Please check your email and password.";
+        public const string FieldsMustBeFilled = "All fields must be filled.";
     }
 }
