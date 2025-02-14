@@ -99,7 +99,7 @@ namespace Beamable.Examples.Services.LeaderboardService
 
                 if (lastPlayerRank <= 10)
                 {
-                    for (var i = lastPlayerRank < 4 ? 4 : lastPlayerRank + 1; i <= 10; i++)
+                    for (var i = lastPlayerRank < 4 ? 4 : lastPlayerRank + 1; i <= 7; i++)
                     {
                         var rank = _playerPrefab.transform.GetChild(1).GetComponent<Text>();
                         var icon = _playerPrefab.transform.GetChild(2).GetComponent<Image>();

@@ -172,6 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _senetAmount: {fileID: 1560037074583032154}
+  isRemainingAfterPayment: 0
 --- !u!1 &4956404651474112364
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,7 +239,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3f351c5cc579baa4797750571651ae51, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 995147bd079b5414a93b3b9bbd608616, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

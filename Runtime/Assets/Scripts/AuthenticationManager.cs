@@ -68,15 +68,25 @@ public class AuthenticationManager : MonoBehaviour
 
     private async void LoginUser()
     {
-        if (emailInputField.text == "" || emailInputField.text == "Anonymous" || signInButton == null) return;
+        if (string.IsNullOrWhiteSpace(emailInputField.text) || string.IsNullOrWhiteSpace(passwordInputField.text))
+        {
+            DisplayErrorMessage(ErrorMessages.FieldsMustBeFilled);
+            return;
+        }
+        
         signInButton.interactable = false;
         await Login();
     }
 
     private async void SignUpUser()
     {
-        if (emailInputField.text == "" || usernameInputField.text == "" || passwordInputField.text == "" ||
-            signUpButton == null) return;
+        if (string.IsNullOrWhiteSpace(emailInputField.text) || string.IsNullOrWhiteSpace(usernameInputField.text) || 
+            string.IsNullOrWhiteSpace(passwordInputField.text) || string.IsNullOrWhiteSpace(confirmPasswordInputField.text))
+        {
+            DisplayErrorMessage(ErrorMessages.FieldsMustBeFilled);
+            return;
+        }
+        
         signUpButton.interactable = false;
         await SignUp();
     }
@@ -229,14 +239,9 @@ public class AuthenticationManager : MonoBehaviour
     private void TogglePassword(bool isConfirm)
     {
         var inputField = isConfirm ? confirmPasswordInputField : passwordInputField;
-        if (inputField.contentType == InputField.ContentType.Password)
-        {
-            inputField.contentType = InputField.ContentType.Standard;
-        }
-        else
-        {
-            inputField.contentType = InputField.ContentType.Password;
-        }
+        inputField.contentType = inputField.contentType == InputField.ContentType.Password
+            ? InputField.ContentType.Standard
+            : InputField.ContentType.Password;
 
         inputField.ForceLabelUpdate();
     }

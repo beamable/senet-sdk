@@ -154,12 +154,13 @@ public class WheelReward : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState)
     {
-        if (adUnitId.Equals(_adUnitId) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
-        {
-            _spinButton.interactable = false;
-            Rotate();
-        }
+        if (!adUnitId.Equals(_adUnitId) || !showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED)) return;
+        _spinButton.interactable = false;
+        Rotate();
+        
+        Advertisement.Load(_adUnitId, this);
     }
+
 
     public void OnUnityAdsFailedToLoad(string adUnitId, UnityAdsLoadError error, string message)
     {
