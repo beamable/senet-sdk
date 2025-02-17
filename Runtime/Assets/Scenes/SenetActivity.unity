@@ -2934,6 +2934,10 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 3829142048565892280, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3829142048565892283, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 97.01294
@@ -2941,6 +2945,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3829142048565892282, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
     - {fileID: 3829142048266063918, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
+    - {fileID: 3829142048565892293, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
 --- !u!224 &621917813 stripped
 RectTransform:

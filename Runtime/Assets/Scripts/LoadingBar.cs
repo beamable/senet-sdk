@@ -64,8 +64,6 @@ public class LoadingBar : MonoBehaviour
 
         var account = beamContext.Accounts.Current;
 
-        Debug.Log($"Player Email: {account.Email},\n Player GamerTag: {account.GamerTag}");
-
         if (account != null && !string.IsNullOrEmpty(account.Email))
         {
             return "SenetMainMenu";
