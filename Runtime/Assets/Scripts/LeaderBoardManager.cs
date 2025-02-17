@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace Beamable.Examples.Services.LeaderboardService
@@ -11,7 +13,6 @@ namespace Beamable.Examples.Services.LeaderboardService
         private GameObject _board;
         [SerializeField]
         private GameObject _emptyBoard;
-
         [SerializeField]
         private VerticalLayoutGroup _verticalLayoutGroup;
         [SerializeField]
@@ -24,6 +25,11 @@ namespace Beamable.Examples.Services.LeaderboardService
         private GameObject _thirdPlacePlayer;
         [SerializeField]
         private GameObject _playerPrefab;
+
+        private static readonly Color NoOpacity = new Color32(255, 255, 255, 255);
+        private static readonly Color TextColor = new Color32(157, 149, 172, 255);
+        private static readonly Color TextColorWithOpacity = new Color32(157, 149, 172, 60);
+        private static readonly Color GrayedOut = new Color32(200, 200, 200, 255);
 
         async void Start()
         {
@@ -39,92 +45,143 @@ namespace Beamable.Examples.Services.LeaderboardService
             });
         }
 
-        void UpdateLeaderboard(List<PlayerModel> players, long currentPlayerId)
+        private void UpdateLeaderboard(List<PlayerModel> players, long currentPlayerId)
         {
-            Color noOpacity = new Color32(255, 255, 255, 255);
-            Color opacity = new Color32(255, 255, 255, 60);
+            _board.SetActive(players.Count > 0);
+            _emptyBoard.SetActive(players.Count == 0);
 
-            Color textColor = new Color32(157, 149, 172, 255);
-            Color textColorWithOpacity = new Color32(157, 149, 172, 60);
+            ClearPreviousEntries();
 
-            if (players.Count > 0)
+            foreach (var player in players)
             {
-                _board.SetActive(true);
-                _emptyBoard.SetActive(false);
+                var place = GetPlayerSlot(player.rank);
+                AssignPlayerData(place, player);
 
-                foreach (var player in players)
-                {
-                    if (player.rank > 0 && player.rank < 4)
-                    {
-
-                        var place = player.rank == 1 ? _firstPlacePlayer : player.rank == 2 ? _secondPlacePlayer : _thirdPlacePlayer;
-                        var icon = place.GetComponent<Image>();
-
-                        var info = place.transform.GetChild(1).GetComponent<TMP_Text>();
-
-                        icon.color = noOpacity;
-
-                        info.text = $"{player.name}<br>{player.score}";
-                    }
-
-                    if (player.rank > 3)
-                    {
-                        var rank = _playerPrefab.transform.GetChild(1).GetComponent<Text>();
-                        var icon = _playerPrefab.transform.GetChild(2).GetComponent<Image>();
-                        var name = _playerPrefab.transform.GetChild(3).GetComponent<Text>();
-                        var score = _playerPrefab.transform.GetChild(4).GetComponent<Text>();
-
-                        icon.color = noOpacity;
-
-                        rank.text = $"{player.rank}";
-                        name.text = player.name;
-                        score.text = $"{player.score}";
-
-                        rank.color = textColor;
-                        name.color = textColor;
-                        score.color = textColor;
-
-                        Instantiate(_playerPrefab, _verticalLayoutGroup.transform);
-                    }
-
-                    if (player.id == currentPlayerId)
-                    {
-                        _currentPlayer.SetActive(true);
-                        _currentPlayer.transform.GetChild(0).GetComponent<Text>().text = player.rank.ToString();
-                        _currentPlayer.transform.GetChild(3).GetComponent<Text>().text = player.score.ToString();
-                    }
-                }
-
-                var lastPlayerRank = players[^1].rank;
-
-                if (lastPlayerRank <= 10)
-                {
-                    for (var i = lastPlayerRank < 4 ? 4 : lastPlayerRank + 1; i <= 7; i++)
-                    {
-                        var rank = _playerPrefab.transform.GetChild(1).GetComponent<Text>();
-                        var icon = _playerPrefab.transform.GetChild(2).GetComponent<Image>();
-                        var name = _playerPrefab.transform.GetChild(3).GetComponent<Text>();
-                        var score = _playerPrefab.transform.GetChild(4).GetComponent<Text>();
-
-                        rank.text = $"{i}";
-                        icon.color = opacity;
-                        score.text = "";
-                        name.text = "Waiting for players...";
-
-                        rank.color = textColorWithOpacity;
-                        name.color = textColorWithOpacity;
-                        score.color = textColorWithOpacity;
-
-                        Instantiate(_playerPrefab, _verticalLayoutGroup.transform);
-                    }
-                }
+                if (player.id != currentPlayerId) continue;
+                _currentPlayer.SetActive(true);
+                AssignPlayerData(_currentPlayer, player, true);
             }
-            else
+
+            CreatePlaceholders(players.Count > 0 ? (int)players[^1].rank : 0);
+        }
+
+        private void ClearPreviousEntries()
+        {
+            foreach (Transform child in _verticalLayoutGroup.transform)
             {
-                _board.SetActive(false);
-                _emptyBoard.SetActive(true);
+                Destroy(child.gameObject);
             }
         }
 
+        private GameObject GetPlayerSlot(long rank)
+        {
+            return rank switch
+            {
+                1 => _firstPlacePlayer,
+                2 => _secondPlacePlayer,
+                3 => _thirdPlacePlayer,
+                _ => Instantiate(_playerPrefab, _verticalLayoutGroup.transform)
+            };
+        }
+
+        private void AssignPlayerData(GameObject playerObject, PlayerModel player, bool ignoreColorsAndName = false)
+        {
+            if (playerObject == null) return;
+
+            playerObject.transform.Find("Rank").GetComponent<TMP_Text>().text = player.rank.ToString();
+            playerObject.transform.Find("Score").GetComponent<TMP_Text>().text = player.score.ToString();
+            if (!ignoreColorsAndName)
+            {
+                var nameText = playerObject.transform.Find("Name")?.GetComponent<TMP_Text>();
+                if (nameText != null) nameText.text = player.name;
+
+        
+                var isPlaceholder = player.name == "Waiting for players...";
+                var textColor = isPlaceholder ? TextColorWithOpacity : TextColor; 
+
+                SetTextColor(playerObject, textColor);
+            }
+
+            SetProfileImage(playerObject, player.id);
+        }
+
+
+
+        private static void SetTextColor(GameObject playerObject, Color color)
+        {
+            playerObject.transform.Find("Rank").GetComponent<TMP_Text>().color = color;
+            playerObject.transform.Find("Name").GetComponent<TMP_Text>().color = color;
+            playerObject.transform.Find("Score").GetComponent<TMP_Text>().color = color;
+        }
+
+        private static async void SetProfileImage(GameObject playerObject, long playerId)
+        {
+            var profileImageTransform = playerObject.transform.Find("Logo/Image/Profile Mask/Profile");
+            if (profileImageTransform == null) return;
+
+            var profileImage = profileImageTransform.GetComponent<Image>();
+            playerObject.transform.Find("Logo/Picture Border").GetComponent<Image>().color = NoOpacity;
+            
+            var profileUrl = await FetchProfilePictureUrl(playerId);
+            if (!string.IsNullOrEmpty(profileUrl))
+            {
+                await LoadImageFromUrl(profileUrl, profileImage);
+            }
+        }
+
+        private void CreatePlaceholders(int lastRank)
+        {
+            for (var i = (lastRank < 4 ? 4 : lastRank + 1); i <= 7; i++)
+            {
+                var placeholder = Instantiate(_playerPrefab, _verticalLayoutGroup.transform);
+                if (placeholder == null) continue;
+
+                AssignPlaceholderData(placeholder, i);
+            }
+        }
+
+        private static void AssignPlaceholderData(GameObject placeholder, int rank)
+        {
+            placeholder.transform.Find("Rank").GetComponent<TMP_Text>().text = rank.ToString();
+            placeholder.transform.Find("Name").GetComponent<TMP_Text>().text = "Waiting for players...";
+            placeholder.transform.Find("Score").GetComponent<TMP_Text>().text = "";
+            
+            var icon = placeholder.transform.Find("Logo/Image/Profile Mask/Profile")?.GetComponent<Image>();
+            if (icon != null) icon.color = GrayedOut;
+
+            SetTextColor(placeholder, TextColorWithOpacity);
+        }
+
+        private static async Task<string> FetchProfilePictureUrl(long playerId)
+        {
+            try
+            {
+                var beamContext = await BeamContext.Default.Instance;
+                var stats = await beamContext.Api.StatsService.GetStats("client", "public", "player", playerId);
+                return stats.GetValueOrDefault("profile_url", "");
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        private static async Task LoadImageFromUrl(string url, Image image)
+        {
+            using var webRequest = UnityWebRequestTexture.GetTexture(url);
+            var operation = webRequest.SendWebRequest();
+            while (!operation.isDone)
+                await Task.Yield();
+
+            if (webRequest.result == UnityWebRequest.Result.Success)
+            {
+                var texture = DownloadHandlerTexture.GetContent(webRequest);
+                if (texture != null)
+                {
+                    var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                    image.sprite = sprite;
+                }
+            }
+        }
     }
 }
