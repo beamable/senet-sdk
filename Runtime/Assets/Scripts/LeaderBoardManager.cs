@@ -2,29 +2,20 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace Beamable.Examples.Services.LeaderboardService
 {
     public class LeaderBoardManager : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject _board;
-        [SerializeField]
-        private GameObject _emptyBoard;
-        [SerializeField]
-        private VerticalLayoutGroup _verticalLayoutGroup;
-        [SerializeField]
-        private GameObject _currentPlayer;
-        [SerializeField]
-        private GameObject _firstPlacePlayer;
-        [SerializeField]
-        private GameObject _secondPlacePlayer;
-        [SerializeField]
-        private GameObject _thirdPlacePlayer;
-        [SerializeField]
-        private GameObject _playerPrefab;
+        [SerializeField] private GameObject _board;
+        [SerializeField] private GameObject _emptyBoard;
+        [SerializeField] private VerticalLayoutGroup _verticalLayoutGroup;
+        [SerializeField] private GameObject _currentPlayer;
+        [SerializeField] private GameObject _firstPlacePlayer;
+        [SerializeField] private GameObject _secondPlacePlayer;
+        [SerializeField] private GameObject _thirdPlacePlayer;
+        [SerializeField] private GameObject _playerPrefab;
 
         private static readonly Color NoOpacity = new Color32(255, 255, 255, 255);
         private static readonly Color TextColor = new Color32(157, 149, 172, 255);
@@ -90,22 +81,19 @@ namespace Beamable.Examples.Services.LeaderboardService
 
             playerObject.transform.Find("Rank").GetComponent<TMP_Text>().text = player.rank.ToString();
             playerObject.transform.Find("Score").GetComponent<TMP_Text>().text = player.score.ToString();
+
             if (!ignoreColorsAndName)
             {
                 var nameText = playerObject.transform.Find("Name")?.GetComponent<TMP_Text>();
                 if (nameText != null) nameText.text = player.name;
 
-        
                 var isPlaceholder = player.name == "Waiting for players...";
-                var textColor = isPlaceholder ? TextColorWithOpacity : TextColor; 
-
+                var textColor = isPlaceholder ? TextColorWithOpacity : TextColor;
                 SetTextColor(playerObject, textColor);
             }
 
             SetProfileImage(playerObject, player.id);
         }
-
-
 
         private static void SetTextColor(GameObject playerObject, Color color)
         {
@@ -121,11 +109,11 @@ namespace Beamable.Examples.Services.LeaderboardService
 
             var profileImage = profileImageTransform.GetComponent<Image>();
             playerObject.transform.Find("Logo/Picture Border").GetComponent<Image>().color = NoOpacity;
-            
-            var profileUrl = await FetchProfilePictureUrl(playerId);
+
+            var profileUrl = await ProfilePictureUtility.FetchProfilePictureUrl(playerId);
             if (!string.IsNullOrEmpty(profileUrl))
             {
-                await LoadImageFromUrl(profileUrl, profileImage);
+                await ProfilePictureUtility.LoadImageFromUrl(profileUrl, profileImage);
             }
         }
 
@@ -145,43 +133,11 @@ namespace Beamable.Examples.Services.LeaderboardService
             placeholder.transform.Find("Rank").GetComponent<TMP_Text>().text = rank.ToString();
             placeholder.transform.Find("Name").GetComponent<TMP_Text>().text = "Waiting for players...";
             placeholder.transform.Find("Score").GetComponent<TMP_Text>().text = "";
-            
+
             var icon = placeholder.transform.Find("Logo/Profile Mask/Profile")?.GetComponent<Image>();
             if (icon != null) icon.color = GrayedOut;
 
             SetTextColor(placeholder, TextColorWithOpacity);
-        }
-
-        private static async Task<string> FetchProfilePictureUrl(long playerId)
-        {
-            try
-            {
-                var beamContext = await BeamContext.Default.Instance;
-                var stats = await beamContext.Api.StatsService.GetStats("client", "public", "player", playerId);
-                return stats.GetValueOrDefault("profile_url", "");
-            }
-            catch
-            {
-                return "";
-            }
-        }
-
-        private static async Task LoadImageFromUrl(string url, Image image)
-        {
-            using var webRequest = UnityWebRequestTexture.GetTexture(url);
-            var operation = webRequest.SendWebRequest();
-            while (!operation.isDone)
-                await Task.Yield();
-
-            if (webRequest.result == UnityWebRequest.Result.Success)
-            {
-                var texture = DownloadHandlerTexture.GetContent(webRequest);
-                if (texture != null)
-                {
-                    var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-                    image.sprite = sprite;
-                }
-            }
         }
     }
 }
