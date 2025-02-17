@@ -116,7 +116,7 @@ namespace Beamable.Examples.Services.LeaderboardService
 
         private static async void SetProfileImage(GameObject playerObject, long playerId)
         {
-            var profileImageTransform = playerObject.transform.Find("Logo/Image/Profile Mask/Profile");
+            var profileImageTransform = playerObject.transform.Find("Logo/Profile Mask/Profile");
             if (profileImageTransform == null) return;
 
             var profileImage = profileImageTransform.GetComponent<Image>();
@@ -146,7 +146,7 @@ namespace Beamable.Examples.Services.LeaderboardService
             placeholder.transform.Find("Name").GetComponent<TMP_Text>().text = "Waiting for players...";
             placeholder.transform.Find("Score").GetComponent<TMP_Text>().text = "";
             
-            var icon = placeholder.transform.Find("Logo/Image/Profile Mask/Profile")?.GetComponent<Image>();
+            var icon = placeholder.transform.Find("Logo/Profile Mask/Profile")?.GetComponent<Image>();
             if (icon != null) icon.color = GrayedOut;
 
             SetTextColor(placeholder, TextColorWithOpacity);
