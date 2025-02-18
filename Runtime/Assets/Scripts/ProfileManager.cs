@@ -28,6 +28,7 @@ namespace Assets.Scripts
         [Header("Profile Picture")]
         [SerializeField] private Button uploadButton;
         [SerializeField] private ProfilePictureFetcher profilePictureFetcher;
+        [SerializeField] private Image profilePicture;
         private string _localImagePath;
 
         [Header("Edit Alias")]
@@ -239,7 +240,8 @@ namespace Assets.Scripts
                 var statsDictionary = new Dictionary<string, string> { { "profile_url", hostedUrl } };
                 await _beamContext.Api.StatsService.SetStats("public", statsDictionary);
 
-                await profilePictureFetcher.LoadImageFromUrl(hostedUrl); 
+                await ProfilePictureUtility.LoadImageFromUrl(hostedUrl, profilePicture);
+ 
             }
             catch (Exception ex)
             {

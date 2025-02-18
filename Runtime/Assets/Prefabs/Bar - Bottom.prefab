@@ -1028,7 +1028,6 @@ GameObject:
   - component: {fileID: 3829142047722250021}
   - component: {fileID: 3829142047722250022}
   - component: {fileID: 3829142047722250023}
-  - component: {fileID: 3829142047722250020}
   m_Layer: 5
   m_Name: NavIcon Glow
   m_TagString: Untagged
@@ -1094,28 +1093,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3829142047722250020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3829142047722250010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ed911e8922bb7b408a8465e024d4eb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _strength: 1
-  _renderSpace: 0
-  _downSample: 0
-  _blur: 53.2
-  _sourceAlpha: 0
-  _angle: 180
-  _distance: 0
-  _hardness: 1
-  _color: {r: 1, g: 1, b: 1, a: 0.45490196}
-  _mode: 2
 --- !u!1 &3829142047729581763
 GameObject:
   m_ObjectHideFlags: 0
@@ -3059,7 +3036,6 @@ GameObject:
   - component: {fileID: 3829142048468800714}
   - component: {fileID: 3829142048468800727}
   - component: {fileID: 3829142048468800724}
-  - component: {fileID: 3829142048468800725}
   m_Layer: 5
   m_Name: NavIcon Glow
   m_TagString: Untagged
@@ -3125,28 +3101,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3829142048468800725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3829142048468800715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ed911e8922bb7b408a8465e024d4eb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _strength: 1
-  _renderSpace: 0
-  _downSample: 0
-  _blur: 53.2
-  _sourceAlpha: 0
-  _angle: 180
-  _distance: 0
-  _hardness: 1
-  _color: {r: 1, g: 1, b: 1, a: 0.45490196}
-  _mode: 2
 --- !u!1 &3829142048503321606
 GameObject:
   m_ObjectHideFlags: 0
@@ -3407,7 +3361,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3829142048565892283}
   - component: {fileID: 3829142048565892292}
-  - component: {fileID: 3829142048565892282}
   m_Layer: 5
   m_Name: Bar - Shadow
   m_TagString: Untagged
@@ -3443,28 +3396,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3829142048565892280}
   m_CullTransparentMesh: 1
---- !u!114 &3829142048565892282
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3829142048565892280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ed911e8922bb7b408a8465e024d4eb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _strength: 1
-  _renderSpace: 1
-  _downSample: 0
-  _blur: 30
-  _sourceAlpha: 0
-  _angle: 0
-  _distance: 4
-  _hardness: 1
-  _color: {r: 0.37019408, g: 0.23064259, b: 0.6886792, a: 0.29803923}
-  _mode: 0
 --- !u!1 &3829142048760940559
 GameObject:
   m_ObjectHideFlags: 0
@@ -3514,7 +3445,6 @@ GameObject:
   - component: {fileID: 3829142049010339514}
   - component: {fileID: 3829142049010339527}
   - component: {fileID: 3829142049010339524}
-  - component: {fileID: 3829142049010339525}
   m_Layer: 5
   m_Name: NavIcon Glow
   m_TagString: Untagged
@@ -3580,28 +3510,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3829142049010339525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3829142049010339515}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ed911e8922bb7b408a8465e024d4eb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _strength: 1
-  _renderSpace: 0
-  _downSample: 0
-  _blur: 53.2
-  _sourceAlpha: 0
-  _angle: 180
-  _distance: 0
-  _hardness: 1
-  _color: {r: 1, g: 1, b: 1, a: 0.45490196}
-  _mode: 2
 --- !u!1 &3829142049036213968
 GameObject:
   m_ObjectHideFlags: 0
@@ -3613,7 +3521,6 @@ GameObject:
   - component: {fileID: 3829142049036213971}
   - component: {fileID: 3829142049036213980}
   - component: {fileID: 3829142049036213981}
-  - component: {fileID: 3829142049036213970}
   m_Layer: 5
   m_Name: NavIcon Glow
   m_TagString: Untagged
@@ -3679,28 +3586,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3829142049036213970
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3829142049036213968}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ed911e8922bb7b408a8465e024d4eb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _strength: 1
-  _renderSpace: 0
-  _downSample: 0
-  _blur: 53.2
-  _sourceAlpha: 0
-  _angle: 180
-  _distance: 0
-  _hardness: 1
-  _color: {r: 1, g: 1, b: 1, a: 0.45490196}
-  _mode: 2
 --- !u!1 &3829142049241498520
 GameObject:
   m_ObjectHideFlags: 0
@@ -3847,7 +3732,6 @@ GameObject:
   - component: {fileID: 3829142049283305211}
   - component: {fileID: 3829142049283305220}
   - component: {fileID: 3829142049283305221}
-  - component: {fileID: 3829142049283305210}
   m_Layer: 5
   m_Name: NavIcon Glow
   m_TagString: Untagged
@@ -3913,25 +3797,3 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3829142049283305210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3829142049283305208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ed911e8922bb7b408a8465e024d4eb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _strength: 1
-  _renderSpace: 0
-  _downSample: 0
-  _blur: 53.2
-  _sourceAlpha: 0
-  _angle: 180
-  _distance: 0
-  _hardness: 1
-  _color: {r: 1, g: 1, b: 1, a: 0.45490196}
-  _mode: 2

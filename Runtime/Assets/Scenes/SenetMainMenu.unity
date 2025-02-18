@@ -4698,7 +4698,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.527, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1233.0004, y: 0}
+  m_AnchoredPosition: {x: 1233.0002, y: 0}
   m_SizeDelta: {x: -0.8899994, y: -0.8899994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &687691591
@@ -6535,7 +6535,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80.95
+  m_fontSize: 88.25
   m_fontSizeBase: 86.93
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7012,7 +7012,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0.11842267, y: 1}
-  m_AnchoredPosition: {x: 192.03401, y: -66.49991}
+  m_AnchoredPosition: {x: 192.03403, y: -66.49991}
   m_SizeDelta: {x: 338.29, y: 106.265}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1120658427
@@ -7607,7 +7607,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -124.64499, y: 11.0789795}
+  m_AnchoredPosition: {x: -124.64498, y: 11.0789795}
   m_SizeDelta: {x: -20.396, y: 341.663}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1359454284
@@ -11600,6 +11600,11 @@ PrefabInstance:
     - {fileID: 3829142048565892282, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
     - {fileID: 3829142047740167304, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
     - {fileID: 3829142048565892293, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
+    - {fileID: 3829142048468800725, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
+    - {fileID: 3829142047722250020, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
+    - {fileID: 3829142049036213970, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
+    - {fileID: 3829142049283305210, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
+    - {fileID: 3829142049010339525, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
 --- !u!114 &5553461223249785096
 MonoBehaviour:
