@@ -61,7 +61,7 @@ public static class ProfilePictureUtility
         }
     }
 
-    public static void AdjustImageToFill(Sprite sprite, Image targetImage)
+    private static void AdjustImageToFill(Sprite sprite, Image targetImage)
     {
         if (sprite == null || targetImage == null) return;
 
@@ -76,5 +76,17 @@ public static class ProfilePictureUtility
             : new Vector2(parentSize.width, parentSize.width / imageRatio);
     }
     
+    public static void SetIconToFillParent(Image icon, Image defaultProfilePicture)
+    {
+        if (icon == null) return;
     
+        icon.sprite = defaultProfilePicture.sprite;
+    
+        var iconTransform = icon.GetComponent<RectTransform>();
+        iconTransform.anchorMin = Vector2.zero;   
+        iconTransform.anchorMax = Vector2.one;    
+        iconTransform.offsetMin = Vector2.zero;   
+        iconTransform.offsetMax = Vector2.zero;
+        icon.color = new Color32(200, 200, 200, 255);
+    }
 }

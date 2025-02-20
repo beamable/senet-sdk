@@ -23,7 +23,6 @@ public class TournamentButtonVariant : MonoBehaviour
         if (TournamentManager.instance)
         {
             TournamentManager.instance.OnRunningTournamentChanged -= HandleButtonVariant;
-            Debug.Log("Removed HandleButtonVariant listener.");
         }
     }
 

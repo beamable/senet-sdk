@@ -16,6 +16,7 @@ namespace Beamable.Examples.Services.LeaderboardService
         [SerializeField] private GameObject _secondPlacePlayer;
         [SerializeField] private GameObject _thirdPlacePlayer;
         [SerializeField] private GameObject _playerPrefab;
+        [SerializeField] private Image _defaultProfilePicture;
 
         private static readonly Color NoOpacity = new Color32(255, 255, 255, 255);
         private static readonly Color TextColor = new Color32(157, 149, 172, 255);
@@ -75,7 +76,7 @@ namespace Beamable.Examples.Services.LeaderboardService
             };
         }
 
-        private void AssignPlayerData(GameObject playerObject, PlayerModel player, bool ignoreColorsAndName = false)
+        private async void AssignPlayerData(GameObject playerObject, PlayerModel player, bool ignoreColorsAndName = false)
         {
             if (playerObject == null) return;
 
@@ -92,7 +93,7 @@ namespace Beamable.Examples.Services.LeaderboardService
                 SetTextColor(playerObject, textColor);
             }
 
-            SetProfileImage(playerObject, player.id);
+            await SetProfileImage(playerObject, player.id);
         }
 
         private static void SetTextColor(GameObject playerObject, Color color)
@@ -102,7 +103,7 @@ namespace Beamable.Examples.Services.LeaderboardService
             playerObject.transform.Find("Score").GetComponent<TMP_Text>().color = color;
         }
 
-        private static async void SetProfileImage(GameObject playerObject, long playerId)
+        private async Task SetProfileImage(GameObject playerObject, long playerId)
         {
             var profileImageTransform = playerObject.transform.Find("Logo/Profile Mask/Profile");
             if (profileImageTransform == null) return;
@@ -114,6 +115,10 @@ namespace Beamable.Examples.Services.LeaderboardService
             if (!string.IsNullOrEmpty(profileUrl))
             {
                 await ProfilePictureUtility.LoadImageFromUrl(profileUrl, profileImage);
+            }
+            else
+            {
+                ProfilePictureUtility.SetIconToFillParent(profileImage, _defaultProfilePicture);
             }
         }
 
@@ -128,14 +133,14 @@ namespace Beamable.Examples.Services.LeaderboardService
             }
         }
 
-        private static void AssignPlaceholderData(GameObject placeholder, int rank)
+        private void AssignPlaceholderData(GameObject placeholder, int rank)
         {
             placeholder.transform.Find("Rank").GetComponent<TMP_Text>().text = rank.ToString();
             placeholder.transform.Find("Name").GetComponent<TMP_Text>().text = "Waiting for players...";
             placeholder.transform.Find("Score").GetComponent<TMP_Text>().text = "";
 
             var icon = placeholder.transform.Find("Logo/Profile Mask/Profile")?.GetComponent<Image>();
-            if (icon != null) icon.color = GrayedOut;
+            if (icon != null) ProfilePictureUtility.SetIconToFillParent(icon, _defaultProfilePicture);
 
             SetTextColor(placeholder, TextColorWithOpacity);
         }
