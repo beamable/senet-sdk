@@ -16,6 +16,8 @@ public class TournamentButton : MonoBehaviour
     private GameObject _entryCost;
     [SerializeField]
     private TextMeshProUGUI _rankNumber;
+    [SerializeField]
+    private TextMeshProUGUI _prizePool;
 
     void Start()
     {
@@ -36,11 +38,13 @@ public class TournamentButton : MonoBehaviour
     {
         if (runningTournament == null) return;
         var hasUserPaidForTournament = runningTournament.hasPaid;
+        var firstPlaceReward = TournamentManager.instance.GetRunningFirstPlaceReward(); 
+        
+        _prizePool.text = $"{firstPlaceReward}"; 
 
         if (hasUserPaidForTournament)
         {
             var rank = runningTournament.rank;
-
             _playNow.SetActive(true);
             _entryCost.SetActive(false);
             _rankNumber.text = rank > 0 ? $"Your Rank: {ToOrdinal(rank)}" : "";

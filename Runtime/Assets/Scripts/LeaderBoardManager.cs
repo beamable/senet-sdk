@@ -17,7 +17,8 @@ namespace Beamable.Examples.Services.LeaderboardService
         [SerializeField] private GameObject _thirdPlacePlayer;
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private Image _defaultProfilePicture;
-
+        [SerializeField] private TextMeshProUGUI _prizePool;
+        
         private static readonly Color NoOpacity = new Color32(255, 255, 255, 255);
         private static readonly Color TextColor = new Color32(157, 149, 172, 255);
         private static readonly Color TextColorWithOpacity = new Color32(157, 149, 172, 60);
@@ -35,6 +36,10 @@ namespace Beamable.Examples.Services.LeaderboardService
                 var players = await eventsGetResponse.GetTournamentPlayers();
                 UpdateLeaderboard(players, account.GamerTag);
             });
+            
+            var firstPlaceReward = TournamentManager.instance.GetRunningFirstPlaceReward(); 
+        
+            _prizePool.text = $"{firstPlaceReward}"; 
         }
 
         private void UpdateLeaderboard(List<PlayerModel> players, long currentPlayerId)
