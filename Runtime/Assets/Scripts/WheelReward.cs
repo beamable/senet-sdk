@@ -44,7 +44,6 @@ public class WheelReward : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     public void LoadAd()
     {
-        Debug.Log("Loading Ad: " + _adUnitId);
         Advertisement.Load(_adUnitId, this);
     }
 

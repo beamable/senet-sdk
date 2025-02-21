@@ -1,6 +1,7 @@
 using Beamable;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +18,8 @@ public class RankAfterGame : MonoBehaviour
     private TMP_Text _rank;
     [SerializeField]
     private VerticalLayoutGroup _verticalLayoutGroup;
+    [SerializeField]
+    private Image _defaultProfilePicture;
     
     async void Start()
     {
@@ -41,103 +44,40 @@ public class RankAfterGame : MonoBehaviour
         }
     }
 
-    private void ShowRankPanel(List<PlayerModel> players, long currentPlayerId)
+    private async void ShowRankPanel(List<PlayerModel> players, long currentPlayerId)
     {
         _rankAfterGamePanel.SetActive(true);
 
-        var currentPlayer = players.Where(i => i.id == currentPlayerId).FirstOrDefault();
+        var currentPlayer = players.FirstOrDefault(i => i.id == currentPlayerId);
 
-        _rank.text = ToOrdinal(currentPlayer.rank);
-
-        Color noOpacity = new Color32(255, 255, 255, 255);
-        Color opacity = new Color32(255, 255, 255, 60);
-
-        Color textColor = new Color32(157, 149, 172, 255);
-        Color textColorWithOpacity = new Color32(157, 149, 172, 60);
-
-        if (currentPlayer.rank == 1 || currentPlayer.rank > 3)
+        if (currentPlayer == null) return;
         {
-            _currentPlayer.transform.GetChild(0).GetComponent<Text>().text = currentPlayer.rank.ToString();
-            _currentPlayer.transform.GetChild(3).GetComponent<Text>().text = currentPlayer.score.ToString();
-            Instantiate(_currentPlayer, _verticalLayoutGroup.transform);
+            _rank.text = ToOrdinal(currentPlayer.rank);
 
-            for (long i = currentPlayer.rank + 1; i <= currentPlayer.rank + 2; i++)
+            if (currentPlayer.rank is 1 or > 3)
             {
-                var rank = _playerPrefab.transform.GetChild(1).GetComponent<Text>();
-                var icon = _playerPrefab.transform.GetChild(2).GetComponent<Image>();
-                var name = _playerPrefab.transform.GetChild(3).GetComponent<Text>();
-                var score = _playerPrefab.transform.GetChild(4).GetComponent<Text>();
+                await InstantiatePlayer(_currentPlayer, _verticalLayoutGroup.transform, currentPlayer);
 
-                var player = players.Where(p => p.rank == i).FirstOrDefault();
-                rank.text = $"{i}";
-
-                if (player != null)
+                for (var i = currentPlayer.rank + 1; i <= currentPlayer.rank + 2; i++)
                 {
-                    icon.color = noOpacity;
-                    score.text = player.score.ToString();
-                    name.text = player.name;
-
-                    rank.color = textColor;
-                    name.color = textColor;
-                    score.color = textColor;
+                    var player = players.FirstOrDefault(p => p.rank == i);
+                    await InstantiatePlayer(_playerPrefab, _verticalLayoutGroup.transform, player, i);
                 }
-                else
-                {
-                    icon.color = opacity;
-                    score.text = "";
-                    name.text = "Waiting for players...";
-
-                    rank.color = textColorWithOpacity;
-                    name.color = textColorWithOpacity;
-                    score.color = textColorWithOpacity;
-                }
-
-                Instantiate(_playerPrefab, _verticalLayoutGroup.transform);
             }
-        }
-        else
-        {
-            for (int i = 1; i <= 3; i++)
+            else
             {
-                var player = players.Where(p => p.rank == i).FirstOrDefault();
-
-                var rank = _playerPrefab.transform.GetChild(1).GetComponent<Text>();
-                var icon = _playerPrefab.transform.GetChild(2).GetComponent<Image>();
-                var name = _playerPrefab.transform.GetChild(3).GetComponent<Text>();
-                var score = _playerPrefab.transform.GetChild(4).GetComponent<Text>();
-
-                rank.text = $"{i}";
-
-                if (player != null)
+                for (var i = 1; i <= 3; i++)
                 {
-                    if (player.rank == currentPlayer.rank)
+                    var player = players.FirstOrDefault(p => p.rank == i);
+                    
+                    if (player?.rank == currentPlayer.rank)
                     {
-                        _currentPlayer.transform.GetChild(0).GetComponent<Text>().text = currentPlayer.rank.ToString();
-                        _currentPlayer.transform.GetChild(3).GetComponent<Text>().text = currentPlayer.score.ToString();
-                        Instantiate(_currentPlayer, _verticalLayoutGroup.transform);
+                        await InstantiatePlayer(_currentPlayer, _verticalLayoutGroup.transform, currentPlayer);
                     }
                     else
                     {
-                        icon.color = noOpacity;
-                        score.text = player.score.ToString();
-                        name.text = player.name;
-
-                        rank.color = textColor;
-                        name.color = textColor;
-                        score.color = textColor;
-                        Instantiate(_playerPrefab, _verticalLayoutGroup.transform);
+                        await InstantiatePlayer(_playerPrefab, _verticalLayoutGroup.transform, player);
                     }
-                }
-                else
-                {
-                    icon.color = opacity;
-                    score.text = "";
-                    name.text = "Waiting for players...";
-
-                    rank.color = textColorWithOpacity;
-                    name.color = textColorWithOpacity;
-                    score.color = textColorWithOpacity;
-                    Instantiate(_playerPrefab, _verticalLayoutGroup.transform);
                 }
             }
         }
@@ -154,10 +94,10 @@ public class RankAfterGame : MonoBehaviour
         if (number <= 0) return number.ToString();
 
         string suffix;
-        long lastDigit = number % 10;
-        long lastTwoDigits = number % 100;
+        var lastDigit = number % 10;
+        var lastTwoDigits = number % 100;
 
-        if (lastTwoDigits == 11 || lastTwoDigits == 12 || lastTwoDigits == 13)
+        if (lastTwoDigits is 11 or 12 or 13)
         {
             suffix = "th";
         }
@@ -173,5 +113,65 @@ public class RankAfterGame : MonoBehaviour
         }
 
         return $"{number}{suffix}";
+    }
+    
+    private async Task SetPlayerDetails(GameObject playerObj, PlayerModel player)
+    {
+        var rank = playerObj.transform.Find("Rank")?.GetComponent<TMP_Text>();
+        var name = playerObj.transform.Find("Name")?.GetComponent<TMP_Text>();
+        var score = playerObj.transform.Find("Score")?.GetComponent<TMP_Text>();
+        var icon = playerObj.transform.Find("Logo/Profile Mask/Profile")?.GetComponent<Image>();
+
+        if (rank != null) rank.text = player.rank.ToString();
+        if (name != null) name.text = player.name;
+        if (score != null) score.text = player.score.ToString();
+
+        await LoadProfilePicture(player.id, icon);
+    }
+
+
+    private async Task LoadProfilePicture(long playerId, Image imageComponent)
+    {
+        var url = await ProfilePictureUtility.FetchProfilePictureUrl(playerId);
+        if (!string.IsNullOrEmpty(url))
+        {
+            await ProfilePictureUtility.LoadImageFromUrl(url, imageComponent);
+        }
+        else
+        {
+            ProfilePictureUtility.SetIconToFillParent(imageComponent, _defaultProfilePicture);
+        }
+    }
+
+    private async Task InstantiatePlayer(GameObject prefab, Transform parent, PlayerModel player, long rankNumber = 0)
+    {
+        var playerInstance = Instantiate(prefab, parent);
+        if (player != null)
+        {
+            await SetPlayerDetails(playerInstance, player);
+        }
+        else
+        {
+            SetPlaceholderDetails(playerInstance, rankNumber);
+        }
+    }
+
+    private void SetPlaceholderDetails(GameObject playerObj, long rankNumber)
+    {
+        var rank = playerObj.transform.Find("Rank").GetComponent<TMP_Text>();
+        var name = playerObj.transform.Find("Name").GetComponent<TMP_Text>();
+        var score = playerObj.transform.Find("Score").GetComponent<TMP_Text>();
+        var icon = playerObj.transform.Find("Logo/Profile Mask/Profile")?.GetComponent<Image>();
+
+        rank.text = $"{rankNumber}";
+        ProfilePictureUtility.SetIconToFillParent(icon, _defaultProfilePicture);
+        icon.color = new Color32(200, 200, 200, 255);
+
+        rank.color = new Color32(157, 149, 172, 60);
+        name.color = new Color32(157, 149, 172, 60);
+        score.color = new Color32(157, 149, 172, 60);
+
+        name.text = "Waiting for players...";
+        score.text = "";
     }
 }
