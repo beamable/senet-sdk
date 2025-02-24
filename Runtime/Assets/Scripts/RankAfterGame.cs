@@ -23,24 +23,24 @@ public class RankAfterGame : MonoBehaviour
     
     async void Start()
     {
-        if (TournamentManager.instance)
+        if (!TournamentManager.instance) return;
+        await Task.Delay(500);
+
+        if (TournamentManager.instance.isPlacementBoardOpen)
         {
-            if (TournamentManager.instance.isPlacementBoardOpen)
-            {
-                var beamContext = BeamContext.Default;
-                await beamContext.OnReady;
-                await beamContext.Accounts.OnReady;
-                var account = beamContext.Accounts.Current;
+            var beamContext = BeamContext.Default;
+            await beamContext.OnReady;
+            await beamContext.Accounts.OnReady;
+            var account = beamContext.Accounts.Current;
 
-                var eventsGetResponse = await beamContext.Api.EventsService.GetCurrent();
-                var players = await eventsGetResponse.GetTournamentPlayers();
+            var eventsGetResponse = await beamContext.Api.EventsService.GetCurrent();
+            var players = await eventsGetResponse.GetTournamentPlayers();
 
-                ShowRankPanel(players, account.GamerTag);
-            }
-            else
-            {
-                _rankAfterGamePanel.SetActive(false);
-            }
+            ShowRankPanel(players, account.GamerTag);
+        }
+        else
+        {
+            _rankAfterGamePanel.SetActive(false);
         }
     }
 

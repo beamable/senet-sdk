@@ -152,16 +152,33 @@ public class TournamentManager : MonoBehaviour
             }
         }
     }
-
     public async Promise SetScoreInEvents(int totalScore)
     {
-        var eventId = runningTournament.eventId;
-        await _beamContext.Microservices().TournamentService().SetScore(eventId, totalScore);
-        _beamContext.Api.EventsService.Subscribable.ForceRefresh();
-        isTournament = false;
+        if (runningTournament == null)
+        {
+            return;
+        }
 
-        if (totalScore > 0) isPlacementBoardOpen = true;
+        var eventId = runningTournament.eventId;
+
+        try
+        {
+            await _beamContext.Microservices().TournamentService().SetScore(eventId, totalScore);
+
+            _beamContext.Api.EventsService.Subscribable.ForceRefresh();
+            isTournament = false;
+
+            if (totalScore > 0)
+            {
+                isPlacementBoardOpen = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"[SetScoreInEvents] Error setting score: {ex.Message}");
+        }
     }
+
 
     private async void SetRunningTournament(EventView eventView)
     {
