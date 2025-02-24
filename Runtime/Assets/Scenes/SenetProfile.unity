@@ -9208,7 +9208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8715968616443595457, guid: 9f4eaaa4b6c229647ba0c0908cd6abf4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -202.604
+      value: -202.60402
       objectReference: {fileID: 0}
     - target: {fileID: 8715968616443595457, guid: 9f4eaaa4b6c229647ba0c0908cd6abf4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11584,6 +11584,7 @@ MonoBehaviour:
   emailText: {fileID: 1786495202}
   uploadButton: {fileID: 1309470602}
   profilePictureFetcher: {fileID: 7457137967034023265}
+  profilePicture: {fileID: 679340330}
   aliasInputField: {fileID: 601614351}
   editAliasButton: {fileID: 589277651}
   closeButton: {fileID: 2099917197}

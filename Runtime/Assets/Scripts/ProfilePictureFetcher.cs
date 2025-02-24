@@ -100,70 +100,18 @@ namespace Assets.Scripts
             try
             {
                 var playerId = BeamContext.Default.PlayerId;
-                const string access = "public";
-                const string domain = "client";
-                const string type = "player";
+                var profileUrl = await ProfilePictureUtility.FetchProfilePictureUrl(playerId);
 
-                var stats = await _beamContext.Api.StatsService.GetStats(domain, access, type, playerId);
-
-                if (stats.TryGetValue("profile_url", out var profileUrl))
+                if (!string.IsNullOrEmpty(profileUrl))
                 {
-                    await LoadImageFromUrl(profileUrl);
+                    await ProfilePictureUtility.LoadImageFromUrl(profileUrl, profileImage);
+
                 }
             }
             catch (Exception ex)
             {
                 Debug.LogError($"Error fetching profile picture: {ex.Message}");
             }
-        }
-
-        public async Task LoadImageFromUrl(string url)
-        {
-            try
-            {
-                using var webRequest = UnityWebRequestTexture.GetTexture(url);
-                var operation = webRequest.SendWebRequest();
-
-                while (!operation.isDone)
-                    await Task.Yield();
-
-                if (webRequest.result == UnityWebRequest.Result.Success)
-                {
-                    var texture = DownloadHandlerTexture.GetContent(webRequest);
-                    if (texture != null)
-                    {
-                        var sprite = Sprite.Create(
-                            texture,
-                            new Rect(0, 0, texture.width, texture.height),
-                            new Vector2(0.5f, 0.5f)
-                        );
-
-                        profileImage.sprite = sprite;
-                        AdjustImageToFill(sprite);
-                    }
-                }
-                else
-                {
-                    Debug.LogError($"Failed to load image from URL: {url}, Error: {webRequest.error}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"Error loading image from URL: {ex.Message}");
-            }
-        }
-
-        private void AdjustImageToFill(Sprite sprite)
-        {
-            if (sprite == null || profileImage == null) return;
-
-            var rectTransform = profileImage.rectTransform;
-            var imageRatio = (float)sprite.texture.width / sprite.texture.height;
-            var parentSize = rectTransform.parent.GetComponent<RectTransform>().rect;
-
-            var parentRatio = parentSize.width / parentSize.height;
-
-            rectTransform.sizeDelta = imageRatio > parentRatio ? new Vector2(parentSize.height * imageRatio, parentSize.height) : new Vector2(parentSize.width, parentSize.width / imageRatio);
         }
     }
 }
