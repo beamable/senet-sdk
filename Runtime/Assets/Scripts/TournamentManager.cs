@@ -59,31 +59,14 @@ public class TournamentManager : MonoBehaviour
         SubscribeToEvents();
     }
 
-    public void SubscribeToEvents()
+    private void SubscribeToEvents()
     {
         _beamContext.Api.EventsService.Subscribe(eventsGetResponse =>
         {
             var done = eventsGetResponse.GetSenetGameTournament(EventStatusType.Done);
             var running = eventsGetResponse.GetSenetGameTournament(EventStatusType.Running);
-
-            if (done.Count > 0)
-            {
-                var lastDoneEvent = done[^1];
-                var lastEventEarned = lastDoneEvent.rankRewards.Find(i => i.earned);
-
-                if (lastEventEarned != null && !lastEventEarned.claimed)
-                {
-                    var doneTournamentData = new DoneTournament
-                    {
-                        rank = lastDoneEvent.rank,
-                        rewardAmount = lastDoneEvent.rankRewards.Find(i => i.earned).currencies[0].amount
-                    };
-
-                    OnDoneTournamentChanged?.Invoke(doneTournamentData);
-                    doneTournament = doneTournamentData;
-                }
-            }
-            else if (running.Count > 0)
+    
+            if (running.Count > 0)
             {
                 var eventView = running[0];
                 SetRunningTournament(eventView);
@@ -92,8 +75,25 @@ public class TournamentManager : MonoBehaviour
             {
                 ResetTournamentData();
             }
+
+            if (done.Count <= 0) return;
+            var lastDoneEvent = done[^1];
+            var lastEventEarned = lastDoneEvent.rankRewards.Find(i => i.earned);
+    
+            if (lastEventEarned == null || lastEventEarned.claimed) return;
+    
+            var doneTournamentData = new DoneTournament
+            {
+                rank = lastDoneEvent.rank,
+                rewardAmount = lastEventEarned.currencies[0].amount
+            };
+    
+            OnDoneTournamentChanged?.Invoke(doneTournamentData);
+            doneTournament = doneTournamentData;
         });
     }
+
+
 
     void OnApplicationPause(bool isGamePause)
     {
@@ -165,8 +165,8 @@ public class TournamentManager : MonoBehaviour
 
     private async void SetRunningTournament(EventView eventView)
     {
-        var _tournamentServiceClient = new TournamentServiceClient();
-        var hasPaid = await _tournamentServiceClient.HasUserPaidForTournament(eventView.id);
+        var tournamentServiceClient = new TournamentServiceClient();
+        var hasPaid = await tournamentServiceClient.HasUserPaidForTournament(eventView.id);
 
         var runningTournamentData = new RunningTournament
         {
