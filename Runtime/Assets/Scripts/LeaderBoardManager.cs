@@ -18,11 +18,6 @@ namespace Beamable.Examples.Services.LeaderboardService
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private Image _defaultProfilePicture;
         [SerializeField] private TextMeshProUGUI _prizePool;
-        
-        private static readonly Color NoOpacity = new Color32(255, 255, 255, 255);
-        private static readonly Color TextColor = new Color32(157, 149, 172, 255);
-        private static readonly Color TextColorWithOpacity = new Color32(157, 149, 172, 60);
-        private static readonly Color GrayedOut = new Color32(200, 200, 200, 255);
 
         async void Start()
         {
@@ -94,7 +89,7 @@ namespace Beamable.Examples.Services.LeaderboardService
                 if (nameText != null) nameText.text = player.name;
 
                 var isPlaceholder = player.name == "Waiting for players...";
-                var textColor = isPlaceholder ? TextColorWithOpacity : TextColor;
+                var textColor = isPlaceholder ? UIColors.TextColorWithOpacity : UIColors.TextColor;
                 SetTextColor(playerObject, textColor);
             }
 
@@ -114,7 +109,7 @@ namespace Beamable.Examples.Services.LeaderboardService
             if (profileImageTransform == null) return;
 
             var profileImage = profileImageTransform.GetComponent<Image>();
-            playerObject.transform.Find("Logo/Picture Border").GetComponent<Image>().color = NoOpacity;
+            playerObject.transform.Find("Logo/Picture Border").GetComponent<Image>().color = UIColors.NoOpacity;
 
             var profileUrl = await ProfilePictureUtility.FetchProfilePictureUrl(playerId);
             if (!string.IsNullOrEmpty(profileUrl))
@@ -147,7 +142,7 @@ namespace Beamable.Examples.Services.LeaderboardService
             var icon = placeholder.transform.Find("Logo/Profile Mask/Profile")?.GetComponent<Image>();
             if (icon != null) ProfilePictureUtility.SetIconToFillParent(icon, _defaultProfilePicture);
 
-            SetTextColor(placeholder, TextColorWithOpacity);
+            SetTextColor(placeholder, UIColors.TextColorWithOpacity);
         }
     }
 }

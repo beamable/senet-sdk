@@ -87,6 +87,6 @@ public static class ProfilePictureUtility
         iconTransform.anchorMax = Vector2.one;    
         iconTransform.offsetMin = Vector2.zero;   
         iconTransform.offsetMax = Vector2.zero;
-        icon.color = new Color32(200, 200, 200, 255);
+        icon.color = UIColors.GrayedOut;
     }
 }

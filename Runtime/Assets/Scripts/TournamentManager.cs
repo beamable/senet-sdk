@@ -182,7 +182,7 @@ public class TournamentManager : MonoBehaviour
 
     private async void SetRunningTournament(EventView eventView)
     {
-        var tournamentServiceClient = new TournamentServiceClient();
+        var tournamentServiceClient = _beamContext.Microservices().TournamentService();
         var hasPaid = await tournamentServiceClient.HasUserPaidForTournament(eventView.id);
 
         var runningTournamentData = new RunningTournament
