@@ -42,10 +42,10 @@ namespace Beamable.Examples.Services.LeaderboardService
 
         private string ExtractTournamentType(string tournamentId)
         {
-            if (string.IsNullOrEmpty(tournamentId)) return "No tournament";
+            if (string.IsNullOrEmpty(tournamentId)) return "No Active";
 
             var parts = tournamentId.Split('.');
-            return parts.Length > 2 ? parts[2] : "No tournament";
+            return parts.Length > 2 ? parts[2] : "No Active";
         }
 
         private void UpdateLeaderboard(List<PlayerModel> players, long currentPlayerId)
