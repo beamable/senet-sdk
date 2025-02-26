@@ -28,11 +28,12 @@ public class CurrencyManager : MonoBehaviour
     {
         _beamContext = BeamContext.Default;
         await _beamContext.OnReady;
-
-        SubsribeToInventory();
+        
+        await FetchBalance();
+        SubscribeToInventory();
     }
 
-    public void SubsribeToInventory()
+    private void SubscribeToInventory()
     {
         _beamContext.Api.InventoryService.Subscribe("currency", inventoryView =>
         {
@@ -50,6 +51,16 @@ public class CurrencyManager : MonoBehaviour
         inventoryUpdateBuilder.CurrencyChange(senetToken, amount);
 
         await _beamContext.Inventory.Update(inventoryUpdateBuilder);
-        return;
+
+        await FetchBalance();
+    }
+    
+    private async Task FetchBalance()
+    {
+        var inventoryView = await _beamContext.Api.InventoryService.GetCurrent();
+        if (inventoryView.currencies.ContainsKey(senetToken))
+        {
+            senet = inventoryView.currencies[senetToken];
+        }
     }
 }
