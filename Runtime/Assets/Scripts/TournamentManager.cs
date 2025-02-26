@@ -122,36 +122,61 @@ public class TournamentManager : MonoBehaviour
 
     public async Promise ClaimRewardsInTournament()
     {
+        if (_beamContext == null)
+        {
+            Debug.LogError("BeamContext is null! Cannot claim rewards.");
+            return;
+        }
+
         var eventsGetResponse = await _beamContext.Api.EventsService.GetCurrent();
 
+        if (eventsGetResponse.done == null || eventsGetResponse.done.Count == 0)
+        {
+            Debug.LogWarning("No completed tournaments found.");
+            return;
+        }
+
         var lastEvent = eventsGetResponse.done[^1];
+
+        if (lastEvent.rankRewards == null || lastEvent.rankRewards.Count == 0)
+        {
+            Debug.LogWarning("No rank rewards found in last event.");
+            return;
+        }
+
         var userReward = lastEvent.rankRewards.Find(i => i.earned);
 
-        if (userReward != null && !userReward.claimed)
+        if (userReward == null || userReward.claimed || userReward.currencies == null || userReward.currencies.Count == 0)
         {
-            try
+            Debug.LogWarning("User has no unclaimed rewards.");
+            return;
+        }
+
+        try
+        {
+            var rewardAmount = userReward.currencies[0].amount;
+
+            await _beamContext.Microservices().TournamentService()
+                .ClaimTournamentRewards(lastEvent.id, lastEvent.name, rewardAmount, doneTournament?.rank ?? 0);
+
+            var newEventsGetResponse = await _beamContext.Api.EventsService.GetCurrent();
+
+            var running = newEventsGetResponse.GetSenetGameTournament(EventStatusType.Running);
+            if (running.Count > 0)
             {
-                var rewardAmount = userReward.currencies[0].amount;
-                await _beamContext.Microservices().TournamentService().ClaimTournamentRewards(lastEvent.id, lastEvent.name, rewardAmount, doneTournament.rank);
-
-                var newEventsGetResponse = await _beamContext.Api.EventsService.GetCurrent();
-
-                var running = newEventsGetResponse.GetSenetGameTournament(EventStatusType.Running);
-                if (running.Count > 0)
-                {
-                    SetRunningTournament(running[0]);
-                }
-                else
-                {
-                    ResetTournamentData();
-                }
+                SetRunningTournament(running[0]);
             }
-            catch (Exception ex)
+            else
             {
-                Debug.LogException(ex);
+                ResetTournamentData();
             }
         }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Error claiming rewards: {ex.Message}");
+        }
     }
+
     public async Promise SetScoreInEvents(int totalScore)
     {
         if (runningTournament == null)
