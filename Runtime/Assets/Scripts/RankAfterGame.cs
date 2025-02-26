@@ -23,24 +23,24 @@ public class RankAfterGame : MonoBehaviour
     
     async void Start()
     {
-        if (TournamentManager.instance)
+        if (!TournamentManager.instance) return;
+        await Task.Delay(500);
+
+        if (TournamentManager.instance.isPlacementBoardOpen)
         {
-            if (TournamentManager.instance.isPlacementBoardOpen)
-            {
-                var beamContext = BeamContext.Default;
-                await beamContext.OnReady;
-                await beamContext.Accounts.OnReady;
-                var account = beamContext.Accounts.Current;
+            var beamContext = BeamContext.Default;
+            await beamContext.OnReady;
+            await beamContext.Accounts.OnReady;
+            var account = beamContext.Accounts.Current;
 
-                var eventsGetResponse = await beamContext.Api.EventsService.GetCurrent();
-                var players = await eventsGetResponse.GetTournamentPlayers();
+            var eventsGetResponse = await beamContext.Api.EventsService.GetCurrent();
+            var players = await eventsGetResponse.GetTournamentPlayers();
 
-                ShowRankPanel(players, account.GamerTag);
-            }
-            else
-            {
-                _rankAfterGamePanel.SetActive(false);
-            }
+            ShowRankPanel(players, account.GamerTag);
+        }
+        else
+        {
+            _rankAfterGamePanel.SetActive(false);
         }
     }
 
@@ -128,8 +128,7 @@ public class RankAfterGame : MonoBehaviour
 
         await LoadProfilePicture(player.id, icon);
     }
-
-
+    
     private async Task LoadProfilePicture(long playerId, Image imageComponent)
     {
         var url = await ProfilePictureUtility.FetchProfilePictureUrl(playerId);
@@ -165,11 +164,11 @@ public class RankAfterGame : MonoBehaviour
 
         rank.text = $"{rankNumber}";
         ProfilePictureUtility.SetIconToFillParent(icon, _defaultProfilePicture);
-        icon.color = new Color32(200, 200, 200, 255);
+        icon.color = UIColors.GrayedOut;
 
-        rank.color = new Color32(157, 149, 172, 60);
-        name.color = new Color32(157, 149, 172, 60);
-        score.color = new Color32(157, 149, 172, 60);
+        rank.color = UIColors.TextColorWithOpacity;
+        name.color = UIColors.TextColorWithOpacity;
+        score.color = UIColors.TextColorWithOpacity;
 
         name.text = "Waiting for players...";
         score.text = "";

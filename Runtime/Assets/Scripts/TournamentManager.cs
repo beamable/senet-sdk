@@ -21,6 +21,7 @@ public class RunningTournament
     public string eventId;
     public bool hasPaid;
     public long playerCount;
+    public long firstPlaceReward; 
 }
 
 public class TournamentManager : MonoBehaviour
@@ -58,31 +59,14 @@ public class TournamentManager : MonoBehaviour
         SubscribeToEvents();
     }
 
-    public void SubscribeToEvents()
+    private void SubscribeToEvents()
     {
         _beamContext.Api.EventsService.Subscribe(eventsGetResponse =>
         {
             var done = eventsGetResponse.GetSenetGameTournament(EventStatusType.Done);
             var running = eventsGetResponse.GetSenetGameTournament(EventStatusType.Running);
-
-            if (done.Count > 0)
-            {
-                var lastDoneEvent = done[^1];
-                var lastEventEarned = lastDoneEvent.rankRewards.Find(i => i.earned);
-
-                if (lastEventEarned != null && !lastEventEarned.claimed)
-                {
-                    var doneTournamentData = new DoneTournament
-                    {
-                        rank = lastDoneEvent.rank,
-                        rewardAmount = lastDoneEvent.rankRewards.Find(i => i.earned).currencies[0].amount
-                    };
-
-                    OnDoneTournamentChanged?.Invoke(doneTournamentData);
-                    doneTournament = doneTournamentData;
-                }
-            }
-            else if (running.Count > 0)
+    
+            if (running.Count > 0)
             {
                 var eventView = running[0];
                 SetRunningTournament(eventView);
@@ -91,8 +75,25 @@ public class TournamentManager : MonoBehaviour
             {
                 ResetTournamentData();
             }
+
+            if (done.Count <= 0) return;
+            var lastDoneEvent = done[^1];
+            var lastEventEarned = lastDoneEvent.rankRewards.Find(i => i.earned);
+    
+            if (lastEventEarned == null || lastEventEarned.claimed) return;
+    
+            var doneTournamentData = new DoneTournament
+            {
+                rank = lastDoneEvent.rank,
+                rewardAmount = lastEventEarned.currencies[0].amount
+            };
+    
+            OnDoneTournamentChanged?.Invoke(doneTournamentData);
+            doneTournament = doneTournamentData;
         });
     }
+
+
 
     void OnApplicationPause(bool isGamePause)
     {
@@ -138,7 +139,6 @@ public class TournamentManager : MonoBehaviour
                 var running = newEventsGetResponse.GetSenetGameTournament(EventStatusType.Running);
                 if (running.Count > 0)
                 {
-                    Debug.Log($"After claim: {running[0].id}");
                     SetRunningTournament(running[0]);
                 }
                 else
@@ -152,21 +152,38 @@ public class TournamentManager : MonoBehaviour
             }
         }
     }
-
     public async Promise SetScoreInEvents(int totalScore)
     {
-        var eventId = runningTournament.eventId;
-        await _beamContext.Microservices().TournamentService().SetScore(eventId, totalScore);
-        _beamContext.Api.EventsService.Subscribable.ForceRefresh();
-        isTournament = false;
+        if (runningTournament == null)
+        {
+            return;
+        }
 
-        if (totalScore > 0) isPlacementBoardOpen = true;
+        var eventId = runningTournament.eventId;
+
+        try
+        {
+            await _beamContext.Microservices().TournamentService().SetScore(eventId, totalScore);
+
+            _beamContext.Api.EventsService.Subscribable.ForceRefresh();
+            isTournament = false;
+
+            if (totalScore > 0)
+            {
+                isPlacementBoardOpen = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"[SetScoreInEvents] Error setting score: {ex.Message}");
+        }
     }
+
 
     private async void SetRunningTournament(EventView eventView)
     {
-        var _tournamentServiceClient = new TournamentServiceClient();
-        var hasPaid = await _tournamentServiceClient.HasUserPaidForTournament(eventView.id);
+        var tournamentServiceClient = _beamContext.Microservices().TournamentService();
+        var hasPaid = await tournamentServiceClient.HasUserPaidForTournament(eventView.id);
 
         var runningTournamentData = new RunningTournament
         {
@@ -176,9 +193,12 @@ public class TournamentManager : MonoBehaviour
 
         var view = await _beamContext.Api.LeaderboardService.GetLeaderboard(eventView.id);
 
+        var firstPlaceReward = eventView.rankRewards.FirstOrDefault()?.currencies[0].amount ?? 0;
+        runningTournamentData.firstPlaceReward = firstPlaceReward;
+        
         var rankings = view.rankings;
         runningTournamentData.playerCount = rankings.Count;
-
+        
         await _beamContext.Accounts.OnReady;
         var account = _beamContext.Accounts.Current;
 
@@ -188,13 +208,13 @@ public class TournamentManager : MonoBehaviour
         {
             runningTournamentData.rank = myRank.rank;
         }
-
+        
         OnDoneTournamentChanged?.Invoke(null);
         doneTournament = null;
 
-        OnRunningTournamentChanged?.Invoke(runningTournamentData);
         runningTournament = runningTournamentData;
-
+        OnRunningTournamentChanged?.Invoke(runningTournamentData);
+        
         var localTimeZone = TimeZoneInfo.Local;
         var localTime = TimeZoneInfo.ConvertTimeFromUtc(eventView.GetEndDate(), localTimeZone);
 
@@ -221,5 +241,10 @@ public class TournamentManager : MonoBehaviour
 
         OnDoneTournamentChanged?.Invoke(null);
         OnRunningTournamentChanged?.Invoke(null);
+    }
+    
+    public long GetRunningFirstPlaceReward()
+    {
+        return runningTournament?.firstPlaceReward ?? 0;
     }
 }
