@@ -32,8 +32,11 @@ namespace Beamable.Examples.Services.LeaderboardService
                 var players = await eventsGetResponse.GetTournamentPlayers();
                 UpdateLeaderboard(players, account.GamerTag);
 
-                var tournamentType = ExtractTournamentType(eventsGetResponse.running[0].id);
-                _tournamentTitle.text = $"{tournamentType} Tournament";
+                string tournamentType = "No Active";
+                if (eventsGetResponse.running != null && eventsGetResponse.running.Count > 0)
+                {
+                    tournamentType = ExtractTournamentType(eventsGetResponse.running[0].id);
+                }                _tournamentTitle.text = $"{tournamentType} Tournament";
             });
 
             var firstPlaceReward = TournamentManager.instance.GetRunningFirstPlaceReward(); 
