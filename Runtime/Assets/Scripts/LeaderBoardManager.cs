@@ -18,6 +18,7 @@ namespace Beamable.Examples.Services.LeaderboardService
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private Image _defaultProfilePicture;
         [SerializeField] private TextMeshProUGUI _prizePool;
+        [SerializeField] private TextMeshProUGUI _tournamentTitle;
 
         async void Start()
         {
@@ -30,11 +31,24 @@ namespace Beamable.Examples.Services.LeaderboardService
             {
                 var players = await eventsGetResponse.GetTournamentPlayers();
                 UpdateLeaderboard(players, account.GamerTag);
+
+                string tournamentType = "No Active";
+                if (eventsGetResponse.running != null && eventsGetResponse.running.Count > 0)
+                {
+                    tournamentType = ExtractTournamentType(eventsGetResponse.running[0].id);
+                }                _tournamentTitle.text = $"{tournamentType} Tournament";
             });
-            
+
             var firstPlaceReward = TournamentManager.instance.GetRunningFirstPlaceReward(); 
-        
             _prizePool.text = $"{firstPlaceReward}"; 
+        }
+
+        private string ExtractTournamentType(string tournamentId)
+        {
+            if (string.IsNullOrEmpty(tournamentId)) return "No Active";
+
+            var parts = tournamentId.Split('.');
+            return parts.Length > 2 ? parts[2] : "No Active";
         }
 
         private void UpdateLeaderboard(List<PlayerModel> players, long currentPlayerId)
