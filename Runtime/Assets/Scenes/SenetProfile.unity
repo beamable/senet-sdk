@@ -160,7 +160,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -17.999756, y: -156}
+  m_AnchoredPosition: {x: -17.999725, y: -156}
   m_SizeDelta: {x: 0.3, y: 222.33}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &37847613
@@ -1076,19 +1076,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3829142047281181247, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3829142047281181247, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1286803714}
+      objectReference: {fileID: 228738229}
     - target: {fileID: 3829142047281181247, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetActive
+      value: MoreGames
       objectReference: {fileID: 0}
     - target: {fileID: 3829142047281181247, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
+      value: SenetMenuManager, Beamable.SenetSDK
       objectReference: {fileID: 0}
     - target: {fileID: 3829142047281181247, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
@@ -5332,7 +5332,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -17.999756, y: 0.32795715}
+  m_AnchoredPosition: {x: -17.999725, y: 0.32795715}
   m_SizeDelta: {x: 0.3, y: 222.33}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1108158492
@@ -7654,7 +7654,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5053733216883701872, guid: abd5dbb8b78f8f04180179e7c0129131, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -15.149902
+      value: -15.149841
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3078580083849909700, guid: abd5dbb8b78f8f04180179e7c0129131, type: 3}
@@ -9208,7 +9208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8715968616443595457, guid: 9f4eaaa4b6c229647ba0c0908cd6abf4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -202.60402
+      value: -202.604
       objectReference: {fileID: 0}
     - target: {fileID: 8715968616443595457, guid: 9f4eaaa4b6c229647ba0c0908cd6abf4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

@@ -128,7 +128,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3829142047424412084}
         m_TargetAssemblyTypeName: SenetMenuManager, Beamable.SenetSDK
-        m_MethodName: Activity
+        m_MethodName: MoreGames
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -136,7 +136,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &3829142047281181244
 MonoBehaviour:

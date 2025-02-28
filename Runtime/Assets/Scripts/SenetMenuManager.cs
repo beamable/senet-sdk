@@ -46,6 +46,11 @@ public class SenetMenuManager : MonoBehaviour
     public void Wallet()
     {
         SceneManager.LoadSceneAsync("SenetWallet");
+    } 
+    
+    public void MoreGames()
+    {
+        SceneManager.LoadSceneAsync("SenetMoreGames");
     }
 
     public void Activity()

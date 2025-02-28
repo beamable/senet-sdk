@@ -815,7 +815,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5053733216883701872, guid: abd5dbb8b78f8f04180179e7c0129131, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -15.149902
+      value: -15.149841
       objectReference: {fileID: 0}
     - target: {fileID: 8470100447666738658, guid: abd5dbb8b78f8f04180179e7c0129131, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -2524,19 +2524,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3829142047281181247, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3829142047281181247, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 125510719}
+      objectReference: {fileID: 846900681}
     - target: {fileID: 3829142047281181247, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetActive
+      value: MoreGames
       objectReference: {fileID: 0}
     - target: {fileID: 3829142047281181247, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
+      value: SenetMenuManager, Beamable.SenetSDK
       objectReference: {fileID: 0}
     - target: {fileID: 3829142047281181247, guid: cc0d39896d301e64dbda146d11b3c149, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
