@@ -47,17 +47,18 @@ public class MoreGamesManager : MonoBehaviour
     {
         foreach (var game in gamesList)
         {
-            GameObject newGameItem = Instantiate(gamePrefab, contentParent);
+            var tempGameItem = gamePrefab;
 
-            Image gameImage = newGameItem.transform.Find("Image").GetComponent<Image>();
+            var gameImage = tempGameItem.transform.Find("Image").GetComponent<Image>();
             gameImage.sprite = game.gameIcon;
             gameImage.preserveAspect = true;  
 
-            newGameItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = game.gameName;
+            tempGameItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = game.gameName;
 
-            // newGameItem.GetComponent<Button>().onClick.AddListener(() => OpenGame(game.gameURL)); // Future use
+            Instantiate(tempGameItem, contentParent);
         }
     }
+
 
 
     private static Sprite LoadSpriteFromPath(string filePath)
